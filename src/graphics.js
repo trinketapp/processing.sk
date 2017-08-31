@@ -1,16 +1,21 @@
-graphicsClass = function ($gbl, $loc) {
-    $loc.__init__ = new Sk.builtin.func(function (self, x, y, z) {
-        // PGraphics()
-        // PGraphics(width,height)
-        // PGraphics(width,height,applet)
-        if (typeof (x) === "undefined") {
-            self.v = new mod.processing.PVector();
-        } else if (typeof (z) === "undefined") {
-            self.v = new mod.processing.PVector(x.v, y.v);
-        } else {
-            self.v = new mod.processing.PVector(x.v, y.v, z.v);
-        }
-    });
+import processing from  'processing.js';
+import Sk from 'skulpt.js';
+import { makeFunc, optional, __name__ } from 'utils.js';
+import PApplet from 'applet.js';
+
+const { func, int } = Sk.builtin;
+const { buildClass } = Sk.misceval;
+
+function graphicsInit(self, width, height, applet) {
+    self.v = new processing.PGraphics(width, height, applet);
+}
+
+function graphicsClass($gbl, $loc) {
+    $loc.__init__ = makeFunc(graphicsInit, [
+        { "width": int },
+        { "width": int },
+        { "width": PApplet }
+    ]);
 
     $loc.beginDraw = new Sk.builtin.func(function (self) {
         self.v.beginDraw();
@@ -21,4 +26,4 @@ graphicsClass = function ($gbl, $loc) {
     });
 };
 
-mod.PGraphics = Sk.misceval.buildClass(mod, graphicsClass, "PGraphics", []);
+export default buildClass({ __name__ }, graphicsClass, "PGraphics", []);

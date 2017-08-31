@@ -1,18 +1,25 @@
-fontClass = function ($gbl, $loc) {
+import processing from  'processing.js';
+import Sk from 'skulpt.js';
+import { makeFunc, optional, __name__ } from 'utils.js';
+
+const { func, float, list } = Sk.builtin;
+const { buildClass } = Sk.misceval;
+
+function fontClass ($gbl, $loc) {
     $loc.__init__ = new Sk.builtin.func(function (self, input) {
         // PFont()
         // PFont(input)
         if (typeof (input) === "undefined") {
-            self.v = new mod.processing.PFont();
+            self.v = new processing.PFont();
         } else {
-            self.v = new mod.processing.PVector(input.v);
+            self.v = new processing.PFont(input.v);
         }
     });
 
-    $loc.list = new Sk.builtin.func(function (self) {
+    $loc.list = new func(function (self) {
         // font.list()
-        return new Sk.builtin.list(self.v.list());
+        return new list(self.v.list());
     });
 };
 
-mod.PFont = Sk.misceval.buildClass(mod, fontClass, "PFont", []);
+export default buildClass({ __name__ }, fontClass, "PFont", []);

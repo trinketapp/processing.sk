@@ -1,14 +1,22 @@
-mod.box = makeFunc(mod.processing.box, [
-    { "width": float },
-    { "height": float, optional },
-    { "depth": float, optional }
-]);
+import processing from  'processing.js'
+import Sk from 'skulpt.js'
+import { makeFunc, optional } from 'utils.js'
 
-mod.sphere = makeFunc(mod.processing.sphere, [
-    { "radius": float }
-]);
+const { float } = Sk.builtin;
 
-mod.sphereDetaul = makeFunc(mod.processing.sphere, [
-    { "ures": float },
-    { "vres": float, optional }
-]);
+export default {
+    box: makeFunc(processing.box, [
+        { "width": float },
+        { "height": float, optional },
+        { "depth": float, optional }
+    ]),
+
+    sphere: makeFunc(processing.sphere, [
+        { "radius": float }
+    ]),
+
+    sphereDetail: makeFunc(processing.sphereDetail, [
+        { "ures": float },
+        { "vres": float, optional }
+    ])
+}
