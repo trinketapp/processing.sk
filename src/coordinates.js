@@ -1,35 +1,44 @@
-mod.modelX = new Sk.builtin.func(function (x, y, z) {
-    // modelX(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.modelX(x.v, y.v, z.v));
-});
+import processing from  'processing.js';
+import Sk from 'skulpt.js';
+import { makeFunc, optional } from 'utils.js';
+import PColor from 'color.js';
 
-mod.modelY = new Sk.builtin.func(function (x, y, z) {
-    // modelY(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.modelY(x.v, y.v, z.v));
-});
+const { int, float } = Sk.builtin;
 
-mod.modelZ = new Sk.builtin.func(function (x, y, z) {
-    // modelZ(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.modelZ(x.v, y.v, z.v));
-});
+export default {
+    modelX: makeFunc(processing.modelX, "modelX", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ]),
 
-mod.screenX = new Sk.builtin.func(function (x, y, z) {
-    // screenX(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.screenX(x.v, y.v, z.v));
-});
+    modelY: makeFunc(processing.modelY, "modelY", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ]),
 
-mod.screenY = new Sk.builtin.func(function (x, y, z) {
-    // screenY(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.screenY(x.v, y.v, z.v));
-});
+    modelZ: makeFunc(processing.modelZ, "modelZ", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ]),
 
-mod.screenZ = new Sk.builtin.func(function (x, y, z) {
-    // screenZ(x,y,z)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.screenZ(x.v, y.v, z.v));
-});
+    screenX: makeFunc(processing.screenX, "screenX", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ]),
+
+    screenY: makeFunc(processing.screenY, "screenY", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ]),
+
+    screenZ: makeFunc(processing.screenZ, "screenZ", [
+        { "x": [ int, float ]},
+        { "y": [ int, float ]},
+        { "z": [ int, float ]}
+    ])
+}

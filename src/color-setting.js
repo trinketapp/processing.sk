@@ -1,75 +1,42 @@
-mod.background = new Sk.builtin.func(function (r, g, b) {
-    if (typeof (g) !== "undefined") {
-        g = g.v;
-    }
-    if (typeof (b) !== "undefined") {
-        b = b.v;
-    }
+import processing from  'processing.js';
+import Sk from 'skulpt.js';
+import { makeFunc, optional, __name__ } from 'utils.js';
+import { RGB, HSB } from 'constants.js';
+import PColor from 'color.js';
 
-    mod.processing.background(r.v, g, b);
+const { int, float } = Sk.builtin;
 
-});
+export default {
+    background: makeFunc(processing.background, "background", [
+        { "value1": [ int, float, PColor ] },
+        { "value2": [ int, float ], optional },
+        { "value2": [ int, float ], optional },
+        { "alpha": [ int, float ], optional }
+    ]),
 
-mod.colorMode = new Sk.builtin.func(function (mode, maxV, maxG, maxB, maxAlpha) {
-    // mode is one of RGB or HSB
-    // maxV is either the max value for all color elements
-    // or the range for Red/Hue (depending on mode) if maxG and maxB are defined
-    if (typeof (maxV) === "undefined") {
-        maxV = 255;
-    }
-    else {
-        maxV = maxV.v;
-    }
-    if (typeof (maxG) !== "undefined") {
-        maxG = maxG.v;
-    }
-    if (typeof (maxB) !== "undefined") {
-        maxB = maxB.v;
-    }
-    if (typeof (maxAlpha) !== "undefined") {
-        maxAlpha = maxAlpha.v;
-    }
+    colorMode: makeFunc(processing.colorMode, "colorMode", [
+        { "mode": int, allowed: [ RBG, HSB ] },
+        { "range1": [ int, float ], optional },
+        { "range2": [ int, float ], optional },
+        { "range3": [ int, float ], optional },
+        { "range4": [ int, float ], optional }
+    ]),
 
-    mod.processing.colorMode(mode.v, maxV, maxG, maxB, maxAlpha);
-});
+    fill: makeFunc(processing.fill, "fill", [
+        { "value1": [ int, float, PColor ] },
+        { "value2": [ int, float ], optional },
+        { "value2": [ int, float ], optional },
+        { "alpha": [ int, float ], optional }
+    ]),
 
-mod.fill = new Sk.builtin.func(function (r, g, b, alpha) {
-    // r will be either:
-    //      a number in which case the fill will be grayscale
-    //      a color object
-    // g, and b may be undefined.  If they hold values it will
-    // be assumed that we have an r,g,b color tuple
-    // alpha may also be undefined - if defined, it is the opacity of the fill
-    if (typeof (g) !== "undefined") {
-        g = g.v;
-    }
-    if (typeof (b) !== "undefined") {
-        b = b.v;
-    }
-    if (typeof (alpha) !== "undefined") {
-        alpha = alpha.v;
-    }
+    noFill: makeFunc(processing.noFill, "noFill"),
 
-    mod.processing.fill(r.v, g, b, alpha);
-});
+    noStroke: makeFunc(processing.noStroke, "noStroke"),
 
-mod.noFill = new Sk.builtin.func(function () {
-    mod.processing.noFill();
-});
-
-mod.noStroke = new Sk.builtin.func(function () {
-    mod.processing.noStroke();
-});
-
-mod.stroke = new Sk.builtin.func(function (r, g, b) {
-
-    if (typeof (g) !== "undefined") {
-        g = g.v;
-    }
-    if (typeof (b) !== "undefined") {
-        b = b.v;
-    }
-
-    mod.processing.stroke(r.v, g, b);
-
-});
+    stroke: makeFunc(processing.stroke, "stroke", [
+        { "value1": [ int, float, PColor ] },
+        { "value2": [ int, float ], optional },
+        { "value2": [ int, float ], optional },
+        { "alpha": [ int, float ], optional }
+    ])
+}

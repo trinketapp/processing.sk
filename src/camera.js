@@ -1,65 +1,52 @@
-mod.beginCamera = new Sk.builtin.func(function () {
-    mod.processing.beginCamera();
-});
+import processing from  'processing.js';
+import Sk from 'skulpt.js';
+import { makeFunc, optional } from 'utils.js';
 
+const { float } = Sk.builtin;
 
-mod.camera = new Sk.builtin.func(function (eyeX, eyeY, eyeZ,
-    centerX, centerY, centerZ,
-    upX, upY, upZ) {
-    // camera()
-    // camera(eyeX, eyeY, eyeZ,centerX, centerY, centerZ,upX, upY, upZ)
-    if (typeof (eyeX) === "undefined") {
-        mod.processing.camera();
-    } else {
-        mod.processing.camera(eyeX.v, eyeY.v, eyeZ.v,
-            centerX.v, centerY.v, centerZ.v,
-            upX.v, upY.v, upZ.v);
-    }
-});
+export default {
+    beginCamera: makeFunc(processing.beginCamera, "beginCamera"),
 
-mod.endCamera = new Sk.builtin.func(function () {
-    // endCamera()
-    mod.processing.endCamera();
-});
+    camera: makeFunc(processing.camera, "camera", [
+        { "eyeX": float, optional },
+        { "eyeY": float, optional },
+        { "eyeZ": float, optional },
+        { "centerX": float, optional },
+        { "centerY": float, optional },
+        { "centerZ": float, optional },
+        { "upX": float, optional },
+        { "upY": float, optional },
+        { "upZ": float, optional }
+    ]),
 
-mod.frustum = new Sk.builtin.func(function (left, right, bottom, top, near, far) {
-    // frustum(left, right, bottom,top, near, far)
-    mod.processing.frustum(left, right, bottom, top, near, far);
-});
+    endCamera: makeFunc(processing.endCamera, "endCamera"),
 
-mod.ortho = new Sk.builtin.func(function (left, right, bottom, top, near, far) {
-    // ortho(left, right, bottom,top, near,far)
-    // returns None
-    mod.processing.ortho(left.v, right.v, bottom.v, top.v, near.v, far.v);
-});
+    frustum: makeFunc(processing.frustum, "frustum", [
+        { "left": float },
+        { "right": float },
+        { "bottom": float },
+        { "top": float },
+        { "near": float },
+        { "far": float }
+    ]),
 
-mod.perspective = new Sk.builtin.func(function (fov, aspect, zNear, zFar) {
-    // perspective()
-    // perspective(fov, aspect, zNear, zFar)
-    // returns None
-    if (typeof (fov) === "undefined") {
-        mod.processing.perspective();
-    } else if (typeof (aspect) === "undefined") {
-        mod.processing.perspective(fov.v);
-    } else if (typeof (zNear) === "undefined") {
-        mod.processing.perspective(fov.v, aspect.v);
-    } else if (typeof (zFar) === "undefined") {
-        mod.processing.perspective(fov.v, aspect.v, zNear.v);
-    } else {
-        mod.processing.perspective(fov.v, aspect.v, zNear.v, zFar.v);
-    }
-});
+    ortho: makeFunc(processing.ortho, "ortho", [
+        { "left": float, optional },
+        { "right": float, optional },
+        { "bottom": float, optional },
+        { "top": float, optional },
+        { "near": float, optional },
+        { "far": float, optional }
+    ]),
 
+    perspective: makeFunc(processing.perspective, "perspective", [
+        { "fov": float, optional },
+        { "aspect": float, optional },
+        { "zNear": float, optional },
+        { "zFar": float, optional }
+    ]),
 
-mod.printCamera = new Sk.builtin.func(function () {
-    // printCamera()
-    // returns None
-    mod.processing.printCamera();
-});
+    printCamera: makeFunc(processing.printCamera, "printCamera"),
 
-
-mod.printProjection = new Sk.builtin.func(function () {
-    // printProjection()
-    // returns None
-    mod.processing.printProjection();
-});
+    printProjection: makeFunc(processing.printProjection, "printProjection")
+};
