@@ -1,3 +1,11 @@
+import processing from 'processing.js';
+import Sk from 'skulpt.js';
+import { optional, makeFunc } from 'utils.js';
+import PShape from 'shape.js';
+import { CORNER, CORNERS, CENTER } from 'constants';
+
+const { str, int, float } = Sk.builtin;
+
 shapeClass = function ($gbl, $loc) {
     $loc.__init__ = new Sk.builtin.func(function (self, arg1, arg2, arg3) {
         if (typeof (arg1) === "undefined") {
@@ -103,3 +111,23 @@ shapeClass = function ($gbl, $loc) {
 };
 
 mod.PShapeSVG = Sk.misceval.buildClass(mod, shapeClass, "PShapeSVG", []);
+
+
+
+export default {
+    loadShape: makeFunc(processing.loadShape, "loadShape", [
+        { "filename": str }
+    ]),
+
+    shape: makeFunc(processing.shape, [
+        { "sh": PShape },
+        { "x": float },
+        { "y": float },
+        { "width": float, optional },
+        { "height": float, optional }
+    ]),
+
+    shapeMode: makeFunc(processing.shapeMode, [
+        { "img": int, allowed: [ CORNER, CORNERS, CENTER ] }
+    ])
+}

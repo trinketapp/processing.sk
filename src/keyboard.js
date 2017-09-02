@@ -1,20 +1,25 @@
-keyboardClass = function ($gbl, $loc) {
+import processing from 'processing.js';
+import Sk from 'skulpt.js';
+import __name__ from 'utils.js';
 
-    $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
+const { remapToPy, remapToJs } = Sk.ffi;
+const { func } = Sk.builtin;
+
+function keyboardClass ($gbl, $loc) {
+    $loc.__getattr__ = new func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
         if (key === "key") {
-            return new Sk.builtin.str(mod.processing.key.toString());
+            return remapToPy(mod.processing.key.toString());
         }
         else if (key === "keyCode") {
-            return Sk.builtin.assk$(mod.processing.keyCode);
+            return remapToPy(mod.processing.keyCode);
         }
         else if (key === "keyPressed") {
-            return new Sk.builtin.str(mod.processing.keyPressed);
-        } // todo bool
+            return remapToPy(mod.processing.keyPressed);
+        }
     });
-
 };
 
-mod.Keyboard = Sk.misceval.buildClass(mod, keyboardClass, "Keyboard", []);
+export const Keyboard = Sk.misceval.buildClass({ __name__ }, keyboardClass, "Keyboard", []);
 
-mod.keyboard = Sk.misceval.callsim(mod.Keyboard);
+export const keyboard = Sk.misceval.callsim(Keyboard);

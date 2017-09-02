@@ -56,7 +56,7 @@ function imageUpdatePixels(self, x, y, w, h) {
 
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
-    $loc.__init__ = makeFunc(imageInit, [
+    $loc.__init__ = makeFunc(imageInit, "__init__", [
         // TODO: implement [] in type in makefunt
         { "width": [ int, str ], optional },
         { "height": int, optional },
@@ -76,20 +76,20 @@ function imageClass($gbl, $loc) {
         }
     });
 
-    $loc.get = makeFunc(imageGet, [
+    $loc.get = makeFunc(imageGet, "get", [
         { "x": int },
         { "y": int },
         { "width": int, optional },
         { "height": int, optional }
     ]);
 
-    $loc.set = makeFunc(imageSet, [
+    $loc.set = makeFunc(imageSet, "set", [
         { "x": int },
         { "y": int },
         { "color": PColor }
     ]);
 
-    $loc.copy = makeFunc(imageCopy, [
+    $loc.copy = makeFunc(imageCopy, "copy", [
         { "srcImg": [ int, PImage ]},
         { "sx": int },
         { "sy": int },
@@ -101,11 +101,11 @@ function imageClass($gbl, $loc) {
         { "dheight": int, optional }
     ]);
 
-    $loc.mask = makeFunc(imageMask, [
+    $loc.mask = makeFunc(imageMask, "mask", [
         { "maskImg": [PImage, list] }
     ]);
 
-    $loc.blend = makeFunc(imageBlend, [
+    $loc.blend = makeFunc(imageBlend, "blend", [
         { "srcImg": [ int, PImage ]},
         { "x": int },
         { "y": int },
@@ -119,23 +119,23 @@ function imageClass($gbl, $loc) {
             MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN ]}
     ]);
 
-    $loc.filter = makeFunc(imageFilter, [
+    $loc.filter = makeFunc(imageFilter, "filter", [
         { "MODE": int, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
         { "srcImg": PImage, optional }
     ]);
 
-    $loc.save = makeFunc(imageSave, [
+    $loc.save = makeFunc(imageSave, "save", [
         { "filename": str }
     ]);
 
-    $loc.resize = makeFunc(imageResize, [
+    $loc.resize = makeFunc(imageResize, "resize", [
         { "wide": int },
         { "high": int }
     ])
 
-    $loc.loadPixels = makeFunc(imageLoadPixels);
+    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
 
-    $loc.updatePixels = makeFunc(imageUpdatePixels, [
+    $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
         { "x": int, optional},
         { "y": int, optional},
         { "w": int, optional},
@@ -146,3 +146,124 @@ function imageClass($gbl, $loc) {
 const PImage = buildClass({ __name__ }, imageClass, "PImage", []);
 
 export default PImage
+
+export const createImage = new Sk.builtin.func(function (width, height, format) {
+    var image = Sk.misceval.callsim(mod.PImage);
+    image.v = mod.processing.createImage(width.v, height.v, format.v);
+    return image;
+});
+
+mod.image = new Sk.builtin.func(function (im, x, y, w, h) {
+    // image(img, x, y)
+    // image(img, x, y, width, height)
+    if (typeof (w) === "undefined") {
+        mod.processing.image(im.v, x.v, y.v);
+    } else {
+        mod.processing.image(im.v, x.v, y.v, w.v, h.v);
+    }
+});
+
+mod.imageMode = new Sk.builtin.func(function (mode) {
+    mod.processing.imageMode(mode.v);
+});
+
+mod.loadImage = new Sk.builtin.func(function (imfile) {
+    var i = mod.processing.loadImage(imfile.v);
+    imList.push(i);
+    var image = Sk.misceval.callsim(mod.PImage);
+    image.v = i;
+    return image;
+});
+
+mod.noTint = new Sk.builtin.func(function () {
+    mod.processing.noTint();
+});
+
+mod.requestImage = new Sk.builtin.func(function (filename, extension) {
+    // requestImage(filename)
+    // requestImage(filename, extension)
+    var image = Sk.misceval.callsim(mod.PImage);
+    if (typeof (extension) === "undefined") {
+        image.v = mod.processing.requestImage(filename.v);
+    } else {
+        image.v = mod.processing.requestImage(filename.v, extension.v);
+    }
+    return image;
+});
+
+mod.tint = new Sk.builtin.func(function (v1, v2, v3, v4) {
+    // tint(gray)
+    // tint(gray, alpha)
+    // tint(value1, value2, value3)
+    // tint(value1, value2, value3, alpha)
+    // tint(color)
+    // tint(color, alpha)
+    // tint(hex)
+    // tint(hex, alpha)
+    if (typeof (v2) === "undefined") {
+        mod.processing.tint(v1.v);
+    } else if (typeof (v3) === "undefined") {
+        mod.processing.tint(v1.v, v2.v);
+    } else if (typeof (v4) === "undefined") {
+        mod.processing.tint(v1.v, v2.v, v3.v);
+    } else {
+        mod.processing.tint(v1.v, v2.v, v3.v, v4.v);
+    }
+});
+
+mod.blend = new Sk.builtin.func(function (v1, v2, v3, v4, v5,
+    v6, v7, v8, v9, v10) {
+    if (other instanceof Sk.builtin.int_ || other instanceof Sk.builtin.float_) {
+        // blend(x,     y,width,height,dx,    dy,dwidth,dheight,MODE)
+        mod.processing.blend(v1.v, v2.v, v3.v, v4.v, v5.v,
+            v6.v, v7.v, v8.v, v9.v);
+    } else {
+        // blend(srcImg,x,y,    width, height,dx,dy,    dwidth, dheight,MODE)
+        mod.processing.blend(v1.v, v2.v, v3.v, v4.v, v5.v,
+            v6.v, v7.v, v8.v, v9.v, v10.v);
+    }
+});
+
+mod.copy = new Sk.builtin.func(function (v1, v2, v3, v4, v5,
+    v6, v7, v8, v9) {
+    if (other instanceof Sk.builtin.int_ || other instanceof Sk.builtin.float_) {
+        // copy(x,     y,width,height,dx,    dy,dwidth,dheight)
+        mod.processing.copy(v1.v, v2.v, v3.v, v4.v, v5.v,
+            v6.v, v7.v, v8.v);
+    } else {
+        // copy(srcImg,x,y,    width, height,dx,dy,    dwidth, dheight)
+        mod.processing.copy(v1.v, v2.v, v3.v, v4.v, v5.v,
+            v6.v, v7.v, v8.v, v9.v);
+    }
+});
+
+mod.filter = new Sk.builtin.func(function (mode, srcImg) {
+    // filter(MODE)
+    // filter(MODE, srcImg)
+    if (typeof (srcImg) === "undefined") {
+        mod.processing.filter(mode.v);
+    } else {
+        mod.processing.filter(mode.v, srcImg.v);
+    }
+});
+
+mod.get = new Sk.builtin.func(function (x, y) {
+    var clr = mod.processing.get(x.v, y.v);
+    return Sk.misceval.callsim(mod.color,
+        new Sk.builtin.int_(mod.processing.red(clr)),
+        new Sk.builtin.int_(mod.processing.green(clr)),
+        new Sk.builtin.int_(mod.processing.blue(clr)));
+});
+
+mod.loadPixels = new Sk.builtin.func(function () {
+    mod.processing.loadPixels();
+});
+
+mod.set = new Sk.builtin.func(function (x, y, color) {
+    mod.processing.set(x.v, y.v, color.v);
+});
+
+mod.updatePixels = new Sk.builtin.func(function () {
+    // updatePixels()
+    mod.processing.updatePixels();
+});

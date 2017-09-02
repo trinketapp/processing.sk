@@ -26,4 +26,22 @@ function graphicsClass($gbl, $loc) {
     });
 };
 
-export default buildClass({ __name__ }, graphicsClass, "PGraphics", []);
+export const PGraphics = buildClass({ __name__ }, graphicsClass, "PGraphics", []);
+
+export const createGraphics = new Sk.builtin.func(function (width, height, renderer, filename) {
+    // createGraphics(width, height, renderer)
+    // createGraphics(width, height, renderer, filename)
+    var graphics = Sk.misceval.callsim(mod.PGraphics);
+    if (typeof (filename) === "undefined") {
+        graphics.v = mod.processing.createGraphics(width.v, height.v, renderer.v);
+    } else {
+        graphics.v = mod.processing.createGraphics(width.v, height.v, renderer.v, filename.v);
+    }
+    return graphics;
+});
+
+
+export const hint = new Sk.builtin.func(function (item) {
+    // hint(item)
+    mod.processing.hint(item);
+});
