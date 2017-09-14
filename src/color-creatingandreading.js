@@ -1,11 +1,12 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
-import PColor from 'color.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
+import PColor from "./color.js";
 
-import { BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE,
-    EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN } from 'constants.js';
+import constants from "./constants.js";
 
+const { BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE,
+    EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN } = constants;
 const { int, float } = Sk.builtin;
 const { callsim } = Sk.misceval;
 

@@ -1,6 +1,6 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
 
 const { func, float, list } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -11,44 +11,31 @@ function fontClass ($gbl, $loc) {
     }, "__init__", [ { "input ": str } ]);
 
     $loc.list = new func((self) => new list(self.v.list()));
-};
+}
 
-export default buildClass({ __name__ }, fontClass, "PFont", []);
+export const PFont = buildClass({ __name__ }, fontClass, "PFont", []);
 
+export const createFont = makeFunc(processing.createFont, "createFont", [
+    { "name": str },
+    { "size": float},
+    { "smooth": bool, optional },
+    { "charset": str, optional }
+]);
 
-mod.createFont = new Sk.builtin.func(function (name, size, smooth, charset) {
-    // createFont(name, size)
-    // createFont(name, size, smooth)
-    // createFont(name, size, smooth, charset)
-    var font = Sk.misceval.callsim(mod.PFont);
-    if (typeof (smooth) === "undefined") {
-        font.v = mod.processing.createFont(name.v, size.v);
-    } else if (typeof (charset) === "undefined") {
-        font.v = mod.processing.createFont(name.v, size.v, smooth.v);
-    } else {
-        font.v = mod.processing.createFont(name.v, size.v, smooth.v, charset.v);
-    }
-    return font;
-});
+export const loadFont = makeFunc(processing.loadFont, "loadFont", [
+    { "fontname": str }
+]);
 
-mod.loadFont = new Sk.builtin.func(function (fontname) {
-    // loadFont(fontname)
-    // returns font
-    var font = Sk.misceval.callsim(mod.PFont);
-    font.v = mod.processing.loadFont(fontname.v);
-    return font;
-});
+export const text = makeFunc(processing.text, "text", [
+    { "data": [ str, int, float ] },
+    { "x": [ int, float ] },
+    { "y": [ int, float ] },
+    { "z": [ int, float ], optional },
+    { "height": [ int, float ], optional },
+    { "z": [ int, float ], optional }
+]);
 
-mod.text = new Sk.builtin.func(function (theText, x, y) {
-    mod.processing.text(theText.v, x.v, y.v);
-});
-
-mod.textFont = new Sk.builtin.func(function (font, size) {
-    // textFont(font)
-    // textFont(font, size)
-    if (typeof (size) === "undefined") {
-        mod.processing.textFont(font.v);
-    } else {
-        mod.processing.textFont(font.v, size.v);
-    }
-});
+export const textFont = makeFunc(processing.textFont, "textFont", [
+    { "font": PFont },
+    { "size": [ int, float  ], optional }
+]);

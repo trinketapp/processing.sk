@@ -1,6 +1,6 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
 
 const { func, float } = Sk.builtin;
 const { buildClass } = Sk.misceval;

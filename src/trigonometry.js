@@ -1,10 +1,15 @@
-mod.degrees = new Sk.builtin.func(function (angle) {
-    // degrees(angle)
-    return new Sk.builtin.float_(mod.processing.degrees(angle.v));
-});
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc } from "./utils.js";
 
-mod.radians = new Sk.builtin.func(function (angle) {
-    // radians(angle)
-    // returns int or float
-    return new Sk.builtin.float_(mod.processing.radians(angle.v));
-});
+const { int, float } = Sk.builtin;
+
+export default {
+    degrees: makeFunc(processing.degrees, "degrees", [
+        { "angle": [ int, float ] }
+    ]),
+
+    radians: makeFunc(processing.radians, "radians", [
+        { "angle": [ int, float ] }
+    ]),
+};

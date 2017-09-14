@@ -1,7 +1,7 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional } from 'utils.js';
-import PColor from 'color.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional } from "./utils.js";
+import PColor from "./color.js";
 
 const { int, float } = Sk.builtin;
 
@@ -41,4 +41,4 @@ export default {
         { "y": [ int, float ]},
         { "z": [ int, float ]}
     ])
-}
+};

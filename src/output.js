@@ -1,39 +1,37 @@
-mod.println = new Sk.builtin.func(function (data) {
-    // println(data)
-    mod.processing.println(data.v);
-});
+import Sk from "./skulpt.js";
+import processing from "./processing.js";
+import { notImplemented, makeFunc } from "./utils.js";
 
-mod.save = new Sk.builtin.func(function (filename) {
-    // save(filename)
-    // returns None
-    mod.processing.save(filename.v);
-});
+const { object, str, list } = Sk.builtin;
 
-mod.saveFrame = new Sk.builtin.func(function (filename) {
-    // saveFrame()
-    // saveFrame(filename-####.ext)
-    // returns None
-    if (typeof (filename) === "undefined") {
-        mod.processing.saveFrame();
-    } else {
-        mod.processing.saveFrame(filename.v);
-    }
-});
+export default {
+    println: makeFunc(processing.println, "println", [
+        { "data": object }
+    ]),
 
+    save: makeFunc(processing.save, "save", [
+        { "filename": str }
+    ]),
 
-mod.saveStrings = new Sk.builtin.func(function (filename, strings) {
-    // saveStrings(filename,strings)
-    mod.processing.saveStrings(filename.v, strings.v);
-});
+    saveFrame: makeFunc(processing.saveFrame, "saveFrame", [
+        { "filename": str },
+        { "ext": str, allowed: [ "tif", "tga", "jpg", "png" ] }
+    ]),
 
-PrintWriter
-beginRaw
-beginRecord
-createOutput
-createReader
-createWriter
-endRaw
-endRecord
-saveBytes
-saveStream
-selectOuput
+    saveStrings: makeFunc(processing.saveStrings, "saveStrings", [
+        { "filename": str },
+        { "strings": list }
+    ]),
+
+    PrintWriter: notImplemented,
+    beginRaw: notImplemented,
+    beginRecord: notImplemented,
+    createOutput: notImplemented,
+    createReader: notImplemented,
+    createWriter: notImplemented,
+    endRaw: notImplemented,
+    endRecord: notImplemented,
+    saveBytes: notImplemented,
+    saveStream: notImplemented,
+    selectOuput: notImplemented
+};

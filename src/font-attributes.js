@@ -1,34 +1,31 @@
-mod.textAlign = new Sk.builtin.func(function (align, yalign) {
-    // textAlign(ALIGN)
-    // textAlign(ALIGN, YALIGN)
-    // returns None
-    if (typeof (yalign) === "undefined") {
-        mod.processing.textAlign(align.v);
-    } else {
-        mod.processing.textAlign(align.v, yalign.v);
-    }
-});
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import constants from "./constants.js";
 
-mod.textLeading = new Sk.builtin.func(function (dist) {
-    // textLeading(dist)
-    // returns None
-    mod.processing.textLeading(dist.v);
-});
 
-mod.textMode = new Sk.builtin.func(function (mode) {
-    // textMode(MODE)
-    // returns None
-    mod.processing.textMode(mode.v);
-});
+const { LEFT, CENTER, RIGHT, TOP, BOTTOM, BASELINE,
+    MODEL, SCREEN, SHAPE } = constants;
+const { int, float, str } = Sk.builtin;
 
-mod.textSize = new Sk.builtin.func(function (size) {
-    // textSize(size)
-    // returns None
-    mod.processing.textSize(size.v);
-});
+export default {
+    textAlign: makeFunc(processing.textAlign, "textAlign", [
+        { "ALIGN": int, allowed: [ LEFT, CENTER, RIGHT ] },
+        { "YALIGN": int, allowed: [ TOP, BOTTOM, BASELINE, CENTER ] }
+    ]),
 
-mod.textWidth = new Sk.builtin.func(function (data) {
-    // textWidth(data)
-    // returns float
-    return new Sk.builtin.float_(mod.processing.textWidth(data.v));
-});
+    textLeading: makeFunc(processing.textLeading, "textLeading", [
+        { "dist": [ int, float ] }
+    ]),
+
+    textMode: makeFunc(processing.textMode, "textMode", [
+        { "MODE": int, allowed: [ MODEL, SCREEN, SHAPE ] }
+    ]),
+
+    textSize: makeFunc(processing.textSize, "textSize", [
+        { "size":  [ int, float ] }
+    ]),
+
+    textWidth: makeFunc(processing.textWidth, "textWidth", [
+        { "width": str }
+    ])
+};

@@ -1,71 +1,59 @@
-mod.applyMatrix = new Sk.builtin.func(function () {
-    var args = Array.prototype.slice.call(arguments, 0, 16),
-        i;
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional } from "./utils.js";
 
-    for (i = 0; i < args.length; i++) {
-        args[i] = typeof (args[i]) === "undefined" ? 0.0 : args[i].v;
-    }
+const { float } = Sk.builtin;
 
-    mod.processing.applyMatrix.apply(mod.processing, args);
-});
+export default {
+    applyMatrix: makeFunc(processing.applyMatrix, "applyMatrix", [
+        { "n00": float },
+        { "n01": float },
+        { "n02": float },
+        { "n03": float },
+        { "n04": float },
+        { "n05": float },
+        { "n06": float },
+        { "n07": float },
+        { "n08": float },
+        { "n09": float },
+        { "n10": float },
+        { "n11": float },
+        { "n12": float },
+        { "n13": float },
+        { "n14": float },
+        { "n15": float }
+    ]),
 
-mod.popMatrix = new Sk.builtin.func(function () {
-    mod.processing.popMatrix();
-});
+    popMatrix: makeFunc(processing.popMatrix, "popMatrix"),
+    printMatrix: makeFunc(processing.printMatrix, "printMatrix"),
+    pushMatrix: makeFunc(processing.pushMatrix, "pushMatrix"),
+    resetMatrix: makeFunc(processing.resetMatrix, "resetMatrix"),
 
-mod.printMatrix = new Sk.builtin.func(function () {
-    return Sk.ffi.remapToPy(mod.processing.printMatrix());
-});
+    rotate: makeFunc(processing.rotate, "rotate", [
+        { "angle": float }
+    ]),
 
-mod.pushMatrix = new Sk.builtin.func(function () {
-    mod.processing.pushMatrix();
-});
+    rotateX: makeFunc(processing.rotateX, "rotateX", [
+        { "angle": float }
+    ]),
 
-mod.resetMatrix = new Sk.builtin.func(function () {
-    mod.processing.resetMatrix();
-});
+    rotateY: makeFunc(processing.rotateY, "rotateY", [
+        { "angle": float }
+    ]),
 
-mod.rotate = new Sk.builtin.func(function (rads) {
-    // rotation in radians
-    mod.processing.rotate(rads.v);
-});
+    rotateZ: makeFunc(processing.rotateZ, "rotateZ", [
+        { "angle": float }
+    ]),
 
-mod.rotateX = new Sk.builtin.func(function (rads) {
-    mod.processing.rotateX(rads.v);
-});
+    scale: makeFunc(processing.scale, "scale", [
+        { "size": float },
+        { "y": float, optional },
+        { "z": float, optional }
+    ]),
 
-mod.rotateY = new Sk.builtin.func(function (rads) {
-    mod.processing.rotateY(rads.v);
-});
-
-mod.rotateZ = new Sk.builtin.func(function (rads) {
-    mod.processing.rotateZ(rads.v);
-});
-
-mod.scale = new Sk.builtin.func(function (sx, sy, sz) {
-    if (typeof (sy) === "undefined") {
-        sy = 1.0;
-    } else {
-        sy = sy.v;
-    }
-    if (typeof (sz) === "undefined") {
-        sz = 1.0;
-    } else {
-        sz = sz.v;
-    }
-    mod.processing.scale(sx.v, sy, sz);
-});
-
-mod.translate = new Sk.builtin.func(function (sx, sy, sz) {
-    if (typeof (sy) === "undefined") {
-        sy = 1.0;
-    } else {
-        sy = sy.v;
-    }
-    if (typeof (sz) === "undefined") {
-        sz = 1.0;
-    } else {
-        sz = sz.v;
-    }
-    mod.processing.translate(sx.v, sy, sz);
-});
+    translate: makeFunc(processing.translate, "translate", [
+        { "x": float },
+        { "y": float },
+        { "z": float, optional }
+    ])
+};

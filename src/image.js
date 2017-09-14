@@ -1,17 +1,34 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
-import PColor from 'color.js';
-import { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
-         MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
-         THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE } from 'constants.js'
+import processing, { pushImage } from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
+import PColor from "./color.js";
+import constants from "./constants.js";
 
 const { func, int, list } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
+const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
+    MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
+    THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE,
+    CORNER, CORNERS, CENTER } = constants;
+
+function imageLoadImage(img) {
+    var i = processing.loadImage(img);
+    pushImage(img);
+
+    var image = Sk.misceval.callsim(PImage);
+    image.v = i;
+    return image;
+}
+
+function imageRequestImage(filename, extension) {
+    var image = Sk.misceval.callsim(PImage);
+    image.v = processing.requestImage(filename, extension);
+    return image;
+}
 
 function imageInit(self, arg1, arg2, arg3) {
-    self.v = new mod.processing.PImage(arg1.v, arg2.v, arg3.v);
+    self.v = new processing.PImage(arg1.v, arg2.v, arg3.v);
 }
 
 function imageGet(self, x, y, width, height) {
@@ -19,7 +36,7 @@ function imageGet(self, x, y, width, height) {
 }
 
 function imageSet(self, x, y, color) {
-    self.v.set(x, y, width, color);
+    self.v.set(x, y, color);
 }
 
 function imageCopy(self, srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight) {
@@ -131,7 +148,7 @@ function imageClass($gbl, $loc) {
     $loc.resize = makeFunc(imageResize, "resize", [
         { "wide": int },
         { "high": int }
-    ])
+    ]);
 
     $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
 
@@ -141,129 +158,92 @@ function imageClass($gbl, $loc) {
         { "w": int, optional},
         { "h": int, optional}
     ]);
-};
+}
 
 const PImage = buildClass({ __name__ }, imageClass, "PImage", []);
 
-export default PImage
+export default PImage;
 
 export const createImage = new Sk.builtin.func(function (width, height, format) {
-    var image = Sk.misceval.callsim(mod.PImage);
-    image.v = mod.processing.createImage(width.v, height.v, format.v);
+    var image = Sk.misceval.callsim(PImage);
+    image.v = processing.createImage(width.v, height.v, format.v);
     return image;
 });
 
-mod.image = new Sk.builtin.func(function (im, x, y, w, h) {
-    // image(img, x, y)
-    // image(img, x, y, width, height)
-    if (typeof (w) === "undefined") {
-        mod.processing.image(im.v, x.v, y.v);
-    } else {
-        mod.processing.image(im.v, x.v, y.v, w.v, h.v);
-    }
-});
+export const image = makeFunc(processing.image, "image", [
+    { "img": PImage },
+    { "x": int },
+    { "y": int },
+    { "width": int, optional },
+    { "height": int, optional }
+]);
 
-mod.imageMode = new Sk.builtin.func(function (mode) {
-    mod.processing.imageMode(mode.v);
-});
+export const imageMode = makeFunc(processing.imageMode, "imageMode", [
+    { "mode": int, allowed: [ CORNER, CORNERS, CENTER ] }
+]);
 
-mod.loadImage = new Sk.builtin.func(function (imfile) {
-    var i = mod.processing.loadImage(imfile.v);
-    imList.push(i);
-    var image = Sk.misceval.callsim(mod.PImage);
-    image.v = i;
-    return image;
-});
+export const loadImage = makeFunc(imageLoadImage, "loadImage", [
+    { "image": str }
+]);
 
-mod.noTint = new Sk.builtin.func(function () {
-    mod.processing.noTint();
-});
+export const noTint = makeFunc(processing.noTint, "noTint");
 
-mod.requestImage = new Sk.builtin.func(function (filename, extension) {
-    // requestImage(filename)
-    // requestImage(filename, extension)
-    var image = Sk.misceval.callsim(mod.PImage);
-    if (typeof (extension) === "undefined") {
-        image.v = mod.processing.requestImage(filename.v);
-    } else {
-        image.v = mod.processing.requestImage(filename.v, extension.v);
-    }
-    return image;
-});
+export const requestImage = makeFunc(imageRequestImage, "requestImage", [
+    { "filename": str },
+    { "extension": str, optional }
+]);
 
-mod.tint = new Sk.builtin.func(function (v1, v2, v3, v4) {
-    // tint(gray)
-    // tint(gray, alpha)
-    // tint(value1, value2, value3)
-    // tint(value1, value2, value3, alpha)
-    // tint(color)
-    // tint(color, alpha)
-    // tint(hex)
-    // tint(hex, alpha)
-    if (typeof (v2) === "undefined") {
-        mod.processing.tint(v1.v);
-    } else if (typeof (v3) === "undefined") {
-        mod.processing.tint(v1.v, v2.v);
-    } else if (typeof (v4) === "undefined") {
-        mod.processing.tint(v1.v, v2.v, v3.v);
-    } else {
-        mod.processing.tint(v1.v, v2.v, v3.v, v4.v);
-    }
-});
+export const tint = makeFunc(processing.tint, "tint", [
+    { "value1": [ PColor, int, float ] },
+    { "value2": [ int, float ], optional },
+    { "value3": [ int, float ], optional },
+    { "alpha": [ int, float ], optional }
+]);
 
-mod.blend = new Sk.builtin.func(function (v1, v2, v3, v4, v5,
-    v6, v7, v8, v9, v10) {
-    if (other instanceof Sk.builtin.int_ || other instanceof Sk.builtin.float_) {
-        // blend(x,     y,width,height,dx,    dy,dwidth,dheight,MODE)
-        mod.processing.blend(v1.v, v2.v, v3.v, v4.v, v5.v,
-            v6.v, v7.v, v8.v, v9.v);
-    } else {
-        // blend(srcImg,x,y,    width, height,dx,dy,    dwidth, dheight,MODE)
-        mod.processing.blend(v1.v, v2.v, v3.v, v4.v, v5.v,
-            v6.v, v7.v, v8.v, v9.v, v10.v);
-    }
-});
+export const blend = makeFunc(processing.blend, "blend", [
+    { "srcImg": [ int, PImage ]},
+    { "x": int },
+    { "y": int },
+    { "width": int },
+    { "height": int },
+    { "dx": int },
+    { "dy": int },
+    { "dwidth": int },
+    { "dheight": int },
+    { "MODE": int, optional, allowed: [ BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
+        MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN ]}
+]);
 
-mod.copy = new Sk.builtin.func(function (v1, v2, v3, v4, v5,
-    v6, v7, v8, v9) {
-    if (other instanceof Sk.builtin.int_ || other instanceof Sk.builtin.float_) {
-        // copy(x,     y,width,height,dx,    dy,dwidth,dheight)
-        mod.processing.copy(v1.v, v2.v, v3.v, v4.v, v5.v,
-            v6.v, v7.v, v8.v);
-    } else {
-        // copy(srcImg,x,y,    width, height,dx,dy,    dwidth, dheight)
-        mod.processing.copy(v1.v, v2.v, v3.v, v4.v, v5.v,
-            v6.v, v7.v, v8.v, v9.v);
-    }
-});
+export const copy = makeFunc(processing.copy, "copy", [
+    { "srcImg": [ int, PImage ]},
+    { "sx": int },
+    { "sy": int },
+    { "swidth": int },
+    { "sheight": int },
+    { "dx": int },
+    { "dy": int },
+    { "dwidth": int },
+    { "dheight": int, optional }
+]);
 
-mod.filter = new Sk.builtin.func(function (mode, srcImg) {
-    // filter(MODE)
-    // filter(MODE, srcImg)
-    if (typeof (srcImg) === "undefined") {
-        mod.processing.filter(mode.v);
-    } else {
-        mod.processing.filter(mode.v, srcImg.v);
-    }
-});
+export const filter = makeFunc(processing.filter, "filter", [
+    { "MODE": int, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
+    { "srcImg": PImage, optional }
+]);
 
-mod.get = new Sk.builtin.func(function (x, y) {
-    var clr = mod.processing.get(x.v, y.v);
-    return Sk.misceval.callsim(mod.color,
-        new Sk.builtin.int_(mod.processing.red(clr)),
-        new Sk.builtin.int_(mod.processing.green(clr)),
-        new Sk.builtin.int_(mod.processing.blue(clr)));
-});
+export const get = makeFunc(processing.get, "get", [
+    { "x": int, optional },
+    { "y": int, optional },
+    { "width": int, optional },
+    { "height": int, optional },
+]);
 
-mod.loadPixels = new Sk.builtin.func(function () {
-    mod.processing.loadPixels();
-});
+export const loadPixels = makeFunc(processing.loadPixels, "loadPixels");
 
-mod.set = new Sk.builtin.func(function (x, y, color) {
-    mod.processing.set(x.v, y.v, color.v);
-});
+export const set = makeFunc(processing.set, "set", [
+    { "x": int },
+    { "y": int },
+    { "image": [ PColor, PImage ] },
+]);
 
-mod.updatePixels = new Sk.builtin.func(function () {
-    // updatePixels()
-    mod.processing.updatePixels();
-});
+export const updatePixels = makeFunc(processing.updatePixels, "updatePixels");

@@ -1,46 +1,31 @@
-    mod.noise = new Sk.builtin.func(function (x, y, z) {
-        // noise(x)
-        // noise(x, y)
-        // noise(x, y, z)
-        // returns float
-        if (typeof (y) === "undefined") {
-            return new Sk.builtin.float_(mod.processing.noise(x.v));
-        } else if (typeof (z) === "undefined") {
-            return new Sk.builtin.float_(mod.processing.noise(x.v, y.v));
-        } else {
-            return new Sk.builtin.float_(mod.processing.noise(x.v, y.v, z.v));
-        }
-    });
+import { makeFunc, optional } from "./utils.js";
+import Sk from "./skulpt.js";
+import processing from "./processing.js";
 
-    mod.noiseDetail = new Sk.builtin.func(function (octaves, falloff) {
-        // noiseDetail(octaves);
-        // noiseDetail(octaves,falloff);
-        mod.processing.noiseDetail(octaves.v, falloff.v);
-    });
+const { float, int } = Sk.builtin;
 
-    mod.noiseSeed = new Sk.builtin.func(function (value) {
-        // noiseSeed(value); int
-        // returns float
-        return new Sk.builtin.float_(mod.processing.noiseSeed(value.v));
-    });
+export default {
+    noise: makeFunc(processing.noise, "noise", [
+        { "x": float },
+        { "y": float, optional },
+        { "z": float, optional },
+    ]),
 
+    noiseDetail: makeFunc(processing.noiseDetail, "noiseDetail", [
+        { "octave": int },
+        { "falloff": float }
+    ]),
 
-    mod.randomSeed = new Sk.builtin.func(function (value) {
-        // noiseSeed(value);
-        // returns float
-        return new Sk.builtin.float_(mod.processing.randomSeed(value.v));
-    });
+    noiseSeed: makeFunc(processing.noiseSeed, "noiseSeed", [
+        { "value": int }
+    ]),
 
-    mod.random = new Sk.builtin.func(function (v1, v2) {
-        // random();
-        // random(high);
-        // random(low, high);
-        // returns float
-        if (typeof (v1) === "undefined") {
-            return new Sk.builtin.float_(mod.processing.random());
-        } else if (typeof (v2) === "undefined") {
-            return new Sk.builtin.float_(mod.processing.random(v1.v));
-        } else {
-            return new Sk.builtin.float_(mod.processing.random(v1.v, v2.v));
-        }
-    });
+    randomSeed: makeFunc(processing.randomSeed, "randomSeed", [
+        { "value": int }
+    ]),
+
+    random: makeFunc(processing.random, "random", [
+        { low: [ int, float ] },
+        { high: [ int, float ], optional }
+    ])
+};

@@ -1,121 +1,148 @@
-vectorClass = function ($gbl, $loc) {
-    $loc.__init__ = new Sk.builtin.func(function (self, x, y, z) {
-        // PVector()
-        // PVector(x,y)
-        // PVector(x,y,z)
-        if (typeof (x) === "undefined") {
-            self.v = new mod.processing.PVector();
-        } else if (typeof (z) === "undefined") {
-            self.v = new mod.processing.PVector(x.v, y.v);
-        } else {
-            self.v = new mod.processing.PVector(x.v, y.v, z.v);
-        }
-    });
+import Sk from "./skulpt.js";
+import processing from "./processing.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
+
+const { int, float } = Sk.builtin;
+const { callsim } = Sk.misceval;
+const { remapToPy } = Sk.ffi;
+
+function vectorInit(self, x, y, z) {
+    self.v = processing.PVector(x, y, z);
+}
+
+function vectorSet(self, x, y, z) {
+    self.v.set(x, y, z);
+}
+
+function vectorGet(self) {
+    let vector = callsim(PVector);
+    vector.v = self.v.get();
+    return vector;
+}
+
+function vectorAdd(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.add(vec);
+    return new_vec;
+}
+
+function vectorSub(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.sub(vec);
+    return new_vec;
+}
+
+function vectorMult(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.mult(vec);
+    return new_vec;
+}
+
+function vectorDiv(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.div(vec);
+    return new_vec;
+}
+
+function vectorDot(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.dot(vec);
+    return new_vec;
+}
+
+function vectorCross(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.cross(vec);
+    return new_vec;
+}
+
+function vectorDist(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.dist(vec);
+    return new_vec;
+}
+
+function vectorAngleBetween(self, vec) {
+    var new_vec = callsim(PVector);
+    new_vec.v = self.v.angleBetween(vec);
+    return new_vec;
+}
+
+function vectorLimit(self, value) {
+    self.v.limit(value);
+}
+
+function vectorClass($gbl, $loc) {
+    $loc.__init__ = makeFunc(vectorInit, "__init__", [
+        { "x": int },
+        { "y": int, optional },
+        { "z": int, optional }
+    ]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
         if (key === "x") {
-            return Sk.builtin.assk$(self.v.x);
+            return remapToPy(self.v.x);
         } else if (key === "y") {
-            return Sk.builtin.assk$(self.v.y);
+            return remapToPy(self.v.y);
         } else if (key === "z") {
             return Sk.builtin.assk$(self.v.z);
         }
     });
 
-    $loc.get = new Sk.builtin.func(function (self) {
-        // get() Gets a copy of the vector
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.get();
-        return new_vec;
-    });
+    $loc.get = makeFunc(vectorGet, "get"),
 
-    $loc.set = new Sk.builtin.func(function (self, x, y, x) {
-        // set() Sets the x, y, z component of the vector
-        if (typeof (z) === "undefined") {
-            self.v.set(x.v, y.v);
-        } else {
-            self.v.set(x.v, y.v, z.v);
-        }
-    });
+    $loc.set = makeFunc(vectorSet, "set", [
+        { "x": int },
+        { "x": int, optional },
+        { "x": int, optional }
+    ]);
 
-    $loc.mag = new Sk.builtin.func(function (self) {
-        // mag() Calculates the magnitude (length) of the vector
-        // and returns the result as a float
-        return Sk.builtin.assk$(self.v.mag());
-    });
+    $loc.mag = makeFunc(self => self.v.mag(), "mag");
 
-    $loc.add = new Sk.builtin.func(function (self, vec) {
-        // add()	Adds one vector to another
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.add(vec.v);
-        return new_vec;
-    });
+    $loc.add = makeFunc(vectorAdd, "add", [
+        { "vector": PVector }
+    ]);
 
-    $loc.sub = new Sk.builtin.func(function (self, vec) {
-        // sub()	Subtracts one vector from another
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.sub(vec.v);
-        return new_vec;
-    });
+    $loc.sub = makeFunc(vectorSub, "sub", [
+        { "vector": PVector }
+    ]);
 
-    $loc.mult = new Sk.builtin.func(function (self, vec) {
-        // mult()	Multiplies the vector by a scalar
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.mult(vec.v);
-        return new_vec;
-    });
+    $loc.mult = makeFunc(vectorMult, "mult", [
+        { "vector": PVector }
+    ]);
 
-    $loc.div = new Sk.builtin.func(function (self, vec) {
-        // div()	Divides the vector by a scalar
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.dic(vec.v);
-        return new_vec;
-    });
+    $loc.div = makeFunc(vectorDiv, "div", [
+        { "vector": PVector }
+    ]);
 
-    $loc.dist = new Sk.builtin.func(function (self, vec) {
-        // dist()	Calculate the Euclidean distance between two points
-        return Sk.builtin.assk$(self.v.dist(vec.v));
-    });
+    $loc.dist = makeFunc(vectorDist, "dist", [
+        { "vector": PVector }
+    ]);
 
-    $loc.dot = new Sk.builtin.func(function (self, v1, v2, v3) {
-        // dot()	Calculates the dot product
-        // returns float
-        // vec.dot(x,y,z)
-        // vec.dot(v)
-        if (typeof (v2) === 'undefined') {
-            return Sk.builtin.assk$(self.v.dot(v1.v));
-        } else {
-            return Sk.builtin.assk$(self.v.dot(v1.v, v2.v, v3.v));
-        }
-    });
+    $loc.dot = makeFunc(vectorDot, "dot", [
+        { "x": [ int, float ] },
+        { "y": [ int, float ], optional },
+        { "z": [ int, float ], optional }
+    ]);
 
-    $loc.cross = new Sk.builtin.func(function (self, vec) {
-        // cross()	Calculates the cross product
-        var new_vec = Sk.misceval.callsim(mod.PVector);
-        new_vec.v = self.v.cross(vec.v);
-        return new_vec;
-    });
+    $loc.cross = makeFunc(vectorCross, "cross", [
+        { "vector": PVector }
+    ]);
 
-    $loc.normalize = new Sk.builtin.func(function (self) {
-        // normalize()	Normalizes the vector
-        self.v.normalize();
-    });
+    $loc.normalize = makeFunc(self => self.normalize(), "normalize");
 
-    $loc.limit = new Sk.builtin.func(function (self, value) {
-        // limit()	Limits the magnitude of the vector
-        self.v.limit(value.v);
-    });
+    $loc.limit = makeFunc(vectorLimit, "limit", [
+        { "value": float }
+    ]);
 
-    $loc.angleBetween = new Sk.builtin.func(function (self, vec) {
-        // angleBetween()	Calculates the angle between two vectors
-        return Sk.builtin.assk$(self.v.angleBetween(vec.v));
-    });
+    $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [
+        { "vector": PVector }
+    ]);
 
-    $loc.array = new Sk.builtin.func(function (self) {
-        // array()
-        return new Sk.builtin.list(self.v.array());
-    });
-};
+    $loc.array = makeFunc(self => self.v.array(), "array");
+}
 
-mod.PVector = Sk.misceval.buildClass(mod, vectorClass, "PVector", []);
+const PVector = Sk.misceval.buildClass({ __name__ }, vectorClass, "PVector", []);
+
+export default PVector;

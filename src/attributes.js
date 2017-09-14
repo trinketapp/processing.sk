@@ -1,10 +1,11 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional } from 'utils.js';
-import { ROUND, SQUARE, BUTT, MITTER, BEVEL,
-         CENTER, RADIUS, CORNER, CORNERS  } from "constants.js";
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc } from "./utils.js";
+import constants from "./constants.js";
 
 const { int, str } = Sk.builtin;
+const { ROUND, SQUARE, BUTT, MITTER, BEVEL,
+    CENTER, RADIUS, CORNER, CORNERS  } = constants;
 
 export default {
     elipseMode: makeFunc(processing.elipseMode, "elipseMode", [
@@ -29,4 +30,4 @@ export default {
     strokeWeight: makeFunc(processing.strokeWeight, [
         { "width": int }
     ])
-}
+};

@@ -1,31 +1,44 @@
-mod.loop = new Sk.builtin.func(function () {
-    if (mod.processing === null) {
+import processing, { setProperty, setLooping, isInitialised } from "./processing.js";
+import { makeFunc } from "./utils.js";
+import Sk from "./skulpt.js";
+
+const { int } = Sk.builtin;
+
+function loop() {
+    if (isInitialised) {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
-    looping = true;
-    mod.processing.loop();
-});
 
-mod.noLoop = new Sk.builtin.func(function () {
-    if (mod.processing === null) {
+    setLooping(true);
+    processing.loop();
+}
+
+function noLoop() {
+    if (isInitialised()) {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
-    looping = false;
-    mod.processing.noLoop();
-});
 
-mod.width = new Sk.builtin.int_(100);
-mod.height = new Sk.builtin.int_(100);
+    setLooping(false);
+    processing.noLoop();
+}
 
-mod.size = new Sk.builtin.func(function (w, h, mode) {
-    if (typeof (mode) === "undefined") {
-        mode = mod.P2D;
-    }
-    mod.processing.size(w.v, h.v, mode.v);
-    mod.width = new Sk.builtin.int_(mod.processing.width);
-    mod.height = new Sk.builtin.int_(mod.processing.height);
-});
+function size(width, height) {
+    processing.size(width, height);
+    setProperty("width", processing.width);
+    setProperty("height", processing.height);
+}
 
-mod.exit = new Sk.builtin.func(function (h, w) {
-    mod.processing.exit();
-});
+export default {
+    loop: makeFunc(loop, "loop"),
+    noLoop: makeFunc(noLoop, "noLoop"),
+
+    width: makeFunc(() => processing.width, "width"),
+    height: makeFunc(() => processing.height, "height"),
+
+    size: makeFunc(size, "size", [
+        { "width": int },
+        { "height": int },
+    ]),
+
+    exit: makeFunc(processing.exit)
+};

@@ -1,6 +1,6 @@
-import processing from  'processing.js'
-import Sk from 'skulpt.js'
-import { makeFunc, notImplemented, optional } from 'utils.js'
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional } from "./utils.js";
 
 const { str } = Sk.builtin;
 
@@ -12,4 +12,4 @@ export default {
     status: makeFunc(processing.status, [
         { "text": str }
     ])
-}
+};

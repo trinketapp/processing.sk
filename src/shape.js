@@ -1,118 +1,121 @@
-import processing from 'processing.js';
-import Sk from 'skulpt.js';
-import { optional, makeFunc } from 'utils.js';
-import PShape from 'shape.js';
-import { CORNER, CORNERS, CENTER } from 'constants';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { optional, makeFunc, __name__ } from "./utils.js";
+import constants from "./constants.js";
 
-const { str, int, float } = Sk.builtin;
+const { CORNER, CORNERS, CENTER } = constants;
+const { str, int, float, bool } = Sk.builtin;
+const { remapToJs, remapToPy } = Sk.ffi;
 
-shapeClass = function ($gbl, $loc) {
-    $loc.__init__ = new Sk.builtin.func(function (self, arg1, arg2, arg3) {
-        if (typeof (arg1) === "undefined") {
-            // special version for Skulpt
-            self.v = null;
-            // Will fill in manually in getChild()
-        } else if (typeof (arg2) === "undefined") {
-            self.v = new mod.processing.PShapeSVG(arg1.v);
-        } else if (typeof (arg3) === "undefined") {
-            self.v = new mod.processing.PShapeSVG(arg1.v, arg2.v);
-        } else {
-            self.v = new mod.processing.PShapeSVG(arg1.v, arg2.v, arg3.v);
-        }
-    });
+function shapeIsVisible(self) {
+    return self.v.isVisible();
+}
 
+function shapeSetVisible(self, value) {
+    self.v.setVisible(value);
+}
+
+function shapeDisableStyle(self) {
+    self.v.disableStyle();
+}
+
+function shapeEnableStyle(self) {
+    self.v.enableStyle();
+}
+
+function shapeGetChild(self, shape) {
+    // getChild() Returns a child element of a shape as a PShapeSVG object
+    var child = self.v.getChild(shape);
+    if (child != null) {
+        // special method for Skulpt:
+        var new_shape = Sk.misceval.callsim(PShape);
+        // Now fill in value:
+        new_shape.v = child;
+        return new_shape;
+    } else {
+        return null;
+    }
+}
+
+function shapeTranslate(self, x, y, z) {
+    self.v.translate(x.v, y.v, z.v);
+}
+
+function shapeRotate(self, angle) {
+    self.v.rotate(angle);
+}
+
+function shapeRotateX(self, angle) {
+    self.v.rotateX(angle);
+}
+
+function shapeRotateY(self, angle) {
+    self.v.rotateY(angle);
+}
+
+function shapeRotateZ(self, angle) {
+    self.v.rotateZ(angle);
+}
+
+function shapeScale(self, x, y, z) {
+    self.v.scale(x, y, z);
+}
+
+function shapeClass($gbl, $loc) {
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
-        key = Sk.ffi.remapToJs(key);
-        if (key === "width") {
-            return Sk.builtin.assk$(self.v.width);
-        } else if (key === "height") {
-            return Sk.builtin.assk$(self.v.height);
+        key = remapToJs(key);
+        switch (key) {
+        case "width":
+            return remapToPy(self.v.width);
+        case "height":
+            return remapToPy(self.v.height);
         }
     });
 
-    $loc.isVisible = new Sk.builtin.func(function (self) {
-        // isVisible() Returns a boolean value "true" if the image is set to be visible, "false" if not
-        return new Sk.builtin.bool(self.v.isVisible());
-    });
+    $loc.isVisible = makeFunc(shapeIsVisible, "isVisible");
 
-    $loc.setVisible = new Sk.builtin.func(function (self, value) {
-        // setVisible() Sets the shape to be visible or invisible
-        self.v.setVisible(value.v);
-    });
+    $loc.setVisible = makeFunc(shapeSetVisible, "setVisible" [
+        { "value": bool }
+    ]);
 
-    $loc.disableStyle = new Sk.builtin.func(function (self) {
-        // disableStyle() Disables the shape's style data and uses Processing styles
-        self.v.disableStyle();
-    });
+    $loc.disableStyle = makeFunc(shapeDisableStyle, "disableStyle");
 
-    $loc.enableStyle = new Sk.builtin.func(function (self) {
-        // enableStyle() Enables the shape's style data and ignores the Processing styles
-        self.v.enableStyle();
-    });
+    $loc.enableStyle = makeFunc(shapeEnableStyle, "enableStyle");
 
-    $loc.getChild = new Sk.builtin.func(function (self, shape) {
-        // getChild() Returns a child element of a shape as a PShapeSVG object
-        var child = self.v.getChild(shape.v);
-        if (child != null) {
-            // special method for Skulpt:
-            var new_shape = Sk.misceval.callsim(mod.PShapeSVG);
-            // Now fill in value:
-            new_shape.v = child;
-            return new_shape;
-        } else {
-            return null;
-        }
-    });
+    $loc.getChild = makeFunc(shapeGetChild, "getChild", [
+        { "shape": PShape }
+    ]);
 
-    $loc.translate = new Sk.builtin.func(function (self, x, y, z) {
-        // translate() Displaces the shape
-        // sh.translate(x,y)
-        // sh.translate(x,y,z)
-        if (typeof (z) === "undefined") {
-            self.v.translate(x.v, y.v);
-        } else {
-            self.v.translate(x.v, y.v, z.v);
-        }
-    });
+    $loc.translate = makeFunc(shapeTranslate, "translate", [
+        { "x": [ float, int ] },
+        { "y": [ float, int ] },
+        { "z": [ float, int ], optional }
+    ]);
 
-    $loc.rotate = new Sk.builtin.func(function (self, angle) {
-        // rotate() Rotates the shape
-        self.v.rotate(angle.v);
-    });
+    $loc.rotate = makeFunc(shapeRotate, "rotate", [
+        { "angle": float }
+    ]);
 
-    $loc.rotateX = new Sk.builtin.func(function (self, angle) {
-        // rotateX() Rotates the shape around the x-axis
-        self.v.rotateX(angle.v);
-    });
+    $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [
+        { "angle": float }
+    ]);
 
-    $loc.rotateY = new Sk.builtin.func(function (self) {
-        // rotateY() Rotates the shape around the y-axis
-        self.v.rotateY(angle.v);
-    });
+    $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [
+        { "angle": float }
+    ]);
 
-    $loc.rotateZ = new Sk.builtin.func(function (self) {
-        // rotateZ() Rotates the shape around the z-axis
-        self.v.rotateZ(angle.v);
-    });
+    $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [
+        { "angle": float }
+    ]);
 
-    $loc.scale = new Sk.builtin.func(function (self, x, y, z) {
-        // scale() Increases and decreases the size of a shape
-        // sh.scale(size)
-        // sh.scale(x,y)
-        // sh.scale(x,y,z)
-        if (typeof (y) === "undefined") {
-            self.v.scale(x.v);
-        } else if (typeof (z) === "undefined") {
-            self.v.scale(x.v, y.v);
-        } else {
-            self.v.scale(x.v, y.v, z.v);
-        }
-    });
-};
+    $loc.scale = makeFunc(shapeScale, "scale" [
+        { "x": float },
+        { "y": float, optional },
+        { "z": float, optional }
+    ]);
+}
 
-mod.PShapeSVG = Sk.misceval.buildClass(mod, shapeClass, "PShapeSVG", []);
-
-
+export const PShape = Sk.misceval.buildClass({ __name__ }, shapeClass, "PShape", []);
 
 export default {
     loadShape: makeFunc(processing.loadShape, "loadShape", [
@@ -130,4 +133,4 @@ export default {
     shapeMode: makeFunc(processing.shapeMode, [
         { "img": int, allowed: [ CORNER, CORNERS, CENTER ] }
     ])
-}
+};

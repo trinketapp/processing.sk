@@ -1,9 +1,8 @@
-mod.textAscent = new Sk.builtin.func(function () {
-    // returns float
-    return new Sk.builtin.float_(mod.processing.textAscent());
-});
 
-mod.textDescent = new Sk.builtin.func(function () {
-    // returns float
-    return new Sk.builtin.float_(mod.processing.textDescent());
-});
+import processing from "./processing.js";
+import { makeFunc } from "./utils.js";
+
+export default {
+    textAscent: makeFunc(processing.textAscent, "textAscent"),
+    textDescent: makeFunc(processing.textDescent, "textDescent")
+};

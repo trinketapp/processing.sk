@@ -1,37 +1,48 @@
-mod.beginShape = makeFunc(mod.processing.beginShape);
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import constants from "./constants.js";
+import PImage from "./image.js";
+import { makeFunc, optional } from "./utils.js";
 
-mod.endShape = makeFunc(mod.processing.endShape);
+const { float, int } = Sk.builtin;
+const { IMAGE, NORMALIZED } = constants;
 
-mod.vertex = makeFunc(mod.processing.vertex, [
-    { "x": float },
-    { "y": float },
-    { "z": float },
-    { "u": float, optional },
-    { "v": float, optional }
-]);
+export default {
+    beginShape: makeFunc(processing.beginShape, "beginShape"),
 
-mod.bezierVertex = makeFunc(mod.processing.bezierVertex, [
-    { "cx1": float },
-    { "cy1": float },
-    { "cz1": float },
-    { "cx2": float },
-    { "cy2": float },
-    { "cz2": float },
-    { "x": float, optional },
-    { "y": float, optional },
-    { "z": float, optional }
-]);
+    endShape: makeFunc(processing.endShape, "endShape"),
 
-mod.curveVertex = makeFunc(mod.processing.curveVertex, [
-    { "x": float },
-    { "y": float },
-    { "z": float, optional }
-]);
+    vertex: makeFunc(processing.vertex, "vertex", [
+        { "x": float },
+        { "y": float },
+        { "z": float },
+        { "u": float, optional },
+        { "v": float, optional }
+    ]),
 
-mod.texture = makeFunc(mod.texture, [
-    { "img": PImage }
-]);
+    bezierVertex: makeFunc(processing.bezierVertex, "bezierVertex", [
+        { "cx1": float },
+        { "cy1": float },
+        { "cz1": float },
+        { "cx2": float },
+        { "cy2": float },
+        { "cz2": float },
+        { "x": float, optional },
+        { "y": float, optional },
+        { "z": float, optional }
+    ]),
 
-mod.textureMode = makeFunc(mod.textureMode, [
-    { "img": int, allowed: [1, 2] }
-]);
+    curveVertex: makeFunc(processing.curveVertex, "curveVertex", [
+        { "x": float },
+        { "y": float },
+        { "z": float, optional }
+    ]),
+
+    texture: makeFunc(processing.texture, "texture" [
+        { "img": PImage }
+    ]),
+
+    textureMode: makeFunc(processing.allowedtextureMode, "textureMode", [
+        { "img": int, allowed: [ IMAGE, NORMALIZED ] }
+    ])
+};

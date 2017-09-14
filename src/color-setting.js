@@ -1,9 +1,10 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
-import { RGB, HSB } from 'constants.js';
-import PColor from 'color.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
+import constants from "./constants.js";
+import PColor from "./color.js";
 
+const { RGB, HSB } = constants;
 const { int, float } = Sk.builtin;
 
 export default {
@@ -39,4 +40,4 @@ export default {
         { "value2": [ int, float ], optional },
         { "alpha": [ int, float ], optional }
     ])
-}
+};

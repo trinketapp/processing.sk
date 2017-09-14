@@ -1,6 +1,5 @@
-import processing from  'processing.js'
-import Sk from 'skulpt.js'
-import { makeFunc } from 'utils.js'
+import processing from "./processing.js";
+import { makeFunc } from "./utils.js";
 
 export default {
     day: makeFunc(processing.day),
@@ -10,4 +9,4 @@ export default {
     month: makeFunc(processing.month),
     second: makeFunc(processing.second),
     year: makeFunc(processing.year)
-}
+};

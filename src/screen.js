@@ -1,27 +1,32 @@
-screenClass = function ($gbl, $loc) {
+import { __name__ } from "./utils.js";
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
 
-    $loc.__init__ = new Sk.builtin.func(function (self) {
+const { remapToJs, remapToPy } = Sk.ffi;
+const { buildClass, callsim } = Sk.misceval;
+const { list, func } = Sk.builtin;
+
+function screenClass($gbl, $loc) {
+    $loc.__init__ = new func(function (self) {
         self.pixels = null;
     });
 
-    $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
-        key = Sk.ffi.remapToJs(key);
-        if (key === "height") {
-            return Sk.builtin.assk$(mod.processing.height);
-        }
-        else if (key === "width") {
-            return Sk.builtin.assk$(mod.processing.width);
-        }
-        else if (key === "pixels") {
+    $loc.__getattr__ = new func(function (self, key) {
+        key = remapToJs(key);
+        switch (key) {
+        case "height":
+            return remapToPy(processing.height);
+        case "width":
+            return remapToPy(processing.width);
+        case "pixels":
             if (self.pixels == null) {
-                self.pixels = new Sk.builtin.list(mod.processing.pixels.toArray());
+                self.pixels = new list(processing.pixels.toArray());
             }
+            return self.pixels;
         }
-        return self.pixels;
     });
+}
 
-};
+export const Screen = buildClass({ __name__ }, screenClass, "Screen", []);
 
-mod.Screen = Sk.misceval.buildClass(mod, screenClass, "Screen", []);
-
-mod.screen = Sk.misceval.callsim(mod.Screen);
+export const screen = callsim(Screen);

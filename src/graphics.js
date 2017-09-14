@@ -1,7 +1,7 @@
-import processing from  'processing.js';
-import Sk from 'skulpt.js';
-import { makeFunc, optional, __name__ } from 'utils.js';
-import PApplet from 'applet.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional, __name__ } from "./utils.js";
+import PApplet from "./applet.js";
 
 const { func, int } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -24,7 +24,7 @@ function graphicsClass($gbl, $loc) {
     $loc.endDraw = new Sk.builtin.func(function (self) {
         self.v.endDraw();
     });
-};
+}
 
 export const PGraphics = buildClass({ __name__ }, graphicsClass, "PGraphics", []);
 

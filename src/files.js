@@ -1,6 +1,6 @@
-import processing from  'processing.js'
-import Sk from 'skulpt.js'
-import { makeFunc, notImplemented } from 'utils.js'
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, notImplemented } from "./utils.js";
 
 const { str } = Sk.builtin;
 

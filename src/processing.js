@@ -1,33 +1,68 @@
-/*
-  Skulpt Processing
+import twodprimitives from "./2dprimitives.js";
+import threedprimitives from "./3dprimitives.js";
+import attributes from "./attributes.js";
+import calculation from "./calculation.js";
+import camera from "./camera.js";
+import ccreatingandreading from "./color-creatingandreading.js";
+import csetting from "./color-setting.js";
+import color from "./color.js";
+import constants from "./constants.js";
+import coordinates from "./coordinates.js";
+import curves from "./curves.js";
+import { Environment, environment, cursor, noCursor } from "./environment.js";
+import files from "./files.js";
+import fontattribues from "./font-attributes.js";
+import fontmetrics from "./font-metrics.js";
+import { PFont, createFont, loadFont, text, textFont } from "./font.js";
+import { PGraphics, createGraphics, hint } from "./graphics.js";
+import PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
+import { keyboard, Keyboard } from "./keyboard.js";
+import lights from "./lights.js";
+import materialproperties from "./materialproperties.js";
+import { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
+import output from "./output.js";
+import random from "./random.js";
+import { Screen, screen } from "./screen.js";
+import shape from "./shape.js";
+import structure from "./structure.js";
+import timeanddate from "./timeanddate.js";
+import transform from "./transform.js";
+import trigonometry from "./trigonometry.js";
+import vector from "./vector.js";
+import vertex from "./vertex.js";
+import web from "./web.js";
 
-  Testing/debugging:
+let looping = true;
 
-  ProcessingJS from Skulpt:
-  Sk.misceval.callsim(Sk.globals.processing.$d.PShapeSVG,
-      new Sk.builtin.str("string"),
-      new Sk.builtin.str("bot1.svg"))
+const mod = {};
 
-  ProcessingJS direct:
-  p = Processing.instances[0]
-  p.PShapeSVG("string", "bot1.svg")
-*/
+const processingInstance = null;
+
+const imList = [];
+
+export function isInitialised() {
+    return processingInstance == null;
+}
+
+export function setProperty(name, value) {
+    mod[name] = value;
+}
+
+export function setLooping(bool) {
+    looping = bool;
+}
+
+export function pushImage(url) {
+    imList.push(url);
+}
 
 export function main(name) {
-    var mod = {};
-    var imList = [];
-    var looping = true;
-    var instance = null;
-
     // We need this to store a reference to the actual processing object which is not created
     // until the run function is called.  Even then the processing object is passed by the
     // processing-js sytem as a parameter to the sketchProc function.  Why not set it to None here
     //
 
     // See:  http://processingjs.org/reference/
-
-    mod.processing = null;
-    mod.p = null;
 
     //  //////////////////////////////////////////////////////////////////////
     //  Run
@@ -38,7 +73,6 @@ export function main(name) {
     //  //////////////////////////////////////////////////////////////////////
     mod.run = new Sk.builtin.func(function () {
         function sketchProc(processing) {
-            mod.processing = processing;
 
             // processing.setup = function() {
             //     if Sk.globals["setup"]
@@ -52,11 +86,13 @@ export function main(name) {
                 // retry until all the images are loaded.  If noLoop was called in setup then make
                 // sure to revert to that after all the images in hand.
                 var wait = false;
+
                 for (var i in imList) {
                     if (imList[i].width === 0) {
                         wait = true;
                     }
                 }
+
                 if (wait === true) {
                     if (looping === true) {
                         return;
@@ -65,7 +101,6 @@ export function main(name) {
                         processing.loop();
                         return;
                     }
-
                 } else {
                     if (looping === false) {
                         processing.noLoop();
@@ -83,9 +118,11 @@ export function main(name) {
                 }
             };
 
-            var callBacks = ["setup", "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
+            var callBacks = [
+                "setup", "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
                 "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"
             ];
+
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
                     processing[callBacks[cb]] = new Function("try {Sk.misceval.callsim(Sk.globals['" + callBacks[cb] + "']);} catch(e) {Sk.uncaughtException(e);}");
@@ -96,25 +133,31 @@ export function main(name) {
         var canvas = document.getElementById(Sk.canvas);
         if (canvas.tagName !== "CANVAS") {
             var mydiv = canvas;
-            canvas = document.createElement('canvas');
+            canvas = document.createElement("canvas");
             while (mydiv.firstChild) {
                 mydiv.removeChild(mydiv.firstChild);
             }
             mydiv.appendChild(canvas);
         }
-        window.$(canvas).show();
+
+        canvas.style.display = "block";
+
         window.Processing.logger = {
             log: function (message) {
                 Sk.misceval.print_(message);
             }
         };
+
         // if a Processing instance already exists it's likely still running, stop it by exiting
-        instance = window.Processing.getInstanceById(Sk.canvas);
+        let instance = window.Processing.getInstanceById(Sk.canvas);
         if (instance) {
             instance.exit();
         }
+
         mod.p = new window.Processing(canvas, sketchProc);
     });
 
     return mod;
-};
+}
+
+export default processingInstance;

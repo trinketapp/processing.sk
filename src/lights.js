@@ -1,54 +1,67 @@
-mod.ambientLight = new Sk.builtin.func(function (v1, v2, v3, x, y, z) {
-    // ambientLight(v1,v2,v3)
-    // ambientLight(v1,v2,v3,x,y,z)
-    if (typeof (x) === "undefined") {
-        mod.processing.ambientLight(v1.v, v2.v, v3.v);
-    } else if (typeof (y) === "undefined") {
-        mod.processing.ambientLight(v1.v, v2.v, v3.v, x.v);
-    } else if (typeof (z) === "undefined") {
-        mod.processing.ambientLight(v1.v, v2.v, v3.v, x.v, y.v);
-    } else {
-        mod.processing.ambientLight(v1.v, v2.v, v3.v, x.v, y.v, z.v);
-    }
-});
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { makeFunc, optional } from "./utils.js";
 
-mod.directionalLight = new Sk.builtin.func(function (v1, v2, v3, nx, ny, nz) {
-    // directionalLight(v1,v2,v3,nx,ny,nz)
-    mod.processing.directionalLight(v1.v, v2.v, v3.v, nx.v, ny.v, nz.v);
-});
+const { int, float } = Sk.builtin;
 
-mod.lightFalloff = new Sk.builtin.func(function (constant, linear, quadratic) {
-    // lightFalloff(constant,linear,quadratic)
-    mod.processing.lightFalloff(constant.v, linear.v, quadratic.v);
-});
+export default {
+    ambientLight: makeFunc(processing.ambientLight, "ambientLight", [
+        { "v1": [ int, float ] },
+        { "v2": [ int, float ] },
+        { "v3": [ int, float ] },
+        { "x": [ int, float ], optional },
+        { "y": [ int, float ], optional },
+        { "z": [ int, float ], optional }
+    ]),
 
-mod.lightSpecular = new Sk.builtin.func(function (v1, v2, v3) {
-    // lightSpecular(v1,v2,v3)
-    mod.processing.lightSpecular(v1.v, v2.v, v3.v);
-});
+    directionalLight: makeFunc(processing.directionalLight, "directionalLight", [
+        { "v1": [ int, float ] },
+        { "v2": [ int, float ] },
+        { "v3": [ int, float ] },
+        { "nx": [ int, float ], optional },
+        { "ny": [ int, float ], optional },
+        { "nz": [ int, float ], optional }
+    ]),
 
-mod.lights = new Sk.builtin.func(function () {
-    mod.processing.lights();
-});
+    lightFalloff: makeFunc(processing.lightFalloff, "lightFalloff", [
+        { "constant": [ int, float ] },
+        { "linear": [ int, float ] },
+        { "quardatic": [ int, float ] }
+    ]),
 
-mod.noLights = new Sk.builtin.func(function () {
-    mod.processing.noLights();
-});
+    lightSpecular: makeFunc(processing.lightSpecular, "lightSpecular", [
+        { "v1": [ int, float ] },
+        { "v2": [ int, float ] },
+        { "v3": [ int, float ] }
+    ]),
 
-mod.normal = new Sk.builtin.func(function (nx, ny, nz) {
-    // normal(nx,ny,nz)
-    // returns None
-    mod.processing.normal(nx.v, ny.v, nz.v);
-});
+    lights: makeFunc(processing.lights, "lights"),
 
-mod.pointLight = new Sk.builtin.func(function (v1, v2, v3, nx, ny, nz) {
-    // pointLight(v1,v2,v3,nx,ny,nz)
-    // returns None
-    mod.processing.pointLight(v1.v, v2.v, v3.v, nx.v, ny.v, nz.v);
-});
+    noLights: makeFunc(processing.noLights, "noLights"),
 
-mod.spotLight = new Sk.builtin.func(function (v1, v2, v3, nx, ny, nz, angle, concentration) {
-    // spotLight(v1,v2,v3,nx,ny,nz,angle,concentration)
-    // returns None
-    mod.processing.spotLight(v1.v, v2.v, v3.v, nx.v, ny.v, nz.v, angle.v, concentration.v);
-});
+    normal: makeFunc(processing.normal, "normal", [
+        { "nx": [ int, float ] },
+        { "ny": [ int, float ] },
+        { "nz": [ int, float ] }
+    ]),
+
+    pointLight: makeFunc(processing.pointLight, "pointLight", [
+        { "v1": [ int, float ] },
+        { "v2": [ int, float ] },
+        { "v3": [ int, float ] },
+        { "nx": [ int, float ] },
+        { "ny": [ int, float ] },
+        { "nz": [ int, float ] }
+    ]),
+
+    spotLight: makeFunc(processing.spotLight, "spotLight", [
+        { "v1": [ int, float ] },
+        { "v2": [ int, float ] },
+        { "v3": [ int, float ] },
+        { "nx": [ int, float ] },
+        { "ny": [ int, float ] },
+        { "nz": [ int, float ] },
+        { "angle": float },
+        { "concentration": float }
+    ])
+};

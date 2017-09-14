@@ -1,46 +1,46 @@
-import processing from 'processing.js';
-import Sk from 'skulpt.js';
-import __name__ from 'utils.js';
+import processing from "./processing.js";
+import Sk from "./skulpt.js";
+import { __name__ } from "./utils.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
-const { func } = Sk.builtin;
+const { func, int_ } = Sk.builtin;
 
 function mouseClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
         switch (remapToJs(key)) {
-            case "x":
-                return remapToPy(mod.processing.mouseX);
-            case "y":
-                return remapToPy(mod.processing.mouseY);
-            case "px":
-                return remapToPy(mod.processing.pmouseX);
-            case "py":
-                return remapToPy(mod.processing.pmouseY);
-            case "pressed":
-                return remapToPy(mod.processing.__mousePressed);
-            case "button":
-                return remapToPy(mod.processing.mouseButton);
-            default:
-                return undefined;
+        case "x":
+            return remapToPy(processing.mouseX);
+        case "y":
+            return remapToPy(processing.mouseY);
+        case "px":
+            return remapToPy(processing.pmouseX);
+        case "py":
+            return remapToPy(processing.pmouseY);
+        case "pressed":
+            return remapToPy(processing.__mousePressed);
+        case "button":
+            return remapToPy(processing.mouseButton);
+        default:
+            return undefined;
         }
     });
-};
+}
 
 export const Mouse = Sk.misceval.buildClass({ __name__ }, mouseClass, "Mouse", []);
 export const mouse = Sk.misceval.callsim(Mouse);
 
-mod.mouseX = new Sk.builtin.func(function () {
-    return new Sk.builtin.int_(mod.processing.mouseX);
+export const mouseX = new func(function () {
+    return new int_(processing.mouseX);
 });
 
-mod.mouseY = new Sk.builtin.func(function () {
-    return new Sk.builtin.int_(mod.processing.mouseY);
+export const mouseY = new func(function () {
+    return new int_(processing.mouseY);
 });
 
-mod.pmouseX = new Sk.builtin.func(function () {
-    return new Sk.builtin.int_(mod.processing.pmouseX);
+export const pmouseX = new func(function () {
+    return new int_(processing.pmouseX);
 });
 
-mod.pmouseY = new Sk.builtin.func(function () {
-    return new Sk.builtin.int_(mod.processing.pmouseY);
+export const pmouseY = new func(function () {
+    return new int_(processing.pmouseY);
 });
