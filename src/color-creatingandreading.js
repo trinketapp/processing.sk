@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__ } from "./utils.js";
+import { makeFunc } from "./utils.js";
 import PColor from "./color.js";
 
 import constants from "./constants.js";
@@ -11,13 +11,13 @@ const { int, float } = Sk.builtin;
 const { callsim } = Sk.misceval;
 
 function blendColor(c1, c2, mode) {
-    var c = callsim(PColor, new int_(0), new int_(0), new int_(0));
+    var c = callsim(PColor, new int(0), new int(0), new int(0));
     c.v = processing.blendColor(c1, c2, mode);
     return c;
 }
 
 function lerpColor(c1, c2, mode) {
-    var c = callsim(Pcolor, new int_(0), new int_(0), new int_(0));
+    var c = callsim(PColor, new int(0), new int(0), new int(0));
     c.v = processing.lerpColor(c1, c2, mode);
     return c;
 }

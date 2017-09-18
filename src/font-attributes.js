@@ -1,7 +1,7 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import constants from "./constants.js";
-
+import { makeFunc } from "./utils.js";
 
 const { LEFT, CENTER, RIGHT, TOP, BOTTOM, BASELINE,
     MODEL, SCREEN, SHAPE } = constants;

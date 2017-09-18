@@ -4,7 +4,7 @@ import { makeFunc, optional, __name__ } from "./utils.js";
 import PColor from "./color.js";
 import constants from "./constants.js";
 
-const { func, int, list } = Sk.builtin;
+const { func, int, list, str, float } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,

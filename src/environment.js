@@ -11,17 +11,17 @@ function environmentClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
         switch(remapToJs(key)) {
         case "frameCount":
-            return remapToPy(mod.processing.frameCount);
+            return remapToPy(processing.frameCount);
         case "frameRate":
-            return remapToPy(mod.processing.frameRate);
+            return remapToPy(processing.frameRate);
         case "height":
-            return remapToPy(mod.processing.height);
+            return remapToPy(processing.height);
         case "width":
-            return remapToPy(mod.processing.width);
+            return remapToPy(processing.width);
         case "online":
-            return remapToPy(mod.processing.online);
+            return remapToPy(processing.online);
         case "focused":
-            return remapToPy(mod.processing.focused);
+            return remapToPy(processing.focused);
         default:
             return undefined;
         }

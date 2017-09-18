@@ -31,6 +31,7 @@ import trigonometry from "./trigonometry.js";
 import vector from "./vector.js";
 import vertex from "./vertex.js";
 import web from "./web.js";
+import Sk from "./skulpt.js";
 
 let looping = true;
 
@@ -56,7 +57,7 @@ export function pushImage(url) {
     imList.push(url);
 }
 
-export function main(name) {
+export function main() {
     // We need this to store a reference to the actual processing object which is not created
     // until the run function is called.  Even then the processing object is passed by the
     // processing-js sytem as a parameter to the sketchProc function.  Why not set it to None here
@@ -78,7 +79,14 @@ export function main(name) {
             //     if Sk.globals["setup"]
             //         Sk.misceval.callsim(Sk.globals["setup"])
             // }
-
+            Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
+                ccreatingandreading, csetting, color, constants, coordinates, curves,
+                { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
+                { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
+                PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,
+                    copy, filter, get, loadPixels, set, updatePixels }, { keyboard, Keyboard }, lights,
+                materialproperties, { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY }, output, random,
+                { Screen, screen }, shape, structure, timeanddate, transform, trigonometry, vector, vertex, web);
 
             // FIXME if no Sk.globals["draw"], then no need for this
             processing.draw = function () {

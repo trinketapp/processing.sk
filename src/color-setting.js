@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__ } from "./utils.js";
+import { makeFunc, optional } from "./utils.js";
 import constants from "./constants.js";
 import PColor from "./color.js";
 
@@ -16,7 +16,7 @@ export default {
     ]),
 
     colorMode: makeFunc(processing.colorMode, "colorMode", [
-        { "mode": int, allowed: [ RBG, HSB ] },
+        { "mode": int, allowed: [ RGB, HSB ] },
         { "range1": [ int, float ], optional },
         { "range2": [ int, float ], optional },
         { "range3": [ int, float ], optional },

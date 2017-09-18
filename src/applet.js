@@ -1,1 +1,1 @@
-export default PApplet = {};
+export default {};

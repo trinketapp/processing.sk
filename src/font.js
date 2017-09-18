@@ -2,7 +2,7 @@ import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc, optional, __name__ } from "./utils.js";
 
-const { func, float, list } = Sk.builtin;
+const { func, float, list, str, bool, int } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function fontClass ($gbl, $loc) {

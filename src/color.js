@@ -2,7 +2,7 @@ import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc, optional, __name__ } from "./utils.js";
 
-const { func, float } = Sk.builtin;
+const { float } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function colorInit(self, val1, val2, val3, alpha) {
