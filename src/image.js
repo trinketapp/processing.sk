@@ -1,6 +1,6 @@
 import processing, { pushImage } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__ } from "./utils.js";
+import { makeFunc, optional, __name__, self } from "./utils.js";
 import PColor from "./color.js";
 import constants from "./constants.js";
 
@@ -94,6 +94,7 @@ function imageClass($gbl, $loc) {
     });
 
     $loc.get = makeFunc(imageGet, "get", [
+        self,
         { "x": int },
         { "y": int },
         { "width": int, optional },
@@ -101,12 +102,14 @@ function imageClass($gbl, $loc) {
     ]);
 
     $loc.set = makeFunc(imageSet, "set", [
+        self,
         { "x": int },
         { "y": int },
         { "color": PColor }
     ]);
 
     $loc.copy = makeFunc(imageCopy, "copy", [
+        self,
         { "srcImg": [ int, PImage ]},
         { "sx": int },
         { "sy": int },
@@ -119,10 +122,12 @@ function imageClass($gbl, $loc) {
     ]);
 
     $loc.mask = makeFunc(imageMask, "mask", [
+        self,
         { "maskImg": [PImage, list] }
     ]);
 
     $loc.blend = makeFunc(imageBlend, "blend", [
+        self,
         { "srcImg": [ int, PImage ]},
         { "x": int },
         { "y": int },
@@ -137,15 +142,18 @@ function imageClass($gbl, $loc) {
     ]);
 
     $loc.filter = makeFunc(imageFilter, "filter", [
+        self,
         { "MODE": int, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
         { "srcImg": PImage, optional }
     ]);
 
     $loc.save = makeFunc(imageSave, "save", [
+        self,
         { "filename": str }
     ]);
 
     $loc.resize = makeFunc(imageResize, "resize", [
+        self,
         { "wide": int },
         { "high": int }
     ]);
@@ -153,6 +161,7 @@ function imageClass($gbl, $loc) {
     $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
+        self,
         { "x": int, optional},
         { "y": int, optional},
         { "w": int, optional},

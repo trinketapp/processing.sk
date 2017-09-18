@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__ } from "./utils.js";
+import { makeFunc, optional, __name__, self } from "./utils.js";
 
 const { func, float, list, str, bool, int } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -8,7 +8,10 @@ const { buildClass } = Sk.misceval;
 function fontClass ($gbl, $loc) {
     $loc.__init__ = makeFunc(function (self, input) {
         self.v = new processing.PFont(input);
-    }, "__init__", [ { "input ": str } ]);
+    }, "__init__", [
+        self,
+        { "input ": str }
+    ]);
 
     $loc.list = new func((self) => new list(self.v.list()));
 }

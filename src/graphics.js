@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, __name__ } from "./utils.js";
+import { makeFunc, __name__, self } from "./utils.js";
 import PApplet from "./applet.js";
 
 const { int } = Sk.builtin;
@@ -12,6 +12,7 @@ function graphicsInit(self, width, height, applet) {
 
 function graphicsClass($gbl, $loc) {
     $loc.__init__ = makeFunc(graphicsInit, [
+        self,
         { "width": int },
         { "width": int },
         { "width": PApplet }

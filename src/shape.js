@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { optional, makeFunc, __name__ } from "./utils.js";
+import { optional, makeFunc, __name__, self } from "./utils.js";
 import constants from "./constants.js";
 
 const { CORNER, CORNERS, CENTER } = constants;
@@ -72,43 +72,51 @@ function shapeClass($gbl, $loc) {
         }
     });
 
-    $loc.isVisible = makeFunc(shapeIsVisible, "isVisible");
+    $loc.isVisible = makeFunc(shapeIsVisible, "isVisible", [ self ]);
 
     $loc.setVisible = makeFunc(shapeSetVisible, "setVisible" [
+        self,
         { "value": bool }
     ]);
 
-    $loc.disableStyle = makeFunc(shapeDisableStyle, "disableStyle");
+    $loc.disableStyle = makeFunc(shapeDisableStyle, "disableStyle", [ self ]);
 
-    $loc.enableStyle = makeFunc(shapeEnableStyle, "enableStyle");
+    $loc.enableStyle = makeFunc(shapeEnableStyle, "enableStyle", [ self ]);
 
     $loc.getChild = makeFunc(shapeGetChild, "getChild", [
+        self,
         { "shape": PShape }
     ]);
 
     $loc.translate = makeFunc(shapeTranslate, "translate", [
+        self,
         { "x": [ float, int ] },
         { "y": [ float, int ] },
         { "z": [ float, int ], optional }
     ]);
 
     $loc.rotate = makeFunc(shapeRotate, "rotate", [
+        self,
         { "angle": float }
     ]);
 
     $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [
+        self,
         { "angle": float }
     ]);
 
     $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [
+        self,
         { "angle": float }
     ]);
 
     $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [
+        self,
         { "angle": float }
     ]);
 
     $loc.scale = makeFunc(shapeScale, "scale" [
+        self,
         { "x": float },
         { "y": float, optional },
         { "z": float, optional }

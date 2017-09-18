@@ -36,7 +36,9 @@ function pyCheckTypes(args) {
 export function makeFunc(functionToWrap, name, args_template) {
     let func = function wrappedFunc() {
         let args = argsToArray(arguments);
-        let js_args = args.map(remapToJs);
+
+        let js_args = args((a, i) => args_template[i] != self).map(remapToJs);
+
         pyCheckArgs(name, args, countNonOptionalArgs(args_template), args.length, true);
 
         pyCheckTypes(join((l, r) => [l,r], args, args_template));
@@ -49,6 +51,8 @@ export function makeFunc(functionToWrap, name, args_template) {
 }
 
 export const optional = true;
+
+export const self = { "self": true };
 
 export const notImplemented = new func(() => { throw new NotImplementedError(); });
 

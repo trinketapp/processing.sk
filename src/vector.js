@@ -74,6 +74,7 @@ function vectorLimit(self, value) {
 
 function vectorClass($gbl, $loc) {
     $loc.__init__ = makeFunc(vectorInit, "__init__", [
+        self,
         { "x": int },
         { "y": int, optional },
         { "z": int, optional }
@@ -90,57 +91,67 @@ function vectorClass($gbl, $loc) {
         }
     });
 
-    $loc.get = makeFunc(vectorGet, "get"),
+    $loc.get = makeFunc(vectorGet, "get", [ self ]),
 
     $loc.set = makeFunc(vectorSet, "set", [
+        self,
         { "x": int },
         { "x": int, optional },
         { "x": int, optional }
     ]);
 
-    $loc.mag = makeFunc(self => self.v.mag(), "mag");
+    $loc.mag = makeFunc(self => self.v.mag(), "mag", [ self ]);
 
     $loc.add = makeFunc(vectorAdd, "add", [
+        self,
         { "vector": PVector }
     ]);
 
     $loc.sub = makeFunc(vectorSub, "sub", [
+        self,
         { "vector": PVector }
     ]);
 
     $loc.mult = makeFunc(vectorMult, "mult", [
+        self,
         { "vector": PVector }
     ]);
 
     $loc.div = makeFunc(vectorDiv, "div", [
+        self,
         { "vector": PVector }
     ]);
 
     $loc.dist = makeFunc(vectorDist, "dist", [
+        self,
         { "vector": PVector }
     ]);
 
     $loc.dot = makeFunc(vectorDot, "dot", [
+        self,
         { "x": [ int, float ] },
         { "y": [ int, float ], optional },
         { "z": [ int, float ], optional }
     ]);
 
     $loc.cross = makeFunc(vectorCross, "cross", [
+        self,
         { "vector": PVector }
     ]);
 
-    $loc.normalize = makeFunc(self => self.normalize(), "normalize");
+    $loc.normalize = makeFunc(self => self.normalize(), "normalize", [ self ]);
 
     $loc.limit = makeFunc(vectorLimit, "limit", [
+        self,
         { "value": float }
     ]);
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [
+        self,
         { "vector": PVector }
     ]);
 
-    $loc.array = makeFunc(self => self.v.array(), "array");
+    $loc.array = makeFunc(self => self.v.array(), "array", [ self ]);
 }
 
 const PVector = Sk.misceval.buildClass({ __name__ }, vectorClass, "PVector", []);
