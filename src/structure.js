@@ -2,7 +2,7 @@ import processing, { setProperty, setLooping, isInitialised } from "./processing
 import { makeFunc } from "./utils.js";
 import Sk from "./skulpt.js";
 
-const { int } = Sk.builtin;
+const { int_ } = Sk.builtin;
 
 function loop() {
     if (isInitialised) {
@@ -36,8 +36,8 @@ export default {
     height: makeFunc(() => processing.height, "height"),
 
     size: makeFunc(size, "size", [
-        { "width": int },
-        { "height": int },
+        { "width": int_ },
+        { "height": int_ },
     ]),
 
     exit: makeFunc(processing.exit)

@@ -3,21 +3,21 @@ import Sk from "./skulpt.js";
 import { makeFunc, optional } from "./utils.js";
 import PColor from "./color.js";
 
-const { int, float } = Sk.builtin;
+const { int_, float } = Sk.builtin;
 
 export default {
     ambient: makeFunc(processing.ambient, "ambient", [
-        { "gray": [ int, float, PColor ] },
-        { "v1": [ int, float ], optional },
-        { "v2": [ int, float ], optional },
-        { "v3": [ int, float ], optional },
+        { "gray": [ int_, float, PColor ] },
+        { "v1": [ int_, float ], optional },
+        { "v2": [ int_, float ], optional },
+        { "v3": [ int_, float ], optional },
     ]),
 
     emissive: makeFunc(processing.emissive, "emissive", [
-        { "gray": [ int, float, PColor ] },
-        { "v1": [ int, float ], optional },
-        { "v2": [ int, float ], optional },
-        { "v3": [ int, float ], optional },
+        { "gray": [ int_, float, PColor ] },
+        { "v1": [ int_, float ], optional },
+        { "v2": [ int_, float ], optional },
+        { "v3": [ int_, float ], optional },
     ]),
 
     shininess: makeFunc(processing.shininess, "shininess", [
@@ -25,9 +25,9 @@ export default {
     ]),
 
     specular: makeFunc(processing.specular, "specular", [
-        { "gray": [ int, float, PColor ] },
-        { "v1": [ int, float ], optional },
-        { "v2": [ int, float ], optional },
-        { "v3": [ int, float ], optional },
+        { "gray": [ int_, float, PColor ] },
+        { "v1": [ int_, float ], optional },
+        { "v2": [ int_, float ], optional },
+        { "v3": [ int_, float ], optional },
     ])
 };

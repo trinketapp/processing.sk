@@ -4,7 +4,7 @@ import { optional, makeFunc, __name__, self } from "./utils.js";
 import constants from "./constants.js";
 
 const { CORNER, CORNERS, CENTER } = constants;
-const { str, int, float, bool } = Sk.builtin;
+const { str, int_, float, bool } = Sk.builtin;
 const { remapToJs, remapToPy } = Sk.ffi;
 
 function shapeIsVisible(self) {
@@ -90,9 +90,9 @@ function shapeClass($gbl, $loc) {
 
     $loc.translate = makeFunc(shapeTranslate, "translate", [
         self,
-        { "x": [ float, int ] },
-        { "y": [ float, int ] },
-        { "z": [ float, int ], optional }
+        { "x": [ float, int_ ] },
+        { "y": [ float, int_ ] },
+        { "z": [ float, int_ ], optional }
     ]);
 
     $loc.rotate = makeFunc(shapeRotate, "rotate", [
@@ -139,6 +139,6 @@ export default {
     ]),
 
     shapeMode: makeFunc(processing.shapeMode, [
-        { "img": int, allowed: [ CORNER, CORNERS, CENTER ] }
+        { "img": int_, allowed: [ CORNER, CORNERS, CENTER ] }
     ])
 };

@@ -2,14 +2,14 @@ import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc } from "./utils.js";
 
-const { int, float } = Sk.builtin;
+const { int_, float } = Sk.builtin;
 
 export default {
     degrees: makeFunc(processing.degrees, "degrees", [
-        { "angle": [ int, float ] }
+        { "angle": [ int_, float ] }
     ]),
 
     radians: makeFunc(processing.radians, "radians", [
-        { "angle": [ int, float ] }
+        { "angle": [ int_, float ] }
     ]),
 };

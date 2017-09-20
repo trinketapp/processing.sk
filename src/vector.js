@@ -2,7 +2,7 @@ import Sk from "./skulpt.js";
 import processing from "./processing.js";
 import { makeFunc, optional, __name__ } from "./utils.js";
 
-const { int, float } = Sk.builtin;
+const { int_, float } = Sk.builtin;
 const { callsim } = Sk.misceval;
 const { remapToPy } = Sk.ffi;
 
@@ -75,9 +75,9 @@ function vectorLimit(self, value) {
 function vectorClass($gbl, $loc) {
     $loc.__init__ = makeFunc(vectorInit, "__init__", [
         self,
-        { "x": int },
-        { "y": int, optional },
-        { "z": int, optional }
+        { "x": int_ },
+        { "y": int_, optional },
+        { "z": int_, optional }
     ]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
@@ -95,9 +95,9 @@ function vectorClass($gbl, $loc) {
 
     $loc.set = makeFunc(vectorSet, "set", [
         self,
-        { "x": int },
-        { "x": int, optional },
-        { "x": int, optional }
+        { "x": int_ },
+        { "x": int_, optional },
+        { "x": int_, optional }
     ]);
 
     $loc.mag = makeFunc(self => self.v.mag(), "mag", [ self ]);
@@ -129,9 +129,9 @@ function vectorClass($gbl, $loc) {
 
     $loc.dot = makeFunc(vectorDot, "dot", [
         self,
-        { "x": [ int, float ] },
-        { "y": [ int, float ], optional },
-        { "z": [ int, float ], optional }
+        { "x": [ int_, float ] },
+        { "y": [ int_, float ], optional },
+        { "z": [ int_, float ], optional }
     ]);
 
     $loc.cross = makeFunc(vectorCross, "cross", [

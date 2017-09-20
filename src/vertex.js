@@ -4,7 +4,7 @@ import constants from "./constants.js";
 import PImage from "./image.js";
 import { makeFunc, optional } from "./utils.js";
 
-const { float, int } = Sk.builtin;
+const { float, int_ } = Sk.builtin;
 const { IMAGE, NORMALIZED } = constants;
 
 export default {
@@ -43,6 +43,6 @@ export default {
     ]),
 
     textureMode: makeFunc(processing.allowedtextureMode, "textureMode", [
-        { "img": int, allowed: [ IMAGE, NORMALIZED ] }
+        { "img": int_, allowed: [ IMAGE, NORMALIZED ] }
     ])
 };

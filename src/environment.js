@@ -4,8 +4,7 @@ import { __name__, makeFunc, optional } from "./utils.js";
 import PImage from "./image.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
-const { func } = Sk.builtin;
-const { int } = Sk.builtin;
+const { func, int_ } = Sk.builtin;
 
 function environmentClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
@@ -34,9 +33,9 @@ export const Environment = Sk.misceval.buildClass({ __name__ }, environmentClass
 export const environment = Sk.misceval.callsim(Environment);
 
 export const cursor = makeFunc(processing.cursor, "cursor", [
-    { "image": [ PImage, int ], optional },
-    { "x": int, optional },
-    { "y": int, optional }
+    { "image": [ PImage, int_ ], optional },
+    { "x": int_, optional },
+    { "y": int_, optional }
 ]);
 
 export const noCursor = makeFunc(processing.noCursor, "noCursor");
