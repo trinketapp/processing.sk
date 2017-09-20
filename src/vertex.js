@@ -8,11 +8,11 @@ const { float, int_ } = Sk.builtin;
 const { IMAGE, NORMALIZED } = constants;
 
 export default {
-    beginShape: makeFunc(processing.beginShape, "beginShape"),
+    beginShape: makeFunc(processing, "beginShape"),
 
-    endShape: makeFunc(processing.endShape, "endShape"),
+    endShape: makeFunc(processing, "endShape"),
 
-    vertex: makeFunc(processing.vertex, "vertex", [
+    vertex: makeFunc(processing, "vertex", [
         { "x": float },
         { "y": float },
         { "z": float },
@@ -20,7 +20,7 @@ export default {
         { "v": float, optional }
     ]),
 
-    bezierVertex: makeFunc(processing.bezierVertex, "bezierVertex", [
+    bezierVertex: makeFunc(processing, "bezierVertex", [
         { "cx1": float },
         { "cy1": float },
         { "cz1": float },
@@ -32,17 +32,17 @@ export default {
         { "z": float, optional }
     ]),
 
-    curveVertex: makeFunc(processing.curveVertex, "curveVertex", [
+    curveVertex: makeFunc(processing, "curveVertex", [
         { "x": float },
         { "y": float },
         { "z": float, optional }
     ]),
 
-    texture: makeFunc(processing.texture, "texture" [
+    texture: makeFunc(processing, "texture" [
         { "img": PImage }
     ]),
 
-    textureMode: makeFunc(processing.allowedtextureMode, "textureMode", [
+    textureMode: makeFunc(processing, "textureMode", [
         { "img": int_, allowed: [ IMAGE, NORMALIZED ] }
     ])
 };

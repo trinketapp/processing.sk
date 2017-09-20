@@ -5,27 +5,27 @@ import { makeFunc } from "./utils.js";
 
 const { LEFT, CENTER, RIGHT, TOP, BOTTOM, BASELINE,
     MODEL, SCREEN, SHAPE } = constants;
-const { int, float, str } = Sk.builtin;
+const { int_, float, str } = Sk.builtin;
 
 export default {
-    textAlign: makeFunc(processing.textAlign, "textAlign", [
-        { "ALIGN": int, allowed: [ LEFT, CENTER, RIGHT ] },
-        { "YALIGN": int, allowed: [ TOP, BOTTOM, BASELINE, CENTER ] }
+    textAlign: makeFunc(processing, "textAlign", [
+        { "ALIGN": int_, allowed: [ LEFT, CENTER, RIGHT ] },
+        { "YALIGN": int_, allowed: [ TOP, BOTTOM, BASELINE, CENTER ] }
     ]),
 
-    textLeading: makeFunc(processing.textLeading, "textLeading", [
-        { "dist": [ int, float ] }
+    textLeading: makeFunc(processing, "textLeading", [
+        { "dist": [ int_, float ] }
     ]),
 
-    textMode: makeFunc(processing.textMode, "textMode", [
-        { "MODE": int, allowed: [ MODEL, SCREEN, SHAPE ] }
+    textMode: makeFunc(processing, "textMode", [
+        { "MODE": int_, allowed: [ MODEL, SCREEN, SHAPE ] }
     ]),
 
-    textSize: makeFunc(processing.textSize, "textSize", [
-        { "size":  [ int, float ] }
+    textSize: makeFunc(processing, "textSize", [
+        { "size":  [ int_, float ] }
     ]),
 
-    textWidth: makeFunc(processing.textWidth, "textWidth", [
+    textWidth: makeFunc(processing, "textWidth", [
         { "width": str }
     ])
 };

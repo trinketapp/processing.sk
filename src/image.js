@@ -4,7 +4,7 @@ import { makeFunc, optional, __name__, self } from "./utils.js";
 import PColor from "./color.js";
 import constants from "./constants.js";
 
-const { func, int, list, str, float } = Sk.builtin;
+const { func, int_, list, str, float } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
@@ -75,9 +75,9 @@ function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [
         // TODO: implement [] in type in makefunt
-        { "width": [ int, str ], optional },
-        { "height": int, optional },
-        { "format": int, allowed: [ 1, 2, 4 ] }
+        { "width": [ int_, str ], optional },
+        { "height": int_, optional },
+        { "format": int_, allowed: [ 1, 2, 4 ] }
     ]);
 
     $loc.__getattr__ = new func(function (self, key) {
@@ -95,30 +95,30 @@ function imageClass($gbl, $loc) {
 
     $loc.get = makeFunc(imageGet, "get", [
         self,
-        { "x": int },
-        { "y": int },
-        { "width": int, optional },
-        { "height": int, optional }
+        { "x": int_ },
+        { "y": int_ },
+        { "width": int_, optional },
+        { "height": int_, optional }
     ]);
 
     $loc.set = makeFunc(imageSet, "set", [
         self,
-        { "x": int },
-        { "y": int },
+        { "x": int_ },
+        { "y": int_ },
         { "color": PColor }
     ]);
 
     $loc.copy = makeFunc(imageCopy, "copy", [
         self,
-        { "srcImg": [ int, PImage ]},
-        { "sx": int },
-        { "sy": int },
-        { "swidth": int },
-        { "sheight": int },
-        { "dx": int },
-        { "dy": int },
-        { "dwidth": int },
-        { "dheight": int, optional }
+        { "srcImg": [ int_, PImage ]},
+        { "sx": int_ },
+        { "sy": int_ },
+        { "swidth": int_ },
+        { "sheight": int_ },
+        { "dx": int_ },
+        { "dy": int_ },
+        { "dwidth": int_ },
+        { "dheight": int_, optional }
     ]);
 
     $loc.mask = makeFunc(imageMask, "mask", [
@@ -128,22 +128,22 @@ function imageClass($gbl, $loc) {
 
     $loc.blend = makeFunc(imageBlend, "blend", [
         self,
-        { "srcImg": [ int, PImage ]},
-        { "x": int },
-        { "y": int },
-        { "width": int },
-        { "height": int },
-        { "dx": int },
-        { "dy": int },
-        { "dwidth": int },
-        { "dheight": int },
-        { "MODE": int, optional, allowed: [ BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
+        { "srcImg": [ int_, PImage ]},
+        { "x": int_ },
+        { "y": int_ },
+        { "width": int_ },
+        { "height": int_ },
+        { "dx": int_ },
+        { "dy": int_ },
+        { "dwidth": int_ },
+        { "dheight": int_ },
+        { "MODE": int_, optional, allowed: [ BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
             MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN ]}
     ]);
 
     $loc.filter = makeFunc(imageFilter, "filter", [
         self,
-        { "MODE": int, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
+        { "MODE": int_, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
         { "srcImg": PImage, optional }
     ]);
 
@@ -154,18 +154,18 @@ function imageClass($gbl, $loc) {
 
     $loc.resize = makeFunc(imageResize, "resize", [
         self,
-        { "wide": int },
-        { "high": int }
+        { "wide": int_ },
+        { "high": int_ }
     ]);
 
     $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
         self,
-        { "x": int, optional},
-        { "y": int, optional},
-        { "w": int, optional},
-        { "h": int, optional}
+        { "x": int_, optional},
+        { "y": int_, optional},
+        { "w": int_, optional},
+        { "h": int_, optional}
     ]);
 }
 
@@ -179,80 +179,80 @@ export const createImage = new Sk.builtin.func(function (width, height, format) 
     return image;
 });
 
-export const image = makeFunc(processing.image, "image", [
+export const image = makeFunc(processing, "image", [
     { "img": PImage },
-    { "x": int },
-    { "y": int },
-    { "width": int, optional },
-    { "height": int, optional }
+    { "x": int_ },
+    { "y": int_ },
+    { "width": int_, optional },
+    { "height": int_, optional }
 ]);
 
-export const imageMode = makeFunc(processing.imageMode, "imageMode", [
-    { "mode": int, allowed: [ CORNER, CORNERS, CENTER ] }
+export const imageMode = makeFunc(processing, "imageMode", [
+    { "mode": int_, allowed: [ CORNER, CORNERS, CENTER ] }
 ]);
 
 export const loadImage = makeFunc(imageLoadImage, "loadImage", [
     { "image": str }
 ]);
 
-export const noTint = makeFunc(processing.noTint, "noTint");
+export const noTint = makeFunc(processing, "noTint");
 
 export const requestImage = makeFunc(imageRequestImage, "requestImage", [
     { "filename": str },
     { "extension": str, optional }
 ]);
 
-export const tint = makeFunc(processing.tint, "tint", [
-    { "value1": [ PColor, int, float ] },
-    { "value2": [ int, float ], optional },
-    { "value3": [ int, float ], optional },
-    { "alpha": [ int, float ], optional }
+export const tint = makeFunc(processing, "tint", [
+    { "value1": [ PColor, int_, float ] },
+    { "value2": [ int_, float ], optional },
+    { "value3": [ int_, float ], optional },
+    { "alpha": [ int_, float ], optional }
 ]);
 
-export const blend = makeFunc(processing.blend, "blend", [
-    { "srcImg": [ int, PImage ]},
-    { "x": int },
-    { "y": int },
-    { "width": int },
-    { "height": int },
-    { "dx": int },
-    { "dy": int },
-    { "dwidth": int },
-    { "dheight": int },
-    { "MODE": int, optional, allowed: [ BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
+export const blend = makeFunc(processing, "blend", [
+    { "srcImg": [ int_, PImage ]},
+    { "x": int_ },
+    { "y": int_ },
+    { "width": int_ },
+    { "height": int_ },
+    { "dx": int_ },
+    { "dy": int_ },
+    { "dwidth": int_ },
+    { "dheight": int_ },
+    { "MODE": int_, optional, allowed: [ BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
         MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN ]}
 ]);
 
-export const copy = makeFunc(processing.copy, "copy", [
-    { "srcImg": [ int, PImage ]},
-    { "sx": int },
-    { "sy": int },
-    { "swidth": int },
-    { "sheight": int },
-    { "dx": int },
-    { "dy": int },
-    { "dwidth": int },
-    { "dheight": int, optional }
+export const copy = makeFunc(processing, "copy", [
+    { "srcImg": [ int_, PImage ]},
+    { "sx": int_ },
+    { "sy": int_ },
+    { "swidth": int_ },
+    { "sheight": int_ },
+    { "dx": int_ },
+    { "dy": int_ },
+    { "dwidth": int_ },
+    { "dheight": int_, optional }
 ]);
 
-export const filter = makeFunc(processing.filter, "filter", [
-    { "MODE": int, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
+export const filter = makeFunc(processing, "filter", [
+    { "MODE": int_, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
     { "srcImg": PImage, optional }
 ]);
 
-export const get = makeFunc(processing.get, "get", [
-    { "x": int, optional },
-    { "y": int, optional },
-    { "width": int, optional },
-    { "height": int, optional },
+export const get = makeFunc(processing, "get", [
+    { "x": int_, optional },
+    { "y": int_, optional },
+    { "width": int_, optional },
+    { "height": int_, optional },
 ]);
 
-export const loadPixels = makeFunc(processing.loadPixels, "loadPixels");
+export const loadPixels = makeFunc(processing, "loadPixels");
 
-export const set = makeFunc(processing.set, "set", [
-    { "x": int },
-    { "y": int },
+export const set = makeFunc(processing, "set", [
+    { "x": int_ },
+    { "y": int_ },
     { "image": [ PColor, PImage ] },
 ]);
 
-export const updatePixels = makeFunc(processing.updatePixels, "updatePixels");
+export const updatePixels = makeFunc(processing, "updatePixels");

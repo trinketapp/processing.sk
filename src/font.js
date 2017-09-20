@@ -18,27 +18,27 @@ function fontClass ($gbl, $loc) {
 
 export const PFont = buildClass({ __name__ }, fontClass, "PFont", []);
 
-export const createFont = makeFunc(processing.createFont, "createFont", [
+export const createFont = makeFunc(processing, "createFont", [
     { "name": str },
     { "size": float},
     { "smooth": bool, optional },
     { "charset": str, optional }
 ]);
 
-export const loadFont = makeFunc(processing.loadFont, "loadFont", [
+export const loadFont = makeFunc(processing, "loadFont", [
     { "fontname": str }
 ]);
 
-export const text = makeFunc(processing.text, "text", [
-    { "data": [ str, int, float ] },
-    { "x": [ int, float ] },
-    { "y": [ int, float ] },
-    { "z": [ int, float ], optional },
-    { "height": [ int, float ], optional },
-    { "z": [ int, float ], optional }
+export const text = makeFunc(processing, "text", [
+    { "data": [ str, int_, float ] },
+    { "x": [ int_, float ] },
+    { "y": [ int_, float ] },
+    { "z": [ int_, float ], optional },
+    { "height": [ int_, float ], optional },
+    { "z": [ int_, float ], optional }
 ]);
 
-export const textFont = makeFunc(processing.textFont, "textFont", [
+export const textFont = makeFunc(processing, "textFont", [
     { "font": PFont },
-    { "size": [ int, float  ], optional }
+    { "size": [ int_, float  ], optional }
 ]);

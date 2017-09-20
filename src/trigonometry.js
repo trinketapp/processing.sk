@@ -5,11 +5,11 @@ import { makeFunc } from "./utils.js";
 const { int_, float } = Sk.builtin;
 
 export default {
-    degrees: makeFunc(processing.degrees, "degrees", [
+    degrees: makeFunc(processing, "degrees", [
         { "angle": [ int_, float ] }
     ]),
 
-    radians: makeFunc(processing.radians, "radians", [
+    radians: makeFunc(processing, "radians", [
         { "angle": [ int_, float ] }
     ]),
 };

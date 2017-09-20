@@ -5,10 +5,10 @@ import { makeFunc, notImplemented } from "./utils.js";
 const { str } = Sk.builtin;
 
 export default {
-    loadBytes: makeFunc(processing.loadBytes, "loadBytes", [
+    loadBytes: makeFunc(processing, "loadBytes", [
         { "filename": str }
     ]),
-    loadStrings: makeFunc(processing.loadStrings, "loadStrings" [
+    loadStrings: makeFunc(processing, "loadStrings" [
         { "filename": str }
     ]),
     createInput: notImplemented,

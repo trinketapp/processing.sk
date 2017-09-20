@@ -2,42 +2,42 @@ import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc } from "./utils.js";
 
-const { int, float } = Sk.builtin;
+const { int_, float } = Sk.builtin;
 
 export default {
-    modelX: makeFunc(processing.modelX, "modelX", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    modelX: makeFunc(processing, "modelX", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ]),
 
-    modelY: makeFunc(processing.modelY, "modelY", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    modelY: makeFunc(processing, "modelY", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ]),
 
-    modelZ: makeFunc(processing.modelZ, "modelZ", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    modelZ: makeFunc(processing, "modelZ", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ]),
 
-    screenX: makeFunc(processing.screenX, "screenX", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    screenX: makeFunc(processing, "screenX", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ]),
 
-    screenY: makeFunc(processing.screenY, "screenY", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    screenY: makeFunc(processing, "screenY", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ]),
 
-    screenZ: makeFunc(processing.screenZ, "screenZ", [
-        { "x": [ int, float ]},
-        { "y": [ int, float ]},
-        { "z": [ int, float ]}
+    screenZ: makeFunc(processing, "screenZ", [
+        { "x": [ int_, float ]},
+        { "y": [ int_, float ]},
+        { "z": [ int_, float ]}
     ])
 };

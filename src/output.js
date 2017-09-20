@@ -5,20 +5,20 @@ import { notImplemented, makeFunc } from "./utils.js";
 const { object, str, list } = Sk.builtin;
 
 export default {
-    println: makeFunc(processing.println, "println", [
+    println: makeFunc(processing, "println", [
         { "data": object }
     ]),
 
-    save: makeFunc(processing.save, "save", [
+    save: makeFunc(processing, "save", [
         { "filename": str }
     ]),
 
-    saveFrame: makeFunc(processing.saveFrame, "saveFrame", [
+    saveFrame: makeFunc(processing, "saveFrame", [
         { "filename": str },
         { "ext": str, allowed: [ "tif", "tga", "jpg", "png" ] }
     ]),
 
-    saveStrings: makeFunc(processing.saveStrings, "saveStrings", [
+    saveStrings: makeFunc(processing, "saveStrings", [
         { "filename": str },
         { "strings": list }
     ]),

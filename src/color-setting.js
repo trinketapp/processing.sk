@@ -5,39 +5,39 @@ import constants from "./constants.js";
 import PColor from "./color.js";
 
 const { RGB, HSB } = constants;
-const { int, float } = Sk.builtin;
+const { int_, float } = Sk.builtin;
 
 export default {
-    background: makeFunc(processing.background, "background", [
-        { "value1": [ int, float, PColor ] },
-        { "value2": [ int, float ], optional },
-        { "value2": [ int, float ], optional },
-        { "alpha": [ int, float ], optional }
+    background: makeFunc(processing, "background", [
+        { "value1": [ int_, float, PColor ] },
+        { "value2": [ int_, float ], optional },
+        { "value2": [ int_, float ], optional },
+        { "alpha": [ int_, float ], optional }
     ]),
 
-    colorMode: makeFunc(processing.colorMode, "colorMode", [
-        { "mode": int, allowed: [ RGB, HSB ] },
-        { "range1": [ int, float ], optional },
-        { "range2": [ int, float ], optional },
-        { "range3": [ int, float ], optional },
-        { "range4": [ int, float ], optional }
+    colorMode: makeFunc(processing, "colorMode", [
+        { "mode": int_, allowed: [ RGB, HSB ] },
+        { "range1": [ int_, float ], optional },
+        { "range2": [ int_, float ], optional },
+        { "range3": [ int_, float ], optional },
+        { "range4": [ int_, float ], optional }
     ]),
 
-    fill: makeFunc(processing.fill, "fill", [
-        { "value1": [ int, float, PColor ] },
-        { "value2": [ int, float ], optional },
-        { "value2": [ int, float ], optional },
-        { "alpha": [ int, float ], optional }
+    fill: makeFunc(processing, "fill", [
+        { "value1": [ int_, float, PColor ] },
+        { "value2": [ int_, float ], optional },
+        { "value2": [ int_, float ], optional },
+        { "alpha": [ int_, float ], optional }
     ]),
 
-    noFill: makeFunc(processing.noFill, "noFill"),
+    noFill: makeFunc(processing, "noFill"),
 
-    noStroke: makeFunc(processing.noStroke, "noStroke"),
+    noStroke: makeFunc(processing, "noStroke"),
 
-    stroke: makeFunc(processing.stroke, "stroke", [
-        { "value1": [ int, float, PColor ] },
-        { "value2": [ int, float ], optional },
-        { "value2": [ int, float ], optional },
-        { "alpha": [ int, float ], optional }
+    stroke: makeFunc(processing, "stroke", [
+        { "value1": [ int_, float, PColor ] },
+        { "value2": [ int_, float ], optional },
+        { "value2": [ int_, float ], optional },
+        { "alpha": [ int_, float ], optional }
     ])
 };

@@ -5,9 +5,9 @@ import { makeFunc, optional } from "./utils.js";
 const { float } = Sk.builtin;
 
 export default {
-    beginCamera: makeFunc(processing.beginCamera, "beginCamera"),
+    beginCamera: makeFunc(processing, "beginCamera"),
 
-    camera: makeFunc(processing.camera, "camera", [
+    camera: makeFunc(processing, "camera", [
         { "eyeX": float, optional },
         { "eyeY": float, optional },
         { "eyeZ": float, optional },
@@ -19,9 +19,9 @@ export default {
         { "upZ": float, optional }
     ]),
 
-    endCamera: makeFunc(processing.endCamera, "endCamera"),
+    endCamera: makeFunc(processing, "endCamera"),
 
-    frustum: makeFunc(processing.frustum, "frustum", [
+    frustum: makeFunc(processing, "frustum", [
         { "left": float },
         { "right": float },
         { "bottom": float },
@@ -30,7 +30,7 @@ export default {
         { "far": float }
     ]),
 
-    ortho: makeFunc(processing.ortho, "ortho", [
+    ortho: makeFunc(processing, "ortho", [
         { "left": float, optional },
         { "right": float, optional },
         { "bottom": float, optional },
@@ -39,14 +39,14 @@ export default {
         { "far": float, optional }
     ]),
 
-    perspective: makeFunc(processing.perspective, "perspective", [
+    perspective: makeFunc(processing, "perspective", [
         { "fov": float, optional },
         { "aspect": float, optional },
         { "zNear": float, optional },
         { "zFar": float, optional }
     ]),
 
-    printCamera: makeFunc(processing.printCamera, "printCamera"),
+    printCamera: makeFunc(processing, "printCamera"),
 
-    printProjection: makeFunc(processing.printProjection, "printProjection")
+    printProjection: makeFunc(processing, "printProjection")
 };

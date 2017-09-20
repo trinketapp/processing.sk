@@ -5,11 +5,11 @@ import { makeFunc, optional } from "./utils.js";
 const { str } = Sk.builtin;
 
 export default {
-    link: makeFunc(processing.link, [
+    link: makeFunc(processing, "link" [
         { "url": str },
         { "target": str, optional }
     ]),
-    status: makeFunc(processing.status, [
+    status: makeFunc(processing, "status", [
         { "text": str }
     ])
-};
+};§

@@ -5,7 +5,7 @@ import { makeFunc, optional } from "./utils.js";
 const { float } = Sk.builtin;
 
 export default {
-    applyMatrix: makeFunc(processing.applyMatrix, "applyMatrix", [
+    applyMatrix: makeFunc(processing, "applyMatrix", [
         { "n00": float },
         { "n01": float },
         { "n02": float },
@@ -24,34 +24,34 @@ export default {
         { "n15": float }
     ]),
 
-    popMatrix: makeFunc(processing.popMatrix, "popMatrix"),
-    printMatrix: makeFunc(processing.printMatrix, "printMatrix"),
-    pushMatrix: makeFunc(processing.pushMatrix, "pushMatrix"),
-    resetMatrix: makeFunc(processing.resetMatrix, "resetMatrix"),
+    popMatrix: makeFunc(processing, "popMatrix"),
+    printMatrix: makeFunc(processing, "printMatrix"),
+    pushMatrix: makeFunc(processing, "pushMatrix"),
+    resetMatrix: makeFunc(processing, "resetMatrix"),
 
-    rotate: makeFunc(processing.rotate, "rotate", [
+    rotate: makeFunc(processing, "rotate", [
         { "angle": float }
     ]),
 
-    rotateX: makeFunc(processing.rotateX, "rotateX", [
+    rotateX: makeFunc(processing, "rotateX", [
         { "angle": float }
     ]),
 
-    rotateY: makeFunc(processing.rotateY, "rotateY", [
+    rotateY: makeFunc(processing, "rotateY", [
         { "angle": float }
     ]),
 
-    rotateZ: makeFunc(processing.rotateZ, "rotateZ", [
+    rotateZ: makeFunc(processing, "rotateZ", [
         { "angle": float }
     ]),
 
-    scale: makeFunc(processing.scale, "scale", [
+    scale: makeFunc(processing, "scale", [
         { "size": float },
         { "y": float, optional },
         { "z": float, optional }
     ]),
 
-    translate: makeFunc(processing.translate, "translate", [
+    translate: makeFunc(processing, "translate", [
         { "x": float },
         { "y": float },
         { "z": float, optional }

@@ -126,7 +126,7 @@ function shapeClass($gbl, $loc) {
 export const PShape = Sk.misceval.buildClass({ __name__ }, shapeClass, "PShape", []);
 
 export default {
-    loadShape: makeFunc(processing.loadShape, "loadShape", [
+    loadShape: makeFunc(processing, "loadShape", [
         { "filename": str }
     ]),
 

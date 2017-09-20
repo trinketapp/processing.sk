@@ -5,7 +5,7 @@ import { makeFunc, optional } from "./utils.js";
 const { float } = Sk.builtin;
 
 export default {
-    arc: makeFunc(processing.arc, "arc", [
+    arc: makeFunc(processing, "arc", [
         { "x": float },
         { "y": float },
         { "width": float },
@@ -13,13 +13,13 @@ export default {
         { "start": float },
         { "stop": float }]),
 
-    ellipse: makeFunc(processing.ellipse, "ellipse", [
+    ellipse: makeFunc(processing, "ellipse", [
         { "x": float },
         { "y": float },
         { "width": float },
         { "height": float }]),
 
-    line: makeFunc(processing.line, "line", [
+    line: makeFunc(processing, "line", [
         { "x1": float },
         { "y1": float },
         { "z1": float },
@@ -27,12 +27,12 @@ export default {
         { "y2": float, optional },
         { "z2": float, optional }]),
 
-    point: makeFunc(processing.point, "point", [
+    point: makeFunc(processing, "point", [
         { "x" : float },
         { "y" : float },
         { "z": float, optional }]),
 
-    quad: makeFunc(processing.quad, "quad", [
+    quad: makeFunc(processing, "quad", [
         { "x1": float },
         { "y1": float },
         { "x2": float },
@@ -42,7 +42,7 @@ export default {
         { "x4": float },
         { "y4": float }]),
 
-    rect: makeFunc(processing.rect, "rect", [
+    rect: makeFunc(processing, "rect", [
         { "x": float },
         { "y": float },
         { "width": float },
@@ -52,7 +52,7 @@ export default {
         { "brradius": float, optional },
         { "blradius": float, optional }]),
 
-    triagle: makeFunc(processing.triangle, "triangle", [
+    triagle: makeFunc(processing, "triangle", [
         { "x1": float },
         { "y1": float },
         { "x2": float },
