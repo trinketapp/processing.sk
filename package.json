@@ -4,7 +4,7 @@
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
+    "build": "eslint src/** && rollup -c rollup.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Albert-Jan Nijburg",
