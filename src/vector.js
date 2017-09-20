@@ -3,8 +3,9 @@ import processing from "./processing.js";
 import { makeFunc, optional, __name__ } from "./utils.js";
 
 const { int_, float } = Sk.builtin;
-const { callsim } = Sk.misceval;
+const { callsim, buildClass } = Sk.misceval;
 const { remapToPy } = Sk.ffi;
+
 
 function vectorInit(self, x, y, z) {
     self.v = processing.PVector(x, y, z);
@@ -154,6 +155,9 @@ function vectorClass($gbl, $loc) {
     $loc.array = makeFunc(self => self.v.array(), "array", [ self ]);
 }
 
-const PVector = Sk.misceval.buildClass({ __name__ }, vectorClass, "PVector", []);
+let PVector = null;
 
-export default PVector;
+export default mod => {
+    PVector = buildClass(mod, vectorClass, "PVector", [])
+    return PVector;
+};

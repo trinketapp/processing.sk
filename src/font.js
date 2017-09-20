@@ -2,7 +2,7 @@ import processing from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc, optional, __name__, self } from "./utils.js";
 
-const { func, float, list, str, bool, int } = Sk.builtin;
+const { func, float, list, str, bool, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function fontClass ($gbl, $loc) {
@@ -16,7 +16,7 @@ function fontClass ($gbl, $loc) {
     $loc.list = new func((self) => new list(self.v.list()));
 }
 
-export const PFont = buildClass({ __name__ }, fontClass, "PFont", []);
+export const PFontBuilder = mod => buildClass(mod, fontClass, "PFont", []);
 
 export const createFont = makeFunc(processing, "createFont", [
     { "name": str },

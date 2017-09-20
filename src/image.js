@@ -169,9 +169,9 @@ function imageClass($gbl, $loc) {
     ]);
 }
 
-const PImage = buildClass({ __name__ }, imageClass, "PImage", []);
+const PImageBuilder = mod => buildClass(mod, imageClass, "PImage", []);
 
-export default PImage;
+export default PImageBuilder;
 
 export const createImage = new Sk.builtin.func(function (width, height, format) {
     var image = Sk.misceval.callsim(PImage);

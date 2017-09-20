@@ -12,4 +12,4 @@ export default {
     status: makeFunc(processing, "status", [
         { "text": str }
     ])
-};§
+};

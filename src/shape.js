@@ -6,6 +6,7 @@ import constants from "./constants.js";
 const { CORNER, CORNERS, CENTER } = constants;
 const { str, int_, float, bool } = Sk.builtin;
 const { remapToJs, remapToPy } = Sk.ffi;
+const { buildClass } = Sk.misceval;
 
 function shapeIsVisible(self) {
     return self.v.isVisible();
@@ -123,7 +124,7 @@ function shapeClass($gbl, $loc) {
     ]);
 }
 
-export const PShape = Sk.misceval.buildClass({ __name__ }, shapeClass, "PShape", []);
+export const PShapeBuilder = mod => buildClass(mod, shapeClass, "PShape", []);
 
 export default {
     loadShape: makeFunc(processing, "loadShape", [

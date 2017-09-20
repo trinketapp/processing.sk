@@ -5,33 +5,35 @@ import calculation from "./calculation.js";
 import camera from "./camera.js";
 import ccreatingandreading from "./color-creatingandreading.js";
 import csetting from "./color-setting.js";
-import color from "./color.js";
+import colorBuilder from "./color.js";
 import constants from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
-import { Environment, environment, cursor, noCursor } from "./environment.js";
+import { EnvironmentBuilder, cursor, noCursor } from "./environment.js";
 import files from "./files.js";
 import fontattribues from "./font-attributes.js";
 import fontmetrics from "./font-metrics.js";
-import { PFont, createFont, loadFont, text, textFont } from "./font.js";
-import { PGraphics, createGraphics, hint } from "./graphics.js";
-import PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
-import { keyboard, Keyboard } from "./keyboard.js";
+import { PFontBuilder, createFont, loadFont, text, textFont } from "./font.js";
+import { PGraphicsBuilder, createGraphics, hint } from "./graphics.js";
+import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
+import { keyboardBuilder } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
-import { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
+import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
 import output from "./output.js";
 import random from "./random.js";
-import { Screen, screen } from "./screen.js";
-import shape from "./shape.js";
+import { ScreenBuilder } from "./screen.js";
+import shapeBuilder from "./shape.js";
 import structure from "./structure.js";
 import timeanddate from "./timeanddate.js";
 import transform from "./transform.js";
 import trigonometry from "./trigonometry.js";
-import vector from "./vector.js";
+import vectorBuilder from "./vector.js";
 import vertex from "./vertex.js";
 import web from "./web.js";
 import Sk from "./skulpt.js";
+
+const { callsim } = Sk.misceval;
 
 let looping = true;
 
@@ -79,14 +81,31 @@ export function main() {
             //     if Sk.globals["setup"]
             //         Sk.misceval.callsim(Sk.globals["setup"])
             // }
+            // initialise classes
+
+            let PColor = colorBuilder(mod);
+            let Environment = EnvironmentBuilder(mod);
+            let environment = callsim(Environment)
+            let PFont = PFontBuilder(mod);
+            let PGraphics = PGraphicsBuilder(mod);
+            let PImage = PImageBuilder(mod);
+            let Mouse = MouseBuilder(mod);
+            let mouse = callsim(Mouse);
+            let Keyboard = KeyboardBuilder(mod);
+            let keyboard = callsim(Keyboard);
+            let Screen = ScreenBuilder(mod);
+            let screen = callsim(Screen);
+            let PShape = shapeBuilder(mod);
+            let PVector = vectorBuilder(mod);
+
             Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
-                ccreatingandreading, csetting, color, constants, coordinates, curves,
+                ccreatingandreading, csetting, PColor, constants, coordinates, curves,
                 { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
                 { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
                 PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,
                     copy, filter, get, loadPixels, set, updatePixels }, { keyboard, Keyboard }, lights,
                 materialproperties, { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY }, output, random,
-                { Screen, screen }, shape, structure, timeanddate, transform, trigonometry, vector, vertex, web);
+                { Screen, screen }, PShape, structure, timeanddate, transform, trigonometry, PVector, vertex, web);
 
             // FIXME if no Sk.globals["draw"], then no need for this
             processing.draw = function () {

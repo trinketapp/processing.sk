@@ -27,7 +27,7 @@ export default {
         { "mode": str, allowed: [ MITTER, BEVEL, ROUND ] }
     ]),
 
-    strokeWeight: makeFunc(processing.strokeWeight, [
+    strokeWeight: makeFunc(processing, "strokeWeight", [
         { "width": int_ }
     ])
 };

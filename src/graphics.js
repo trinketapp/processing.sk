@@ -14,7 +14,7 @@ function graphicsClass($gbl, $loc) {
     $loc.__init__ = makeFunc(graphicsInit, [
         self,
         { "width": int_ },
-        { "width": int },
+        { "width": int_ },
         { "width": PApplet }
     ]);
 
@@ -27,7 +27,7 @@ function graphicsClass($gbl, $loc) {
     });
 }
 
-export const PGraphics = buildClass({ __name__ }, graphicsClass, "PGraphics", []);
+export const PGraphicsBuilder = mod => buildClass(mod, graphicsClass, "PGraphics", []);
 
 export const createGraphics = new Sk.builtin.func(function (width, height, renderer, filename) {
     // createGraphics(width, height, renderer)

@@ -4,6 +4,7 @@ import { __name__ } from "./utils.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
+const { buildClass, callsim } = Sk.misceval;
 
 function mouseClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
@@ -26,8 +27,7 @@ function mouseClass($gbl, $loc) {
     });
 }
 
-export const Mouse = Sk.misceval.buildClass({ __name__ }, mouseClass, "Mouse", []);
-export const mouse = Sk.misceval.callsim(Mouse);
+export const MouseBuilder = mod => buildClass(mod, mouseClass, "Mouse", []);
 
 export const mouseX = new func(function () {
     return new int_(processing.mouseX);

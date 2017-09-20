@@ -27,6 +27,4 @@ function screenClass($gbl, $loc) {
     });
 }
 
-export const Screen = buildClass({ __name__ }, screenClass, "Screen", []);
-
-export const screen = callsim(Screen);
+export const ScreenBuilder = mod => buildClass(mod, screenClass, "Screen", []);

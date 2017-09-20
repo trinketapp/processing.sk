@@ -18,4 +18,4 @@ function colorClass($gbl, $loc) {
     ]);
 }
 
-export default buildClass({ __name__ }, colorClass, "color", []);
+export default mod => buildClass(mod, colorClass, "color", []);

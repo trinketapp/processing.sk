@@ -5,6 +5,8 @@ import PImage from "./image.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
+const { buildClass, callsim } = Sk.misceval;
+
 
 function environmentClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
@@ -28,9 +30,9 @@ function environmentClass($gbl, $loc) {
 
 }
 
-export const Environment = Sk.misceval.buildClass({ __name__ }, environmentClass, "Environment", []);
+export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
 
-export const environment = Sk.misceval.callsim(Environment);
+//export const environment = e => callsim(Environment);
 
 export const cursor = makeFunc(processing, "cursor", [
     { "image": [ PImage, int_ ], optional },

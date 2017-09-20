@@ -4,6 +4,7 @@ import { __name__ } from "./utils.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func } = Sk.builtin;
+const { buildClass, callsim } = Sk.misceval;
 
 function keyboardClass ($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
@@ -20,6 +21,6 @@ function keyboardClass ($gbl, $loc) {
     });
 }
 
-export const Keyboard = Sk.misceval.buildClass({ __name__ }, keyboardClass, "Keyboard", []);
+export const KeyboardBuilder = mod => buildClass(mod, keyboardClass, "Keyboard", []);
 
-export const keyboard = Sk.misceval.callsim(Keyboard);
+// export const keyboard = keyboard => callsim(keyboard);
