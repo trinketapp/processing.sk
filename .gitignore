@@ -1,3 +1,4 @@
-node_modules/
+.DS_Store
+.vscode
 bower_components/
-.vscode/
+node_modules/
