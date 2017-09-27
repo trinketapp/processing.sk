@@ -1,6 +1,6 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__, self } from "./utils.js";
+import { makeFunc, optional, self } from "./utils.js";
 
 const { func, float, list, str, bool, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -39,6 +39,6 @@ export const text = makeFunc(processing, "text", [
 ]);
 
 export const textFont = makeFunc(processing, "textFont", [
-    { "font": PFont },
+    { "font": "PFont" },
     { "size": [ int_, float  ], optional }
 ]);

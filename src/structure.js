@@ -40,5 +40,5 @@ export default {
         { "height": int_ },
     ]),
 
-    exit: makeFunc(processing.exit)
+    exit: makeFunc(processing, "exit")
 };

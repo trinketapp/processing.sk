@@ -1,9 +1,8 @@
-import { __name__ } from "./utils.js";
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
 
 const { remapToJs, remapToPy } = Sk.ffi;
-const { buildClass, callsim } = Sk.misceval;
+const { buildClass } = Sk.misceval;
 const { list, func } = Sk.builtin;
 
 function screenClass($gbl, $loc) {

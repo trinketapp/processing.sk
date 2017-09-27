@@ -1,7 +1,6 @@
-import processing from "./processing.js";
+import processing, { PGraphics } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, __name__, self } from "./utils.js";
-import PApplet from "./applet.js";
+import { makeFunc, self } from "./utils.js";
 
 const { int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -15,7 +14,7 @@ function graphicsClass($gbl, $loc) {
         self,
         { "width": int_ },
         { "width": int_ },
-        { "width": PApplet }
+        { "width": "PApplet" }
     ]);
 
     $loc.beginDraw = new Sk.builtin.func(function (self) {

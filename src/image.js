@@ -1,6 +1,6 @@
-import processing, { pushImage } from "./processing.js";
+import processing, { pushImage, PImage } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, __name__, self } from "./utils.js";
+import { makeFunc, optional, self } from "./utils.js";
 import PColor from "./color.js";
 import constants from "./constants.js";
 
@@ -162,10 +162,10 @@ function imageClass($gbl, $loc) {
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
         self,
-        { "x": int_, optional},
-        { "y": int_, optional},
-        { "w": int_, optional},
-        { "h": int_, optional}
+        { "x": int_, optional },
+        { "y": int_, optional },
+        { "w": int_, optional },
+        { "h": int_, optional }
     ]);
 }
 
@@ -180,7 +180,7 @@ export const createImage = new Sk.builtin.func(function (width, height, format) 
 });
 
 export const image = makeFunc(processing, "image", [
-    { "img": PImage },
+    { "img": "PImage" },
     { "x": int_ },
     { "y": int_ },
     { "width": int_, optional },
@@ -203,14 +203,14 @@ export const requestImage = makeFunc(imageRequestImage, "requestImage", [
 ]);
 
 export const tint = makeFunc(processing, "tint", [
-    { "value1": [ PColor, int_, float ] },
+    { "value1": [ "PColor", int_, float ] },
     { "value2": [ int_, float ], optional },
     { "value3": [ int_, float ], optional },
     { "alpha": [ int_, float ], optional }
 ]);
 
 export const blend = makeFunc(processing, "blend", [
-    { "srcImg": [ int_, PImage ]},
+    { "srcImg": [ int_, "PImage" ]},
     { "x": int_ },
     { "y": int_ },
     { "width": int_ },
@@ -224,7 +224,7 @@ export const blend = makeFunc(processing, "blend", [
 ]);
 
 export const copy = makeFunc(processing, "copy", [
-    { "srcImg": [ int_, PImage ]},
+    { "srcImg": [ int_, "PImage" ]},
     { "sx": int_ },
     { "sy": int_ },
     { "swidth": int_ },
@@ -237,7 +237,7 @@ export const copy = makeFunc(processing, "copy", [
 
 export const filter = makeFunc(processing, "filter", [
     { "MODE": int_, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
-    { "srcImg": PImage, optional }
+    { "srcImg": "PImage", optional }
 ]);
 
 export const get = makeFunc(processing, "get", [
@@ -252,7 +252,7 @@ export const loadPixels = makeFunc(processing, "loadPixels");
 export const set = makeFunc(processing, "set", [
     { "x": int_ },
     { "y": int_ },
-    { "image": [ PColor, PImage ] },
+    { "image": [ PColor, "PImage" ] },
 ]);
 
 export const updatePixels = makeFunc(processing, "updatePixels");

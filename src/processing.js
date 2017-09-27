@@ -16,7 +16,7 @@ import fontmetrics from "./font-metrics.js";
 import { PFontBuilder, createFont, loadFont, text, textFont } from "./font.js";
 import { PGraphicsBuilder, createGraphics, hint } from "./graphics.js";
 import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
-import { keyboardBuilder } from "./keyboard.js";
+import { KeyboardBuilder } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
 import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
@@ -59,6 +59,12 @@ export function pushImage(url) {
     imList.push(url);
 }
 
+export let PColor;
+export let PImage;
+export let PShape;
+export let PGraphics;
+export let PVector;
+
 export function main() {
     // We need this to store a reference to the actual processing object which is not created
     // until the run function is called.  Even then the processing object is passed by the
@@ -83,20 +89,21 @@ export function main() {
             // }
             // initialise classes
 
-            let PColor = colorBuilder(mod);
+            PColor = colorBuilder(mod);
+            PImage = PImageBuilder(mod);
+            PShape = shapeBuilder(mod);
+            PGraphics = PGraphicsBuilder(mod);
+            PVector = vectorBuilder(mod);
+
             let Environment = EnvironmentBuilder(mod);
-            let environment = callsim(Environment)
+            let environment = callsim(Environment);
             let PFont = PFontBuilder(mod);
-            let PGraphics = PGraphicsBuilder(mod);
-            let PImage = PImageBuilder(mod);
             let Mouse = MouseBuilder(mod);
             let mouse = callsim(Mouse);
             let Keyboard = KeyboardBuilder(mod);
             let keyboard = callsim(Keyboard);
             let Screen = ScreenBuilder(mod);
             let screen = callsim(Screen);
-            let PShape = shapeBuilder(mod);
-            let PVector = vectorBuilder(mod);
 
             Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
                 ccreatingandreading, csetting, PColor, constants, coordinates, curves,

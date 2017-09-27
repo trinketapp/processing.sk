@@ -1,6 +1,6 @@
 import Sk from "./skulpt.js";
-import processing from "./processing.js";
-import { makeFunc, optional, __name__ } from "./utils.js";
+import processing, { PVector } from "./processing.js";
+import { makeFunc, optional } from "./utils.js";
 
 const { int_, float } = Sk.builtin;
 const { callsim, buildClass } = Sk.misceval;
@@ -105,27 +105,27 @@ function vectorClass($gbl, $loc) {
 
     $loc.add = makeFunc(vectorAdd, "add", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.sub = makeFunc(vectorSub, "sub", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.mult = makeFunc(vectorMult, "mult", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.div = makeFunc(vectorDiv, "div", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.dist = makeFunc(vectorDist, "dist", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.dot = makeFunc(vectorDot, "dot", [
@@ -137,7 +137,7 @@ function vectorClass($gbl, $loc) {
 
     $loc.cross = makeFunc(vectorCross, "cross", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.normalize = makeFunc(self => self.normalize(), "normalize", [ self ]);
@@ -149,15 +149,10 @@ function vectorClass($gbl, $loc) {
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [
         self,
-        { "vector": PVector }
+        { "vector": "PVector" }
     ]);
 
     $loc.array = makeFunc(self => self.v.array(), "array", [ self ]);
 }
 
-let PVector = null;
-
-export default mod => {
-    PVector = buildClass(mod, vectorClass, "PVector", [])
-    return PVector;
-};
+export default mod => buildClass(mod, vectorClass, "PVector", []);

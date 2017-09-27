@@ -1,6 +1,6 @@
-import processing from "./processing.js";
+import processing, { PShape } from "./processing.js";
 import Sk from "./skulpt.js";
-import { optional, makeFunc, __name__, self } from "./utils.js";
+import { optional, makeFunc, self } from "./utils.js";
 import constants from "./constants.js";
 
 const { CORNER, CORNERS, CENTER } = constants;
@@ -131,15 +131,15 @@ export default {
         { "filename": str }
     ]),
 
-    shape: makeFunc(processing.shape, [
-        { "sh": PShape },
+    shape: makeFunc(processing, "shape", [
+        { "sh": "PShape" },
         { "x": float },
         { "y": float },
         { "width": float, optional },
         { "height": float, optional }
     ]),
 
-    shapeMode: makeFunc(processing.shapeMode, [
+    shapeMode: makeFunc(processing, "shapeMode", [
         { "img": int_, allowed: [ CORNER, CORNERS, CENTER ] }
     ])
 };

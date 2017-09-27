@@ -1,11 +1,11 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { __name__, makeFunc, optional } from "./utils.js";
+import { makeFunc, optional } from "./utils.js";
 import PImage from "./image.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
-const { buildClass, callsim } = Sk.misceval;
+const { buildClass } = Sk.misceval;
 
 
 function environmentClass($gbl, $loc) {
@@ -31,8 +31,6 @@ function environmentClass($gbl, $loc) {
 }
 
 export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
-
-//export const environment = e => callsim(Environment);
 
 export const cursor = makeFunc(processing, "cursor", [
     { "image": [ PImage, int_ ], optional },

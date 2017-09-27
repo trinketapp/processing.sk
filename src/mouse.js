@@ -1,10 +1,9 @@
 import processing from "./processing.js";
 import Sk from "./skulpt.js";
-import { __name__ } from "./utils.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
-const { buildClass, callsim } = Sk.misceval;
+const { buildClass } = Sk.misceval;
 
 function mouseClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
