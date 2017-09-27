@@ -1,4 +1,4 @@
-import processing from "./processing.js";
+import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
 
 const { remapToJs, remapToPy } = Sk.ffi;

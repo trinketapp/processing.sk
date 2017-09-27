@@ -1,4 +1,4 @@
-import processing, { PShape } from "./processing.js";
+import { processing, PShape } from "./processing.js";
 import Sk from "./skulpt.js";
 import { optional, makeFunc, self } from "./utils.js";
 import constants from "./constants.js";

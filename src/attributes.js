@@ -1,4 +1,4 @@
-import processing from "./processing.js";
+import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc } from "./utils.js";
 import constants from "./constants.js";

@@ -1,4 +1,4 @@
-import processing, { setProperty, setLooping, isInitialised } from "./processing.js";
+import { processing, setProperty, setLooping, isInitialised } from "./processing.js";
 import { makeFunc } from "./utils.js";
 import Sk from "./skulpt.js";
 

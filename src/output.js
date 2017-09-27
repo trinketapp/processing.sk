@@ -1,5 +1,5 @@
 import Sk from "./skulpt.js";
-import processing from "./processing.js";
+import { processing } from "./processing.js";
 import { notImplemented, makeFunc } from "./utils.js";
 
 const { object, str, list } = Sk.builtin;

@@ -51,7 +51,7 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let args = argsToArray(arguments);
 
-        let js_args = args((a, i) => args_template[i] != self).map(remapToJs);
+        let js_args = args.filter((a, i) => args_template[i] != self).map(remapToJs);
 
         pyCheckArgs(name, args, countNonOptionalArgs(args_template), args.length, true);
 

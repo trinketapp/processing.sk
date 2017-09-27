@@ -1,6 +1,6 @@
 import { makeFunc, optional } from "./utils.js";
 import Sk from "./skulpt.js";
-import processing from "./processing.js";
+import { processing } from "./processing.js";
 
 const { float, int_ } = Sk.builtin;
 

@@ -1,4 +1,4 @@
-import processing from "./processing.js";
+import { processing } from "./processing.js";
 import { makeFunc } from "./utils.js";
 
 export default {

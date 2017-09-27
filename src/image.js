@@ -1,4 +1,4 @@
-import processing, { pushImage, PImage } from "./processing.js";
+import { processing, pushImage, PImage } from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc, optional, self } from "./utils.js";
 import PColor from "./color.js";

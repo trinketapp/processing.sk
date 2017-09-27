@@ -23,7 +23,7 @@ import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
 import output from "./output.js";
 import random from "./random.js";
 import { ScreenBuilder } from "./screen.js";
-import shapeBuilder from "./shape.js";
+import shape, { PShapeBuilder } from "./shape.js";
 import structure from "./structure.js";
 import timeanddate from "./timeanddate.js";
 import transform from "./transform.js";
@@ -39,12 +39,10 @@ let looping = true;
 
 const mod = {};
 
-const processingInstance = null;
-
 const imList = [];
 
 export function isInitialised() {
-    return processingInstance == null;
+    return processing == null;
 }
 
 export function setProperty(name, value) {
@@ -64,6 +62,17 @@ export let PImage;
 export let PShape;
 export let PGraphics;
 export let PVector;
+export let processing;
+
+export function init(path) {
+    Sk.externalLibraries = Sk.externalLibraries || {};
+
+    Object.assign(Sk.externalLibraries, {
+        processing: {
+            path: `${path}/__init__.js`,
+        },
+    });
+}
 
 export function main() {
     // We need this to store a reference to the actual processing object which is not created
@@ -80,39 +89,42 @@ export function main() {
     //
     //
     //  //////////////////////////////////////////////////////////////////////
+
+    PColor = colorBuilder(mod);
+    PImage = PImageBuilder(mod);
+    PShape = PShapeBuilder(mod);
+    PGraphics = PGraphicsBuilder(mod);
+    PVector = vectorBuilder(mod);
+
+    let Environment = EnvironmentBuilder(mod);
+    let environment = callsim(Environment);
+    let PFont = PFontBuilder(mod);
+    let Mouse = MouseBuilder(mod);
+    let mouse = callsim(Mouse);
+    let Keyboard = KeyboardBuilder(mod);
+    let keyboard = callsim(Keyboard);
+    let Screen = ScreenBuilder(mod);
+    let screen = callsim(Screen);
+
+    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
+        ccreatingandreading, csetting, PColor, constants, coordinates, curves,
+        { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
+        { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
+        PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,
+            copy, filter, get, loadPixels, set, updatePixels }, { keyboard, Keyboard }, lights,
+        materialproperties, { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY }, output, random,
+        { Screen, screen }, PShape, structure, timeanddate, transform, trigonometry, PVector,
+        vertex, web, shape);
+
     mod.run = new Sk.builtin.func(function () {
-        function sketchProc(processing) {
+        function sketchProc(processingInstance) {
+            processing = processingInstance;
 
             // processing.setup = function() {
             //     if Sk.globals["setup"]
             //         Sk.misceval.callsim(Sk.globals["setup"])
             // }
             // initialise classes
-
-            PColor = colorBuilder(mod);
-            PImage = PImageBuilder(mod);
-            PShape = shapeBuilder(mod);
-            PGraphics = PGraphicsBuilder(mod);
-            PVector = vectorBuilder(mod);
-
-            let Environment = EnvironmentBuilder(mod);
-            let environment = callsim(Environment);
-            let PFont = PFontBuilder(mod);
-            let Mouse = MouseBuilder(mod);
-            let mouse = callsim(Mouse);
-            let Keyboard = KeyboardBuilder(mod);
-            let keyboard = callsim(Keyboard);
-            let Screen = ScreenBuilder(mod);
-            let screen = callsim(Screen);
-
-            Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
-                ccreatingandreading, csetting, PColor, constants, coordinates, curves,
-                { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
-                { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
-                PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,
-                    copy, filter, get, loadPixels, set, updatePixels }, { keyboard, Keyboard }, lights,
-                materialproperties, { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY }, output, random,
-                { Screen, screen }, PShape, structure, timeanddate, transform, trigonometry, PVector, vertex, web);
 
             // FIXME if no Sk.globals["draw"], then no need for this
             processing.draw = function () {
@@ -193,5 +205,3 @@ export function main() {
 
     return mod;
 }
-
-export default processingInstance;

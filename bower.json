@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "skulpt": "^0.11.0"
+    "skulpt": "^0.11.0",
+    "Processing.js": "^1.6.6"
   }
 }

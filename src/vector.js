@@ -1,5 +1,5 @@
 import Sk from "./skulpt.js";
-import processing, { PVector } from "./processing.js";
+import { processing, PVector } from "./processing.js";
 import { makeFunc, optional } from "./utils.js";
 
 const { int_, float } = Sk.builtin;

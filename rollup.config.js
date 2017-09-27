@@ -10,7 +10,7 @@ export default {
         {
             dest: 'processing-sk.js',
             format: 'umd',
-            moduleName: 'Processing'
+            moduleName: 'ProcessingSk'
         }
     ]
 }

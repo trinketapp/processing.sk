@@ -1,4 +1,4 @@
-import processing, { PGraphics } from "./processing.js";
+import { processing, PGraphics } from "./processing.js";
 import Sk from "./skulpt.js";
 import { makeFunc, self } from "./utils.js";
 
