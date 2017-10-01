@@ -1,9 +1,9 @@
 import Sk from "./skulpt.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 import { processingProxy, makeFunc } from "./utils.js";
 
 const { LEFT, CENTER, RIGHT, TOP, BOTTOM, BASELINE,
-    MODEL, SCREEN, SHAPE } = constants;
+    MODEL, SCREEN, SHAPE } = remappedConstants;
 const { int_, float_, str } = Sk.builtin;
 
 export default {

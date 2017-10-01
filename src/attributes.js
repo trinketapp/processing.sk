@@ -1,10 +1,10 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc } from "./utils.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 
 const { int_, str } = Sk.builtin;
 const { ROUND, SQUARE, BUTT, MITTER, BEVEL,
-    CENTER, RADIUS, CORNER, CORNERS  } = constants;
+    CENTER, RADIUS, CORNER, CORNERS  } = remappedConstants;
 
 export default {
     elipseMode: makeFunc(processingProxy, "elipseMode", [

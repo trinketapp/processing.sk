@@ -1,9 +1,9 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 import PColor from "./color.js";
 
-const { RGB, HSB } = constants;
+const { RGB, HSB } = remappedConstants;
 const { int_, float_ } = Sk.builtin;
 
 export default {

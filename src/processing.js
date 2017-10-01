@@ -6,7 +6,7 @@ import camera from "./camera.js";
 import ccreatingandreading from "./color-creatingandreading.js";
 import csetting from "./color-setting.js";
 import colorBuilder from "./color.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
 import { EnvironmentBuilder, cursor, noCursor } from "./environment.js";
@@ -111,7 +111,7 @@ export function main() {
     let screen = callsim(Screen);
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
-        ccreatingandreading, csetting, PColor, constants, coordinates, curves,
+        ccreatingandreading, csetting, PColor, remappedConstants, coordinates, curves,
         { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
         { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
         PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,

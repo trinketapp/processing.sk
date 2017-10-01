@@ -2,7 +2,7 @@ import { pushImage, PImage } from "./processing.js";
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, self } from "./utils.js";
 import PColor from "./color.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 
 const { func, int_, list, str, float_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
@@ -10,7 +10,7 @@ const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
     THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE,
-    CORNER, CORNERS, CENTER } = constants;
+    CORNER, CORNERS, CENTER } = remappedConstants;
 
 function imageLoadImage(img) {
     var i = processingProxy.loadImage(img);

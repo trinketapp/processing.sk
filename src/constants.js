@@ -1,4 +1,8 @@
-export default {
+import Sk from "./skulpt.js";
+
+const { remapToPy } = Sk.ffi;
+
+const constants = {
     X: 0,
     Y: 1,
     Z: 2,
@@ -298,3 +302,10 @@ export default {
     NORMAL_MODE_VERTEX: 2,
     MAX_LIGHTS:         8
 };
+
+export default constants;
+
+export const remappedConstants = Object.keys(constants).reduce(function(previous, current) {
+    previous[current] = remapToPy(constants[current]);
+    return previous;
+}, {});

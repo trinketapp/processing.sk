@@ -1,9 +1,9 @@
 import { PShape } from "./processing.js";
 import Sk from "./skulpt.js";
 import { processingProxy, optional, makeFunc, self } from "./utils.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 
-const { CORNER, CORNERS, CENTER } = constants;
+const { CORNER, CORNERS, CENTER } = remappedConstants;
 const { str, int_, float_, bool } = Sk.builtin;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { buildClass } = Sk.misceval;

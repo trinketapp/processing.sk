@@ -180,6 +180,9 @@ var threedprimitives = {
     sphereDetail: makeFunc(processingProxy, "sphereDetail", [{ "ures": float_$1 }, { "vres": float_$1, optional: optional }])
 };
 
+var remapToPy$1 = Sk.ffi.remapToPy;
+
+
 var constants = {
     X: 0,
     Y: 1,
@@ -480,18 +483,23 @@ var constants = {
     MAX_LIGHTS: 8
 };
 
+var remappedConstants = Object.keys(constants).reduce(function (previous, current) {
+    previous[current] = remapToPy$1(constants[current]);
+    return previous;
+}, {});
+
 var _Sk$builtin$1 = Sk.builtin;
 var int_ = _Sk$builtin$1.int_;
 var str$1 = _Sk$builtin$1.str;
-var ROUND = constants.ROUND;
-var SQUARE = constants.SQUARE;
-var BUTT = constants.BUTT;
-var MITTER = constants.MITTER;
-var BEVEL = constants.BEVEL;
-var CENTER = constants.CENTER;
-var RADIUS = constants.RADIUS;
-var CORNER = constants.CORNER;
-var CORNERS = constants.CORNERS;
+var ROUND = remappedConstants.ROUND;
+var SQUARE = remappedConstants.SQUARE;
+var BUTT = remappedConstants.BUTT;
+var MITTER = remappedConstants.MITTER;
+var BEVEL = remappedConstants.BEVEL;
+var CENTER = remappedConstants.CENTER;
+var RADIUS = remappedConstants.RADIUS;
+var CORNER = remappedConstants.CORNER;
+var CORNERS = remappedConstants.CORNERS;
 
 
 var attributes = {
@@ -567,20 +575,20 @@ var PColor$1 = (function (mod) {
     return buildClass(mod, colorClass, "color", []);
 });
 
-var BLEND = constants.BLEND;
-var ADD = constants.ADD;
-var SUBTRACT = constants.SUBTRACT;
-var DARKEST = constants.DARKEST;
-var LIGHTEST = constants.LIGHTEST;
-var DIFFERENCE = constants.DIFFERENCE;
-var EXLUSION = constants.EXLUSION;
-var MULTIPLY = constants.MULTIPLY;
-var SCREEN = constants.SCREEN;
-var OVERLAY = constants.OVERLAY;
-var HARD_LIGHT = constants.HARD_LIGHT;
-var SOFT_LIGHT = constants.SOFT_LIGHT;
-var DODGE = constants.DODGE;
-var BURN = constants.BURN;
+var BLEND = remappedConstants.BLEND;
+var ADD = remappedConstants.ADD;
+var SUBTRACT = remappedConstants.SUBTRACT;
+var DARKEST = remappedConstants.DARKEST;
+var LIGHTEST = remappedConstants.LIGHTEST;
+var DIFFERENCE = remappedConstants.DIFFERENCE;
+var EXLUSION = remappedConstants.EXLUSION;
+var MULTIPLY = remappedConstants.MULTIPLY;
+var SCREEN = remappedConstants.SCREEN;
+var OVERLAY = remappedConstants.OVERLAY;
+var HARD_LIGHT = remappedConstants.HARD_LIGHT;
+var SOFT_LIGHT = remappedConstants.SOFT_LIGHT;
+var DODGE = remappedConstants.DODGE;
+var BURN = remappedConstants.BURN;
 var _Sk$builtin$3 = Sk.builtin;
 var int_$2 = _Sk$builtin$3.int_;
 var float_$4 = _Sk$builtin$3.float_;
@@ -619,8 +627,8 @@ var ccreatingandreading = {
     saturation: makeFunc(processingProxy, "saturation", [{ "color": PColor$1 }])
 };
 
-var RGB = constants.RGB;
-var HSB = constants.HSB;
+var RGB = remappedConstants.RGB;
+var HSB = remappedConstants.HSB;
 var _Sk$builtin$4 = Sk.builtin;
 var int_$3 = _Sk$builtin$4.int_;
 var float_$6 = _Sk$builtin$4.float_;
@@ -693,33 +701,33 @@ var float_$9 = _Sk$builtin$8.float_;
 var buildClass$2 = Sk.misceval.buildClass;
 var _Sk$ffi$2 = Sk.ffi;
 var remapToJs$2 = _Sk$ffi$2.remapToJs;
-var remapToPy$2 = _Sk$ffi$2.remapToPy;
-var BLEND$1 = constants.BLEND;
-var ADD$1 = constants.ADD;
-var SUBTRACT$1 = constants.SUBTRACT;
-var LIGHTEST$1 = constants.LIGHTEST;
-var DARKEST$1 = constants.DARKEST;
-var DIFFERENCE$1 = constants.DIFFERENCE;
-var EXCLUSION = constants.EXCLUSION;
-var MULTIPLY$1 = constants.MULTIPLY;
-var SCREEN$1 = constants.SCREEN;
-var OVERLAY$1 = constants.OVERLAY;
-var HARD = constants.HARD;
-var LIGHT = constants.LIGHT;
-var SOFT_LIGHT$1 = constants.SOFT_LIGHT;
-var DODGE$1 = constants.DODGE;
-var BURN$1 = constants.BURN;
-var THRESHOLD = constants.THRESHOLD;
-var GRAY = constants.GRAY;
-var INVERT = constants.INVERT;
-var POSTERIZE = constants.POSTERIZE;
-var BLUR = constants.BLUR;
-var OPAQUE = constants.OPAQUE;
-var ERODE = constants.ERODE;
-var DILATE = constants.DILATE;
-var CORNER$1 = constants.CORNER;
-var CORNERS$1 = constants.CORNERS;
-var CENTER$1 = constants.CENTER;
+var remapToPy$3 = _Sk$ffi$2.remapToPy;
+var BLEND$1 = remappedConstants.BLEND;
+var ADD$1 = remappedConstants.ADD;
+var SUBTRACT$1 = remappedConstants.SUBTRACT;
+var LIGHTEST$1 = remappedConstants.LIGHTEST;
+var DARKEST$1 = remappedConstants.DARKEST;
+var DIFFERENCE$1 = remappedConstants.DIFFERENCE;
+var EXCLUSION = remappedConstants.EXCLUSION;
+var MULTIPLY$1 = remappedConstants.MULTIPLY;
+var SCREEN$1 = remappedConstants.SCREEN;
+var OVERLAY$1 = remappedConstants.OVERLAY;
+var HARD = remappedConstants.HARD;
+var LIGHT = remappedConstants.LIGHT;
+var SOFT_LIGHT$1 = remappedConstants.SOFT_LIGHT;
+var DODGE$1 = remappedConstants.DODGE;
+var BURN$1 = remappedConstants.BURN;
+var THRESHOLD = remappedConstants.THRESHOLD;
+var GRAY = remappedConstants.GRAY;
+var INVERT = remappedConstants.INVERT;
+var POSTERIZE = remappedConstants.POSTERIZE;
+var BLUR = remappedConstants.BLUR;
+var OPAQUE = remappedConstants.OPAQUE;
+var ERODE = remappedConstants.ERODE;
+var DILATE = remappedConstants.DILATE;
+var CORNER$1 = remappedConstants.CORNER;
+var CORNERS$1 = remappedConstants.CORNERS;
+var CENTER$1 = remappedConstants.CENTER;
 
 
 function imageLoadImage(img) {
@@ -790,13 +798,13 @@ function imageClass($gbl, $loc) {
     $loc.__getattr__ = new func$2(function (self, key) {
         key = remapToJs$2(key);
         if (key === "width") {
-            return remapToPy$2(self.v.width);
+            return remapToPy$3(self.v.width);
         }
         if (key === "height") {
-            return remapToPy$2(self.v.height);
+            return remapToPy$3(self.v.height);
         }
         if (key === "pixels") {
-            return remapToPy$2(self.v.pixels);
+            return remapToPy$3(self.v.pixels);
         }
     });
 
@@ -858,7 +866,7 @@ var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$7 }, { "y": int_$7 }, 
 var updatePixels = makeFunc(processingProxy, "updatePixels");
 
 var _Sk$ffi$1 = Sk.ffi;
-var remapToPy$1 = _Sk$ffi$1.remapToPy;
+var remapToPy$2 = _Sk$ffi$1.remapToPy;
 var remapToJs$1 = _Sk$ffi$1.remapToJs;
 var _Sk$builtin$7 = Sk.builtin;
 var func$1 = _Sk$builtin$7.func;
@@ -870,17 +878,17 @@ function environmentClass($gbl, $loc) {
     $loc.__getattr__ = new func$1(function (self, key) {
         switch (remapToJs$1(key)) {
             case "frameCount":
-                return remapToPy$1(processingProxy.frameCount);
+                return remapToPy$2(processingProxy.frameCount);
             case "frameRate":
-                return remapToPy$1(processingProxy.frameRate);
+                return remapToPy$2(processingProxy.frameRate);
             case "height":
-                return remapToPy$1(processingProxy.height);
+                return remapToPy$2(processingProxy.height);
             case "width":
-                return remapToPy$1(processingProxy.width);
+                return remapToPy$2(processingProxy.width);
             case "online":
-                return remapToPy$1(processingProxy.online);
+                return remapToPy$2(processingProxy.online);
             case "focused":
-                return remapToPy$1(processingProxy.focused);
+                return remapToPy$2(processingProxy.focused);
             default:
                 return undefined;
         }
@@ -907,15 +915,15 @@ var files = {
     selectInput: notImplemented
 };
 
-var LEFT = constants.LEFT;
-var CENTER$2 = constants.CENTER;
-var RIGHT = constants.RIGHT;
-var TOP = constants.TOP;
-var BOTTOM = constants.BOTTOM;
-var BASELINE = constants.BASELINE;
-var MODEL = constants.MODEL;
-var SCREEN$2 = constants.SCREEN;
-var SHAPE = constants.SHAPE;
+var LEFT = remappedConstants.LEFT;
+var CENTER$2 = remappedConstants.CENTER;
+var RIGHT = remappedConstants.RIGHT;
+var TOP = remappedConstants.TOP;
+var BOTTOM = remappedConstants.BOTTOM;
+var BASELINE = remappedConstants.BASELINE;
+var MODEL = remappedConstants.MODEL;
+var SCREEN$2 = remappedConstants.SCREEN;
+var SHAPE = remappedConstants.SHAPE;
 var _Sk$builtin$9 = Sk.builtin;
 var int_$8 = _Sk$builtin$9.int_;
 var float_$10 = _Sk$builtin$9.float_;
@@ -1013,7 +1021,7 @@ var hint = new Sk.builtin.func(function (item) {
 });
 
 var _Sk$ffi$3 = Sk.ffi;
-var remapToPy$3 = _Sk$ffi$3.remapToPy;
+var remapToPy$4 = _Sk$ffi$3.remapToPy;
 var remapToJs$3 = _Sk$ffi$3.remapToJs;
 var func$4 = Sk.builtin.func;
 var buildClass$5 = Sk.misceval.buildClass;
@@ -1023,11 +1031,11 @@ function keyboardClass($gbl, $loc) {
     $loc.__getattr__ = new func$4(function (self, key) {
         key = remapToJs$3(key);
         if (key === "key") {
-            return remapToPy$3(processing.key.toString());
+            return remapToPy$4(processing.key.toString());
         } else if (key === "keyCode") {
-            return remapToPy$3(processing.keyCode);
+            return remapToPy$4(processing.keyCode);
         } else if (key === "keyPressed") {
-            return remapToPy$3(processing.keyPressed);
+            return remapToPy$4(processing.keyPressed);
         }
     });
 }
@@ -1077,7 +1085,7 @@ var materialproperties = {
 };
 
 var _Sk$ffi$4 = Sk.ffi;
-var remapToPy$4 = _Sk$ffi$4.remapToPy;
+var remapToPy$5 = _Sk$ffi$4.remapToPy;
 var remapToJs$4 = _Sk$ffi$4.remapToJs;
 var _Sk$builtin$13 = Sk.builtin;
 var func$5 = _Sk$builtin$13.func;
@@ -1089,17 +1097,17 @@ function mouseClass($gbl, $loc) {
     $loc.__getattr__ = new func$5(function (self, key) {
         switch (remapToJs$4(key)) {
             case "x":
-                return remapToPy$4(processing.mouseX);
+                return remapToPy$5(processing.mouseX);
             case "y":
-                return remapToPy$4(processing.mouseY);
+                return remapToPy$5(processing.mouseY);
             case "px":
-                return remapToPy$4(processing.pmouseX);
+                return remapToPy$5(processing.pmouseX);
             case "py":
-                return remapToPy$4(processing.pmouseY);
+                return remapToPy$5(processing.pmouseY);
             case "pressed":
-                return remapToPy$4(processing.__mousePressed);
+                return remapToPy$5(processing.__mousePressed);
             case "button":
-                return remapToPy$4(processing.mouseButton);
+                return remapToPy$5(processing.mouseButton);
             default:
                 return undefined;
         }
@@ -1173,7 +1181,7 @@ var random = {
 
 var _Sk$ffi$5 = Sk.ffi;
 var remapToJs$5 = _Sk$ffi$5.remapToJs;
-var remapToPy$5 = _Sk$ffi$5.remapToPy;
+var remapToPy$6 = _Sk$ffi$5.remapToPy;
 var buildClass$7 = Sk.misceval.buildClass;
 var _Sk$builtin$16 = Sk.builtin;
 var list$3 = _Sk$builtin$16.list;
@@ -1189,9 +1197,9 @@ function screenClass($gbl, $loc) {
         key = remapToJs$5(key);
         switch (key) {
             case "height":
-                return remapToPy$5(processing.height);
+                return remapToPy$6(processing.height);
             case "width":
-                return remapToPy$5(processing.width);
+                return remapToPy$6(processing.width);
             case "pixels":
                 if (self.pixels == null) {
                     self.pixels = new list$3(processing.pixels.toArray());
@@ -1205,9 +1213,9 @@ var ScreenBuilder = function ScreenBuilder(mod) {
     return buildClass$7(mod, screenClass, "Screen", []);
 };
 
-var CORNER$2 = constants.CORNER;
-var CORNERS$2 = constants.CORNERS;
-var CENTER$3 = constants.CENTER;
+var CORNER$2 = remappedConstants.CORNER;
+var CORNERS$2 = remappedConstants.CORNERS;
+var CENTER$3 = remappedConstants.CENTER;
 var _Sk$builtin$17 = Sk.builtin;
 var str$7 = _Sk$builtin$17.str;
 var int_$15 = _Sk$builtin$17.int_;
@@ -1215,7 +1223,7 @@ var float_$15 = _Sk$builtin$17.float_;
 var bool$1 = _Sk$builtin$17.bool;
 var _Sk$ffi$6 = Sk.ffi;
 var remapToJs$6 = _Sk$ffi$6.remapToJs;
-var remapToPy$6 = _Sk$ffi$6.remapToPy;
+var remapToPy$7 = _Sk$ffi$6.remapToPy;
 var buildClass$8 = Sk.misceval.buildClass;
 
 
@@ -1278,9 +1286,9 @@ function shapeClass($gbl, $loc) {
         key = remapToJs$6(key);
         switch (key) {
             case "width":
-                return remapToPy$6(self.v.width);
+                return remapToPy$7(self.v.width);
             case "height":
-                return remapToPy$6(self.v.height);
+                return remapToPy$7(self.v.height);
         }
     });
 
@@ -1320,6 +1328,13 @@ var shape = {
 };
 
 var int_$16 = Sk.builtin.int_;
+var P2D = remappedConstants.P2D;
+var JAVA2D = remappedConstants.JAVA2D;
+var WEBGL = remappedConstants.WEBGL;
+var P3D = remappedConstants.P3D;
+var OPENGL = remappedConstants.OPENGL;
+var PDF = remappedConstants.PDF;
+var DXF = remappedConstants.DXF;
 
 
 function loop() {
@@ -1340,8 +1355,8 @@ function noLoop() {
     processing.noLoop();
 }
 
-function size(width, height) {
-    processing.size(width, height);
+function size(width, height, renderer) {
+    processing.size(width, height, renderer);
     setProperty("width", processing.width);
     setProperty("height", processing.height);
 }
@@ -1357,7 +1372,7 @@ var structure = {
         return processing.height;
     }, "height"),
 
-    size: makeFunc(size, "size", [{ "width": int_$16 }, { "height": int_$16 }]),
+    size: makeFunc(size, "size", [{ "width": int_$16 }, { "height": int_$16 }, { "renderer": int_$16, allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF] }]),
 
     exit: makeFunc(processingProxy, "exit")
 };
@@ -1413,7 +1428,7 @@ var float_$18 = _Sk$builtin$19.float_;
 var _Sk$misceval = Sk.misceval;
 var callsim$2 = _Sk$misceval.callsim;
 var buildClass$9 = _Sk$misceval.buildClass;
-var remapToPy$7 = Sk.ffi.remapToPy;
+var remapToPy$8 = Sk.ffi.remapToPy;
 
 
 function vectorInit(self, x, y, z) {
@@ -1488,9 +1503,9 @@ function vectorClass($gbl, $loc) {
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
         if (key === "x") {
-            return remapToPy$7(self.v.x);
+            return remapToPy$8(self.v.x);
         } else if (key === "y") {
-            return remapToPy$7(self.v.y);
+            return remapToPy$8(self.v.y);
         } else if (key === "z") {
             return Sk.builtin.assk$(self.v.z);
         }
@@ -1536,8 +1551,8 @@ var vectorBuilder = (function (mod) {
 var _Sk$builtin$20 = Sk.builtin;
 var float_$19 = _Sk$builtin$20.float_;
 var int_$19 = _Sk$builtin$20.int_;
-var IMAGE = constants.IMAGE;
-var NORMALIZED = constants.NORMALIZED;
+var IMAGE = remappedConstants.IMAGE;
+var NORMALIZED = remappedConstants.NORMALIZED;
 
 
 var vertex = {
@@ -1641,7 +1656,7 @@ function main() {
     var Screen = ScreenBuilder(mod);
     var screen = callsim(Screen);
 
-    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, exports.PColor, constants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, exports.PImage, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage, noTint: noTint, requestImage: requestImage, tint: tint, blend: blend,
+    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, exports.PColor, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, exports.PImage, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage, noTint: noTint, requestImage: requestImage, tint: tint, blend: blend,
         copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels }, { keyboard: keyboard, Keyboard: Keyboard }, lights, materialproperties, { Mouse: Mouse, mouse: mouse, mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY }, output, random, { Screen: Screen, screen: screen }, exports.PShape, structure, timeanddate, transform, trigonometry, exports.PVector, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {

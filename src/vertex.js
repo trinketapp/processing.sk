@@ -1,10 +1,10 @@
 import Sk from "./skulpt.js";
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 import PImage from "./image.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 
 const { float_, int_ } = Sk.builtin;
-const { IMAGE, NORMALIZED } = constants;
+const { IMAGE, NORMALIZED } = remappedConstants;
 
 export default {
     beginShape: makeFunc(processingProxy, "beginShape"),

@@ -1,8 +1,10 @@
 import { processing, setProperty, setLooping, isInitialised } from "./processing.js";
 import { processingProxy, makeFunc } from "./utils.js";
+import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
 const { int_ } = Sk.builtin;
+const { P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF } = remappedConstants;
 
 function loop() {
     if (isInitialised) {
@@ -22,8 +24,8 @@ function noLoop() {
     processing.noLoop();
 }
 
-function size(width, height) {
-    processing.size(width, height);
+function size(width, height, renderer) {
+    processing.size(width, height, renderer);
     setProperty("width", processing.width);
     setProperty("height", processing.height);
 }
@@ -38,6 +40,7 @@ export default {
     size: makeFunc(size, "size", [
         { "width": int_ },
         { "height": int_ },
+        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ] }
     ]),
 
     exit: makeFunc(processingProxy, "exit")

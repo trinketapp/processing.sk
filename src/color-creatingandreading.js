@@ -2,10 +2,10 @@ import Sk from "./skulpt.js";
 import { processingProxy, makeFunc } from "./utils.js";
 import PColor from "./color.js";
 
-import constants from "./constants.js";
+import { remappedConstants } from "./constants.js";
 
 const { BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE,
-    EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN } = constants;
+    EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN } = remappedConstants;
 const { int_, float_ } = Sk.builtin;
 const { callsim } = Sk.misceval;
 
