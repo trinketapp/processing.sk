@@ -1,24 +1,23 @@
 import Sk from "./skulpt.js";
-import { processing } from "./processing.js";
-import { notImplemented, makeFunc } from "./utils.js";
+import { processingProxy, notImplemented, makeFunc } from "./utils.js";
 
 const { object, str, list } = Sk.builtin;
 
 export default {
-    println: makeFunc(processing, "println", [
+    println: makeFunc(processingProxy, "println", [
         { "data": object }
     ]),
 
-    save: makeFunc(processing, "save", [
+    save: makeFunc(processingProxy, "save", [
         { "filename": str }
     ]),
 
-    saveFrame: makeFunc(processing, "saveFrame", [
+    saveFrame: makeFunc(processingProxy, "saveFrame", [
         { "filename": str },
         { "ext": str, allowed: [ "tif", "tga", "jpg", "png" ] }
     ]),
 
-    saveStrings: makeFunc(processing, "saveStrings", [
+    saveStrings: makeFunc(processingProxy, "saveStrings", [
         { "filename": str },
         { "strings": list }
     ]),

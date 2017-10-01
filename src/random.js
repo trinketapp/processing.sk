@@ -1,31 +1,30 @@
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 import Sk from "./skulpt.js";
-import { processing } from "./processing.js";
 
-const { float, int_ } = Sk.builtin;
+const { float_, int_ } = Sk.builtin;
 
 export default {
-    noise: makeFunc(processing, "noise", [
-        { "x": float },
-        { "y": float, optional },
-        { "z": float, optional },
+    noise: makeFunc(processingProxy, "noise", [
+        { "x": float_ },
+        { "y": float_, optional },
+        { "z": float_, optional },
     ]),
 
-    noiseDetail: makeFunc(processing, "noiseDetail", [
+    noiseDetail: makeFunc(processingProxy, "noiseDetail", [
         { "octave": int_ },
-        { "falloff": float }
+        { "falloff": float_ }
     ]),
 
-    noiseSeed: makeFunc(processing, "noiseSeed", [
+    noiseSeed: makeFunc(processingProxy, "noiseSeed", [
         { "value": int_ }
     ]),
 
-    randomSeed: makeFunc(processing, "randomSeed", [
+    randomSeed: makeFunc(processingProxy, "randomSeed", [
         { "value": int_ }
     ]),
 
-    random: makeFunc(processing, "random", [
-        { low: [ int_, float ] },
-        { high: [ int_, float ], optional }
+    random: makeFunc(processingProxy, "random", [
+        { low: [ int_, float_ ] },
+        { high: [ int_, float_ ], optional }
     ])
 };

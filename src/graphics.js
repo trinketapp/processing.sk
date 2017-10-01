@@ -1,12 +1,12 @@
-import { processing, PGraphics } from "./processing.js";
+import { PGraphics } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, self } from "./utils.js";
+import { processingProxy, makeFunc, self } from "./utils.js";
 
 const { int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function graphicsInit(self, width, height, applet) {
-    self.v = new processing.PGraphics(width, height, applet);
+    self.v = new processingProxy.PGraphics(width, height, applet);
 }
 
 function graphicsClass($gbl, $loc) {
@@ -33,9 +33,9 @@ export const createGraphics = new Sk.builtin.func(function (width, height, rende
     // createGraphics(width, height, renderer, filename)
     var graphics = Sk.misceval.callsim(PGraphics);
     if (typeof (filename) === "undefined") {
-        graphics.v = processing.createGraphics(width.v, height.v, renderer.v);
+        graphics.v = processingProxy.createGraphics(width.v, height.v, renderer.v);
     } else {
-        graphics.v = processing.createGraphics(width.v, height.v, renderer.v, filename.v);
+        graphics.v = processingProxy.createGraphics(width.v, height.v, renderer.v, filename.v);
     }
     return graphics;
 });
@@ -43,5 +43,5 @@ export const createGraphics = new Sk.builtin.func(function (width, height, rende
 
 export const hint = new Sk.builtin.func(function (item) {
     // hint(item)
-    processing.hint(item);
+    processingProxy.hint(item);
 });

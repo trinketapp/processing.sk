@@ -1,5 +1,5 @@
 import { processing, setProperty, setLooping, isInitialised } from "./processing.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 import Sk from "./skulpt.js";
 
 const { int_ } = Sk.builtin;
@@ -40,5 +40,5 @@ export default {
         { "height": int_ },
     ]),
 
-    exit: makeFunc(processing, "exit")
+    exit: makeFunc(processingProxy, "exit")
 };

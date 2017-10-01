@@ -1,52 +1,51 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { float } = Sk.builtin;
+const { float_ } = Sk.builtin;
 
 export default {
-    beginCamera: makeFunc(processing, "beginCamera"),
+    beginCamera: makeFunc(processingProxy, "beginCamera"),
 
-    camera: makeFunc(processing, "camera", [
-        { "eyeX": float, optional },
-        { "eyeY": float, optional },
-        { "eyeZ": float, optional },
-        { "centerX": float, optional },
-        { "centerY": float, optional },
-        { "centerZ": float, optional },
-        { "upX": float, optional },
-        { "upY": float, optional },
-        { "upZ": float, optional }
+    camera: makeFunc(processingProxy, "camera", [
+        { "eyeX": float_, optional },
+        { "eyeY": float_, optional },
+        { "eyeZ": float_, optional },
+        { "centerX": float_, optional },
+        { "centerY": float_, optional },
+        { "centerZ": float_, optional },
+        { "upX": float_, optional },
+        { "upY": float_, optional },
+        { "upZ": float_, optional }
     ]),
 
-    endCamera: makeFunc(processing, "endCamera"),
+    endCamera: makeFunc(processingProxy, "endCamera"),
 
-    frustum: makeFunc(processing, "frustum", [
-        { "left": float },
-        { "right": float },
-        { "bottom": float },
-        { "top": float },
-        { "near": float },
-        { "far": float }
+    frustum: makeFunc(processingProxy, "frustum", [
+        { "left": float_ },
+        { "right": float_ },
+        { "bottom": float_ },
+        { "top": float_ },
+        { "near": float_ },
+        { "far": float_ }
     ]),
 
-    ortho: makeFunc(processing, "ortho", [
-        { "left": float, optional },
-        { "right": float, optional },
-        { "bottom": float, optional },
-        { "top": float, optional },
-        { "near": float, optional },
-        { "far": float, optional }
+    ortho: makeFunc(processingProxy, "ortho", [
+        { "left": float_, optional },
+        { "right": float_, optional },
+        { "bottom": float_, optional },
+        { "top": float_, optional },
+        { "near": float_, optional },
+        { "far": float_, optional }
     ]),
 
-    perspective: makeFunc(processing, "perspective", [
-        { "fov": float, optional },
-        { "aspect": float, optional },
-        { "zNear": float, optional },
-        { "zFar": float, optional }
+    perspective: makeFunc(processingProxy, "perspective", [
+        { "fov": float_, optional },
+        { "aspect": float_, optional },
+        { "zNear": float_, optional },
+        { "zFar": float_, optional }
     ]),
 
-    printCamera: makeFunc(processing, "printCamera"),
+    printCamera: makeFunc(processingProxy, "printCamera"),
 
-    printProjection: makeFunc(processing, "printProjection")
+    printProjection: makeFunc(processingProxy, "printProjection")
 };

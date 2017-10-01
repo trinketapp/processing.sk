@@ -1,4 +1,5 @@
 import Sk from "./skulpt.js";
+import { processingInstance } from "./processing.js";
 
 const {
     str,
@@ -22,18 +23,25 @@ function join(func, arr1, arr2) {
     return arr1.map((v, i) => func(v, arr2[i]));
 }
 
-function pyCheckTypes(args) {
+function pyCheckTypes(name, args) {
     args.forEach((a) => {
         let [arg, template] = a;
         let keys = Object.keys(template);
         let argName = keys[0];
-        if (!(arg instanceof template[argName])) {
-            throw new TypeError();
+
+        if (!Array.isArray(template[argName])) {
+            template[argName] = [ template[argName] ];
+        }
+
+        if (!template[argName].some(a => arg instanceof a)) {
+            throw new TypeError(`${name}: ${argName} (value: ${remapToJs(arg)}) not of type ${template[argName].map(t => t.tp$name)}`);
         }
     });
 }
 
 export function makeFunc(thingToWrap, name, args_template) {
+    let largs_template = args_template || [];
+
     let jsfunc = function wrappedFunc() {
         let functionToWrap = null;
 
@@ -51,11 +59,11 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let args = argsToArray(arguments);
 
-        let js_args = args.filter((a, i) => args_template[i] != self).map(remapToJs);
+        let js_args = args.filter((a, i) => largs_template[i] != self).map(remapToJs);
 
-        pyCheckArgs(name, args, countNonOptionalArgs(args_template), args.length, true);
+        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), args.length, true);
 
-        pyCheckTypes(join((l, r) => [l,r], args, args_template));
+        pyCheckTypes(name, join((l, r) => [l,r], args, largs_template));
 
         let result = functionToWrap.apply(null, js_args);
         return remapToPy(result);
@@ -71,3 +79,9 @@ export const self = { "self": true };
 export const notImplemented = new func(() => { throw new NotImplementedError(); });
 
 export const __name__ = new str("processing");
+
+export const processingProxy = new Proxy({}, {
+    get(target, name) {
+        return processingInstance[name];
+    }
+});

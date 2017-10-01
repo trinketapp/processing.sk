@@ -1,6 +1,5 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 import PImage from "./image.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
@@ -12,17 +11,17 @@ function environmentClass($gbl, $loc) {
     $loc.__getattr__ = new func(function (self, key) {
         switch(remapToJs(key)) {
         case "frameCount":
-            return remapToPy(processing.frameCount);
+            return remapToPy(processingProxy.frameCount);
         case "frameRate":
-            return remapToPy(processing.frameRate);
+            return remapToPy(processingProxy.frameRate);
         case "height":
-            return remapToPy(processing.height);
+            return remapToPy(processingProxy.height);
         case "width":
-            return remapToPy(processing.width);
+            return remapToPy(processingProxy.width);
         case "online":
-            return remapToPy(processing.online);
+            return remapToPy(processingProxy.online);
         case "focused":
-            return remapToPy(processing.focused);
+            return remapToPy(processingProxy.focused);
         default:
             return undefined;
         }
@@ -32,10 +31,10 @@ function environmentClass($gbl, $loc) {
 
 export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
 
-export const cursor = makeFunc(processing, "cursor", [
+export const cursor = makeFunc(processingProxy, "cursor", [
     { "image": [ PImage, int_ ], optional },
     { "x": int_, optional },
     { "y": int_, optional }
 ]);
 
-export const noCursor = makeFunc(processing, "noCursor");
+export const noCursor = makeFunc(processingProxy, "noCursor");

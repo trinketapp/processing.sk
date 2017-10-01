@@ -1,29 +1,28 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 import PColor from "./color.js";
 
 import constants from "./constants.js";
 
 const { BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE,
     EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN } = constants;
-const { int_, float } = Sk.builtin;
+const { int_, float_ } = Sk.builtin;
 const { callsim } = Sk.misceval;
 
 function blendColor(c1, c2, mode) {
     var c = callsim(PColor, new int_(0), new int_(0), new int_(0));
-    c.v = processing.blendColor(c1, c2, mode);
+    c.v = processingProxy.blendColor(c1, c2, mode);
     return c;
 }
 
 function lerpColor(c1, c2, mode) {
     var c = callsim(PColor, new int_(0), new int_(0), new int_(0));
-    c.v = processing.lerpColor(c1, c2, mode);
+    c.v = processingProxy.lerpColor(c1, c2, mode);
     return c;
 }
 
 export default {
-    alpha: makeFunc(processing, "alpha", [
+    alpha: makeFunc(processingProxy, "alpha", [
         { "color": PColor }
     ]),
 
@@ -34,33 +33,33 @@ export default {
             EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN ]}
     ]),
 
-    blue: makeFunc(processing, "blue", [
+    blue: makeFunc(processingProxy, "blue", [
         { "color": PColor }
     ]),
 
-    brightness: makeFunc(processing, "brightness", [
+    brightness: makeFunc(processingProxy, "brightness", [
         { "color": PColor }
     ]),
 
-    green: makeFunc(processing, "green", [
+    green: makeFunc(processingProxy, "green", [
         { "color": PColor }
     ]),
 
-    hue: makeFunc(processing, "hue", [
+    hue: makeFunc(processingProxy, "hue", [
         { "color": PColor }
     ]),
 
     lerpColor: makeFunc(lerpColor, "lerpColor", [
         { "c1": PColor },
         { "c2": PColor },
-        { "amt": float }
+        { "amt": float_ }
     ]),
 
-    red: makeFunc(processing, "red", [
+    red: makeFunc(processingProxy, "red", [
         { "color": PColor }
     ]),
 
-    saturation: makeFunc(processing, "saturation", [
+    saturation: makeFunc(processingProxy, "saturation", [
         { "color": PColor }
     ])
 };

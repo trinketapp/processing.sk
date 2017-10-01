@@ -1,12 +1,11 @@
-import { processing } from "./processing.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 
 export default {
-    day: makeFunc(processing, "day"),
-    hour: makeFunc(processing, "hour"),
-    millis: makeFunc(processing, "millis"),
-    minute: makeFunc(processing, "minute"),
-    month: makeFunc(processing, "month"),
-    second: makeFunc(processing, "second"),
-    year: makeFunc(processing, "year")
+    day: makeFunc(processingProxy, "day"),
+    hour: makeFunc(processingProxy, "hour"),
+    millis: makeFunc(processingProxy, "millis"),
+    minute: makeFunc(processingProxy, "minute"),
+    month: makeFunc(processingProxy, "month"),
+    second: makeFunc(processingProxy, "second"),
+    year: makeFunc(processingProxy, "year")
 };

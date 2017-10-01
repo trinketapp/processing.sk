@@ -2,7 +2,7 @@ import Sk from "./skulpt.js";
 import { processing, PVector } from "./processing.js";
 import { makeFunc, optional } from "./utils.js";
 
-const { int_, float } = Sk.builtin;
+const { int_, float_ } = Sk.builtin;
 const { callsim, buildClass } = Sk.misceval;
 const { remapToPy } = Sk.ffi;
 
@@ -130,9 +130,9 @@ function vectorClass($gbl, $loc) {
 
     $loc.dot = makeFunc(vectorDot, "dot", [
         self,
-        { "x": [ int_, float ] },
-        { "y": [ int_, float ], optional },
-        { "z": [ int_, float ], optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ], optional },
+        { "z": [ int_, float_ ], optional }
     ]);
 
     $loc.cross = makeFunc(vectorCross, "cross", [
@@ -144,7 +144,7 @@ function vectorClass($gbl, $loc) {
 
     $loc.limit = makeFunc(vectorLimit, "limit", [
         self,
-        { "value": float }
+        { "value": float_ }
     ]);
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [

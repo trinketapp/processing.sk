@@ -1,43 +1,42 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 
-const { int_, float } = Sk.builtin;
+const { int_, float_ } = Sk.builtin;
 
 export default {
-    modelX: makeFunc(processing, "modelX", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    modelX: makeFunc(processingProxy, "modelX", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ]),
 
-    modelY: makeFunc(processing, "modelY", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    modelY: makeFunc(processingProxy, "modelY", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ]),
 
-    modelZ: makeFunc(processing, "modelZ", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    modelZ: makeFunc(processingProxy, "modelZ", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ]),
 
-    screenX: makeFunc(processing, "screenX", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    screenX: makeFunc(processingProxy, "screenX", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ]),
 
-    screenY: makeFunc(processing, "screenY", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    screenY: makeFunc(processingProxy, "screenY", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ]),
 
-    screenZ: makeFunc(processing, "screenZ", [
-        { "x": [ int_, float ]},
-        { "y": [ int_, float ]},
-        { "z": [ int_, float ]}
+    screenZ: makeFunc(processingProxy, "screenZ", [
+        { "x": [ int_, float_ ]},
+        { "y": [ int_, float_ ]},
+        { "z": [ int_, float_ ]}
     ])
 };

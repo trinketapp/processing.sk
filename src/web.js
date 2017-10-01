@@ -1,15 +1,14 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
 const { str } = Sk.builtin;
 
 export default {
-    link: makeFunc(processing, "link" [
+    link: makeFunc(processingProxy, "link" [
         { "url": str },
         { "target": str, optional }
     ]),
-    status: makeFunc(processing, "status", [
+    status: makeFunc(processingProxy, "status", [
         { "text": str }
     ])
 };

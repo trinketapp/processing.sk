@@ -1,10 +1,10 @@
-import { processing, pushImage, PImage } from "./processing.js";
+import { pushImage, PImage } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, self } from "./utils.js";
+import { processingProxy, makeFunc, optional, self } from "./utils.js";
 import PColor from "./color.js";
 import constants from "./constants.js";
 
-const { func, int_, list, str, float } = Sk.builtin;
+const { func, int_, list, str, float_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
@@ -13,7 +13,7 @@ const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     CORNER, CORNERS, CENTER } = constants;
 
 function imageLoadImage(img) {
-    var i = processing.loadImage(img);
+    var i = processingProxy.loadImage(img);
     pushImage(img);
 
     var image = Sk.misceval.callsim(PImage);
@@ -23,12 +23,12 @@ function imageLoadImage(img) {
 
 function imageRequestImage(filename, extension) {
     var image = Sk.misceval.callsim(PImage);
-    image.v = processing.requestImage(filename, extension);
+    image.v = processingProxy.requestImage(filename, extension);
     return image;
 }
 
 function imageInit(self, arg1, arg2, arg3) {
-    self.v = new processing.PImage(arg1.v, arg2.v, arg3.v);
+    self.v = new processingProxy.PImage(arg1.v, arg2.v, arg3.v);
 }
 
 function imageGet(self, x, y, width, height) {
@@ -175,11 +175,11 @@ export default PImageBuilder;
 
 export const createImage = new Sk.builtin.func(function (width, height, format) {
     var image = Sk.misceval.callsim(PImage);
-    image.v = processing.createImage(width.v, height.v, format.v);
+    image.v = processingProxy.createImage(width.v, height.v, format.v);
     return image;
 });
 
-export const image = makeFunc(processing, "image", [
+export const image = makeFunc(processingProxy, "image", [
     { "img": "PImage" },
     { "x": int_ },
     { "y": int_ },
@@ -187,7 +187,7 @@ export const image = makeFunc(processing, "image", [
     { "height": int_, optional }
 ]);
 
-export const imageMode = makeFunc(processing, "imageMode", [
+export const imageMode = makeFunc(processingProxy, "imageMode", [
     { "mode": int_, allowed: [ CORNER, CORNERS, CENTER ] }
 ]);
 
@@ -195,21 +195,21 @@ export const loadImage = makeFunc(imageLoadImage, "loadImage", [
     { "image": str }
 ]);
 
-export const noTint = makeFunc(processing, "noTint");
+export const noTint = makeFunc(processingProxy, "noTint");
 
 export const requestImage = makeFunc(imageRequestImage, "requestImage", [
     { "filename": str },
     { "extension": str, optional }
 ]);
 
-export const tint = makeFunc(processing, "tint", [
-    { "value1": [ "PColor", int_, float ] },
-    { "value2": [ int_, float ], optional },
-    { "value3": [ int_, float ], optional },
-    { "alpha": [ int_, float ], optional }
+export const tint = makeFunc(processingProxy, "tint", [
+    { "value1": [ "PColor", int_, float_ ] },
+    { "value2": [ int_, float_ ], optional },
+    { "value3": [ int_, float_ ], optional },
+    { "alpha": [ int_, float_ ], optional }
 ]);
 
-export const blend = makeFunc(processing, "blend", [
+export const blend = makeFunc(processingProxy, "blend", [
     { "srcImg": [ int_, "PImage" ]},
     { "x": int_ },
     { "y": int_ },
@@ -223,7 +223,7 @@ export const blend = makeFunc(processing, "blend", [
         MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN ]}
 ]);
 
-export const copy = makeFunc(processing, "copy", [
+export const copy = makeFunc(processingProxy, "copy", [
     { "srcImg": [ int_, "PImage" ]},
     { "sx": int_ },
     { "sy": int_ },
@@ -235,24 +235,24 @@ export const copy = makeFunc(processing, "copy", [
     { "dheight": int_, optional }
 ]);
 
-export const filter = makeFunc(processing, "filter", [
+export const filter = makeFunc(processingProxy, "filter", [
     { "MODE": int_, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
     { "srcImg": "PImage", optional }
 ]);
 
-export const get = makeFunc(processing, "get", [
+export const get = makeFunc(processingProxy, "get", [
     { "x": int_, optional },
     { "y": int_, optional },
     { "width": int_, optional },
     { "height": int_, optional },
 ]);
 
-export const loadPixels = makeFunc(processing, "loadPixels");
+export const loadPixels = makeFunc(processingProxy, "loadPixels");
 
-export const set = makeFunc(processing, "set", [
+export const set = makeFunc(processingProxy, "set", [
     { "x": int_ },
     { "y": int_ },
     { "image": [ PColor, "PImage" ] },
 ]);
 
-export const updatePixels = makeFunc(processing, "updatePixels");
+export const updatePixels = makeFunc(processingProxy, "updatePixels");

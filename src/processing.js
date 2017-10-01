@@ -32,10 +32,13 @@ import vectorBuilder from "./vector.js";
 import vertex from "./vertex.js";
 import web from "./web.js";
 import Sk from "./skulpt.js";
+import { processingProxy } from "./utils.js";
 
 const { callsim } = Sk.misceval;
 
 let looping = true;
+
+export let processingInstance = {};
 
 const mod = {};
 
@@ -62,7 +65,8 @@ export let PImage;
 export let PShape;
 export let PGraphics;
 export let PVector;
-export let processing;
+
+export let processing = processingProxy;
 
 export function init(path) {
     Sk.externalLibraries = Sk.externalLibraries || {};
@@ -117,8 +121,8 @@ export function main() {
         vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
-        function sketchProc(processingInstance) {
-            processing = processingInstance;
+        function sketchProc(proc) {
+            processingInstance = proc;
 
             // processing.setup = function() {
             //     if Sk.globals["setup"]
@@ -127,7 +131,7 @@ export function main() {
             // initialise classes
 
             // FIXME if no Sk.globals["draw"], then no need for this
-            processing.draw = function () {
+            proc.draw = function () {
                 // if there are pending image loads then just use the natural looping calls to
                 // retry until all the images are loaded.  If noLoop was called in setup then make
                 // sure to revert to that after all the images in hand.
@@ -153,7 +157,7 @@ export function main() {
                     }
                 }
 
-                mod.frameCount = processing.frameCount;
+                mod.frameCount = proc.frameCount;
                 if (Sk.globals["draw"]) {
                     try {
                         Sk.misceval.callsim(Sk.globals["draw"]);
@@ -171,7 +175,7 @@ export function main() {
 
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
-                    processing[callBacks[cb]] = new Function("try {Sk.misceval.callsim(Sk.globals['" + callBacks[cb] + "']);} catch(e) {Sk.uncaughtException(e);}");
+                    proc[callBacks[cb]] = new Function("try {Sk.misceval.callsim(Sk.globals['" + callBacks[cb] + "']);} catch(e) {Sk.uncaughtException(e);}");
                 }
             }
         }

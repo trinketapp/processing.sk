@@ -1,10 +1,10 @@
-import { processing, PShape } from "./processing.js";
+import { PShape } from "./processing.js";
 import Sk from "./skulpt.js";
-import { optional, makeFunc, self } from "./utils.js";
+import { processingProxy, optional, makeFunc, self } from "./utils.js";
 import constants from "./constants.js";
 
 const { CORNER, CORNERS, CENTER } = constants;
-const { str, int_, float, bool } = Sk.builtin;
+const { str, int_, float_, bool } = Sk.builtin;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { buildClass } = Sk.misceval;
 
@@ -91,55 +91,55 @@ function shapeClass($gbl, $loc) {
 
     $loc.translate = makeFunc(shapeTranslate, "translate", [
         self,
-        { "x": [ float, int_ ] },
-        { "y": [ float, int_ ] },
-        { "z": [ float, int_ ], optional }
+        { "x": [ float_, int_ ] },
+        { "y": [ float_, int_ ] },
+        { "z": [ float_, int_ ], optional }
     ]);
 
     $loc.rotate = makeFunc(shapeRotate, "rotate", [
         self,
-        { "angle": float }
+        { "angle": float_ }
     ]);
 
     $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [
         self,
-        { "angle": float }
+        { "angle": float_ }
     ]);
 
     $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [
         self,
-        { "angle": float }
+        { "angle": float_ }
     ]);
 
     $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [
         self,
-        { "angle": float }
+        { "angle": float_ }
     ]);
 
     $loc.scale = makeFunc(shapeScale, "scale" [
         self,
-        { "x": float },
-        { "y": float, optional },
-        { "z": float, optional }
+        { "x": float_ },
+        { "y": float_, optional },
+        { "z": float_, optional }
     ]);
 }
 
 export const PShapeBuilder = mod => buildClass(mod, shapeClass, "PShape", []);
 
 export default {
-    loadShape: makeFunc(processing, "loadShape", [
+    loadShape: makeFunc(processingProxy, "loadShape", [
         { "filename": str }
     ]),
 
-    shape: makeFunc(processing, "shape", [
+    shape: makeFunc(processingProxy, "shape", [
         { "sh": "PShape" },
-        { "x": float },
-        { "y": float },
-        { "width": float, optional },
-        { "height": float, optional }
+        { "x": float_ },
+        { "y": float_ },
+        { "width": float_, optional },
+        { "height": float_, optional }
     ]),
 
-    shapeMode: makeFunc(processing, "shapeMode", [
+    shapeMode: makeFunc(processingProxy, "shapeMode", [
         { "img": int_, allowed: [ CORNER, CORNERS, CENTER ] }
     ])
 };

@@ -1,48 +1,47 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
 import constants from "./constants.js";
 import PImage from "./image.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { float, int_ } = Sk.builtin;
+const { float_, int_ } = Sk.builtin;
 const { IMAGE, NORMALIZED } = constants;
 
 export default {
-    beginShape: makeFunc(processing, "beginShape"),
+    beginShape: makeFunc(processingProxy, "beginShape"),
 
-    endShape: makeFunc(processing, "endShape"),
+    endShape: makeFunc(processingProxy, "endShape"),
 
-    vertex: makeFunc(processing, "vertex", [
-        { "x": float },
-        { "y": float },
-        { "z": float },
-        { "u": float, optional },
-        { "v": float, optional }
+    vertex: makeFunc(processingProxy, "vertex", [
+        { "x": float_ },
+        { "y": float_ },
+        { "z": float_ },
+        { "u": float_, optional },
+        { "v": float_, optional }
     ]),
 
-    bezierVertex: makeFunc(processing, "bezierVertex", [
-        { "cx1": float },
-        { "cy1": float },
-        { "cz1": float },
-        { "cx2": float },
-        { "cy2": float },
-        { "cz2": float },
-        { "x": float, optional },
-        { "y": float, optional },
-        { "z": float, optional }
+    bezierVertex: makeFunc(processingProxy, "bezierVertex", [
+        { "cx1": float_ },
+        { "cy1": float_ },
+        { "cz1": float_ },
+        { "cx2": float_ },
+        { "cy2": float_ },
+        { "cz2": float_ },
+        { "x": float_, optional },
+        { "y": float_, optional },
+        { "z": float_, optional }
     ]),
 
-    curveVertex: makeFunc(processing, "curveVertex", [
-        { "x": float },
-        { "y": float },
-        { "z": float, optional }
+    curveVertex: makeFunc(processingProxy, "curveVertex", [
+        { "x": float_ },
+        { "y": float_ },
+        { "z": float_, optional }
     ]),
 
-    texture: makeFunc(processing, "texture" [
+    texture: makeFunc(processingProxy, "texture" [
         { "img": PImage }
     ]),
 
-    textureMode: makeFunc(processing, "textureMode", [
+    textureMode: makeFunc(processingProxy, "textureMode", [
         { "img": int_, allowed: [ IMAGE, NORMALIZED ] }
     ])
 };

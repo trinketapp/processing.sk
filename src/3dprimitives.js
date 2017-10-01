@@ -1,22 +1,21 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { float } = Sk.builtin;
+const { float_ } = Sk.builtin;
 
 export default {
-    box: makeFunc(processing, "box", [
-        { "width": float },
-        { "height": float, optional },
-        { "depth": float, optional }
+    box: makeFunc(processingProxy, "box", [
+        { "width": float_ },
+        { "height": float_, optional },
+        { "depth": float_, optional }
     ]),
 
-    sphere: makeFunc(processing, "sphere", [
-        { "radius": float }
+    sphere: makeFunc(processingProxy, "sphere", [
+        { "radius": float_ }
     ]),
 
-    sphereDetail: makeFunc(processing, "sphereDetail", [
-        { "ures": float },
-        { "vres": float, optional }
+    sphereDetail: makeFunc(processingProxy, "sphereDetail", [
+        { "ures": float_ },
+        { "vres": float_, optional }
     ])
 };

@@ -1,53 +1,52 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { int_, float } = Sk.builtin;
+const { int_, float_ } = Sk.builtin;
 
 export default {
-    constrain: makeFunc(processing, "contrain", [
-        { "value": [ int_, float ] },
-        { "min" : [ int_, float ] },
-        { "max": [ int_, float ] }
+    constrain: makeFunc(processingProxy, "contrain", [
+        { "value": [ int_, float_ ] },
+        { "min" : [ int_, float_ ] },
+        { "max": [ int_, float_ ] }
     ]),
 
-    dist: makeFunc(processing, "dist", [
-        { "x1": [ int_, float ] },
-        { "y1": [ int_, float ] },
-        { "z1": [ int_, float ] },
-        { "x2": [ int_, float ] },
-        { "y2": [ int_, float ], optional },
-        { "z2": [ int_, float ], optional }
+    dist: makeFunc(processingProxy, "dist", [
+        { "x1": [ int_, float_ ] },
+        { "y1": [ int_, float_ ] },
+        { "z1": [ int_, float_ ] },
+        { "x2": [ int_, float_ ] },
+        { "y2": [ int_, float_ ], optional },
+        { "z2": [ int_, float_ ], optional }
     ]),
 
-    lerp: makeFunc(processing, "lerp", [
-        { "value1": [ int_, float ] },
-        { "value2": [ int_, float ] },
-        { "amt": float }
+    lerp: makeFunc(processingProxy, "lerp", [
+        { "value1": [ int_, float_ ] },
+        { "value2": [ int_, float_ ] },
+        { "amt": float_ }
     ]),
 
-    mag: makeFunc(processing, "mag", [
-        { "a": [ int_, float ] },
-        { "a": [ int_, float ] },
-        { "a": [ int_, float ], optional }
+    mag: makeFunc(processingProxy, "mag", [
+        { "a": [ int_, float_ ] },
+        { "a": [ int_, float_ ] },
+        { "a": [ int_, float_ ], optional }
     ]),
 
-    map: makeFunc(processing, "map", [
-        { "value": float },
-        { "low1": float },
-        { "high1": float },
-        { "low2": float },
-        { "high2": float },
+    map: makeFunc(processingProxy, "map", [
+        { "value": float_ },
+        { "low1": float_ },
+        { "high1": float_ },
+        { "low2": float_ },
+        { "high2": float_ },
     ]),
 
-    norm: makeFunc(processing, "norm", [
-        { "value": float },
-        { "low": float },
-        { "high": float }
+    norm: makeFunc(processingProxy, "norm", [
+        { "value": float_ },
+        { "low": float_ },
+        { "high": float_ }
     ]),
 
-    sq: makeFunc(processing, "sq", [
-        { "value": [ int_, float ] }
+    sq: makeFunc(processingProxy, "sq", [
+        { "value": [ int_, float_ ] }
     ])
 };
 

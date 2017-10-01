@@ -1,8 +1,7 @@
 
-import { processing } from "./processing.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 
 export default {
-    textAscent: makeFunc(processing, "textAscent"),
-    textDescent: makeFunc(processing, "textDescent")
+    textAscent: makeFunc(processingProxy, "textAscent"),
+    textDescent: makeFunc(processingProxy, "textDescent")
 };

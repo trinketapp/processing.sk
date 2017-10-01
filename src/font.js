@@ -1,13 +1,12 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional, self } from "./utils.js";
+import { processingProxy, makeFunc, optional, self } from "./utils.js";
 
-const { func, float, list, str, bool, int_ } = Sk.builtin;
+const { func, float_, list, str, bool, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function fontClass ($gbl, $loc) {
     $loc.__init__ = makeFunc(function (self, input) {
-        self.v = new processing.PFont(input);
+        self.v = new processingProxy.PFont(input);
     }, "__init__", [
         self,
         { "input ": str }
@@ -18,27 +17,27 @@ function fontClass ($gbl, $loc) {
 
 export const PFontBuilder = mod => buildClass(mod, fontClass, "PFont", []);
 
-export const createFont = makeFunc(processing, "createFont", [
+export const createFont = makeFunc(processingProxy, "createFont", [
     { "name": str },
-    { "size": float},
+    { "size": float_},
     { "smooth": bool, optional },
     { "charset": str, optional }
 ]);
 
-export const loadFont = makeFunc(processing, "loadFont", [
+export const loadFont = makeFunc(processingProxy, "loadFont", [
     { "fontname": str }
 ]);
 
-export const text = makeFunc(processing, "text", [
-    { "data": [ str, int_, float ] },
-    { "x": [ int_, float ] },
-    { "y": [ int_, float ] },
-    { "z": [ int_, float ], optional },
-    { "height": [ int_, float ], optional },
-    { "z": [ int_, float ], optional }
+export const text = makeFunc(processingProxy, "text", [
+    { "data": [ str, int_, float_ ] },
+    { "x": [ int_, float_ ] },
+    { "y": [ int_, float_ ] },
+    { "z": [ int_, float_ ], optional },
+    { "height": [ int_, float_ ], optional },
+    { "z": [ int_, float_ ], optional }
 ]);
 
-export const textFont = makeFunc(processing, "textFont", [
+export const textFont = makeFunc(processingProxy, "textFont", [
     { "font": "PFont" },
-    { "size": [ int_, float  ], optional }
+    { "size": [ int_, float_  ], optional }
 ]);

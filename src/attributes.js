@@ -1,6 +1,5 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc } from "./utils.js";
+import { processingProxy, makeFunc } from "./utils.js";
 import constants from "./constants.js";
 
 const { int_, str } = Sk.builtin;
@@ -8,26 +7,26 @@ const { ROUND, SQUARE, BUTT, MITTER, BEVEL,
     CENTER, RADIUS, CORNER, CORNERS  } = constants;
 
 export default {
-    elipseMode: makeFunc(processing, "elipseMode", [
+    elipseMode: makeFunc(processingProxy, "elipseMode", [
         { "mode": int_, allowed: [ CENTER, RADIUS, CORNER, CORNERS ] }
     ]),
 
-    noSmooth: makeFunc(processing, "noSmooth"),
-    smooth: makeFunc(processing, "smooth"),
+    noSmooth: makeFunc(processingProxy, "noSmooth"),
+    smooth: makeFunc(processingProxy, "smooth"),
 
-    rectMode: makeFunc(processing, "rectMode", [
+    rectMode: makeFunc(processingProxy, "rectMode", [
         { "mode": int_, allowed: [ CENTER, RADIUS, CORNER, CORNERS ] }
     ]),
 
-    strokeCap: makeFunc(processing, "strokeCap", [
+    strokeCap: makeFunc(processingProxy, "strokeCap", [
         { "mode": str, allowed: [ ROUND, SQUARE, BUTT ] }
     ]),
 
-    strokeJoin: makeFunc(processing, "strokeJoin", [
+    strokeJoin: makeFunc(processingProxy, "strokeJoin", [
         { "mode": str, allowed: [ MITTER, BEVEL, ROUND ] }
     ]),
 
-    strokeWeight: makeFunc(processing, "strokeWeight", [
+    strokeWeight: makeFunc(processingProxy, "strokeWeight", [
         { "width": int_ }
     ])
 };

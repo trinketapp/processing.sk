@@ -1,72 +1,71 @@
-import { processing } from "./processing.js";
 import Sk from "./skulpt.js";
-import { makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { int_, float } = Sk.builtin;
+const { int_, float_ } = Sk.builtin;
 
 export default {
-    bezier: makeFunc(processing, "bezier", [
-        { "x1": [ int_, float ] },
-        { "y1": [ int_, float ] },
-        { "z1": [ int_, float ] },
-        { "cx1": [ int_, float ] },
-        { "cy1": [ int_, float ] },
-        { "cz1": [ int_, float ] },
-        { "cx2": [ int_, float ] },
-        { "cy2": [ int_, float ] },
-        { "cz2": [ int_, float ], optional },
-        { "x2": [ int_, float ], optional },
-        { "y2": [ int_, float ], optional },
-        { "z2": [ int_, float ], optional }]),
+    bezier: makeFunc(processingProxy, "bezier", [
+        { "x1": [ int_, float_ ] },
+        { "y1": [ int_, float_ ] },
+        { "z1": [ int_, float_ ] },
+        { "cx1": [ int_, float_ ] },
+        { "cy1": [ int_, float_ ] },
+        { "cz1": [ int_, float_ ] },
+        { "cx2": [ int_, float_ ] },
+        { "cy2": [ int_, float_ ] },
+        { "cz2": [ int_, float_ ], optional },
+        { "x2": [ int_, float_ ], optional },
+        { "y2": [ int_, float_ ], optional },
+        { "z2": [ int_, float_ ], optional }]),
 
-    bezierDetail: makeFunc(processing, "bezierDetail", [
+    bezierDetail: makeFunc(processingProxy, "bezierDetail", [
         { "detail": int_ }]),
 
-    bezierPoint: makeFunc(processing, "bezierPoint", [
-        { "a": [ int_, float ] },
-        { "b": [ int_, float ] },
-        { "c": [ int_, float ] },
-        { "d": [ int_, float ] },
-        { "t": float }]),
+    bezierPoint: makeFunc(processingProxy, "bezierPoint", [
+        { "a": [ int_, float_ ] },
+        { "b": [ int_, float_ ] },
+        { "c": [ int_, float_ ] },
+        { "d": [ int_, float_ ] },
+        { "t": float_ }]),
 
-    bezierTangent: makeFunc(processing, "bezierTangent", [
-        { "a": [ int_, float ] },
-        { "b": [ int_, float ] },
-        { "c": [ int_, float ] },
-        { "d": [ int_, float ] },
-        { "t": float }]),
+    bezierTangent: makeFunc(processingProxy, "bezierTangent", [
+        { "a": [ int_, float_ ] },
+        { "b": [ int_, float_ ] },
+        { "c": [ int_, float_ ] },
+        { "d": [ int_, float_ ] },
+        { "t": float_ }]),
 
-    curve: makeFunc(processing, "curve", [
-        { "x1": [ int_, float ] },
-        { "y1": [ int_, float ] },
-        { "z1": [ int_, float ] },
-        { "x2": [ int_, float ] },
-        { "y2": [ int_, float ] },
-        { "z2": [ int_, float ] },
-        { "x3": [ int_, float ] },
-        { "y3": [ int_, float ] },
-        { "z3": [ int_, float ], optional },
-        { "x4": [ int_, float ], optional },
-        { "y4": [ int_, float ], optional },
-        { "z4": [ int_, float ], optional }]),
+    curve: makeFunc(processingProxy, "curve", [
+        { "x1": [ int_, float_ ] },
+        { "y1": [ int_, float_ ] },
+        { "z1": [ int_, float_ ] },
+        { "x2": [ int_, float_ ] },
+        { "y2": [ int_, float_ ] },
+        { "z2": [ int_, float_ ] },
+        { "x3": [ int_, float_ ] },
+        { "y3": [ int_, float_ ] },
+        { "z3": [ int_, float_ ], optional },
+        { "x4": [ int_, float_ ], optional },
+        { "y4": [ int_, float_ ], optional },
+        { "z4": [ int_, float_ ], optional }]),
 
-    curveDetail: makeFunc(processing, "curveDetail", [
+    curveDetail: makeFunc(processingProxy, "curveDetail", [
         { "detail": int_ }]),
 
-    curvePoint: makeFunc(processing, "curvePoint", [
-        { "a": [ int_, float ] },
-        { "b": [ int_, float ] },
-        { "c": [ int_, float ] },
-        { "d": [ int_, float ] },
-        { "t": float }]),
+    curvePoint: makeFunc(processingProxy, "curvePoint", [
+        { "a": [ int_, float_ ] },
+        { "b": [ int_, float_ ] },
+        { "c": [ int_, float_ ] },
+        { "d": [ int_, float_ ] },
+        { "t": float_ }]),
 
-    curveTangent: makeFunc(processing, "curveTangent" [
-        { "a": [ int_, float ] },
-        { "b": [ int_, float ] },
-        { "c": [ int_, float ] },
-        { "d": [ int_, float ] },
-        { "t": float }]),
+    curveTangent: makeFunc(processingProxy, "curveTangent" [
+        { "a": [ int_, float_ ] },
+        { "b": [ int_, float_ ] },
+        { "c": [ int_, float_ ] },
+        { "d": [ int_, float_ ] },
+        { "t": float_ }]),
 
-    curveTightness: makeFunc(processing, "curveTightness", [
+    curveTightness: makeFunc(processingProxy, "curveTightness", [
         { "squishy": int_ }])
 };
