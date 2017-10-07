@@ -1,9 +1,17 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { int_, float_ } = Sk.builtin;
+const { int_, float_, list } = Sk.builtin;
 
 export default {
+    abs: makeFunc(processingProxy, "abs", [
+        { "value": [ int_, float_ ] }
+    ]),
+
+    ceil: makeFunc(processingProxy, "ceil", [
+        { "value": [ int_, float_ ] }
+    ]),
+
     constrain: makeFunc(processingProxy, "contrain", [
         { "value": [ int_, float_ ] },
         { "min" : [ int_, float_ ] },
@@ -17,6 +25,14 @@ export default {
         { "x2": [ int_, float_ ] },
         { "y2": [ int_, float_ ], optional },
         { "z2": [ int_, float_ ], optional }
+    ]),
+
+    exp: akeFunc(processingProxy, "exp", [
+        { "value": [ int_, float_ ] }
+    ]),
+
+    floor: akeFunc(processingProxy, "floor", [
+        { "value": [ int_, float_ ] }
     ]),
 
     lerp: makeFunc(processingProxy, "lerp", [
@@ -39,15 +55,40 @@ export default {
         { "high2": [ int_, float_ ] },
     ]),
 
+    max: makeFunc(processingProxy, "max", [
+        { "values": [ list_, int_ ] },
+        { "b": [ list_, int_ ], optional },
+        { "c": [ list_, int_ ], optional }
+    ]),
+
+    min: makeFunc(processingProxy, "min", [
+        { "values": [ list_, int_ ] },
+        { "b": [ list_, int_ ], optional },
+        { "c": [ list_, int_ ], optional }
+    ]),
+
     norm: makeFunc(processingProxy, "norm", [
         { "value": [ int_, float_ ] },
         { "low": [ int_, float_ ] },
         { "high": [ int_, float_ ] }
     ]),
 
+    pow:  makeFunc(processingProxy, "pow", [
+        { "n": [ int_, float_ ] },
+        { "e": [ int_, float_ ] },
+    ]),
+
+    round: makeFunc(processingProxy, "round", [
+        { "value": [ int_, float_ ] }
+    ]),
+
     sq: makeFunc(processingProxy, "sq", [
         { "value": [ int_, float_ ] }
-    ])
+    ]),
+
+    sqrt: makeFunc(processingProxy, "sq", [
+        { "value": [ int_, float_ ] }
+    ]),
 };
 
 
