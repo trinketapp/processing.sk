@@ -22,7 +22,7 @@ export default {
     lerp: makeFunc(processingProxy, "lerp", [
         { "value1": [ int_, float_ ] },
         { "value2": [ int_, float_ ] },
-        { "amt": float_ }
+        { "amt": [ int_, float_ ] }
     ]),
 
     mag: makeFunc(processingProxy, "mag", [
@@ -32,17 +32,17 @@ export default {
     ]),
 
     map: makeFunc(processingProxy, "map", [
-        { "value": float_ },
-        { "low1": float_ },
-        { "high1": float_ },
-        { "low2": float_ },
-        { "high2": float_ },
+        { "value": [ int_, float_ ] },
+        { "low1": [ int_, float_ ] },
+        { "high1": [ int_, float_ ] },
+        { "low2": [ int_, float_ ] },
+        { "high2": [ int_, float_ ] },
     ]),
 
     norm: makeFunc(processingProxy, "norm", [
-        { "value": float_ },
-        { "low": float_ },
-        { "high": float_ }
+        { "value": [ int_, float_ ] },
+        { "low": [ int_, float_ ] },
+        { "high": [ int_, float_ ] }
     ]),
 
     sq: makeFunc(processingProxy, "sq", [

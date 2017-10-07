@@ -144,7 +144,7 @@ function vectorClass($gbl, $loc) {
 
     $loc.limit = makeFunc(vectorLimit, "limit", [
         self,
-        { "value": float_ }
+        { "value": [ int_, float_ ] }
     ]);
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [

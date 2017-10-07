@@ -20,7 +20,7 @@ export default {
     ]),
 
     shininess: makeFunc(processingProxy, "shininess", [
-        { "shine": float_ }
+        { "shine": [ int_, float_ ] }
     ]),
 
     specular: makeFunc(processingProxy, "specular", [

@@ -1,7 +1,7 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 
-const { float_ } = Sk.builtin;
+const { float_, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function colorInit(self, val1, val2, val3, alpha) {
@@ -10,10 +10,10 @@ function colorInit(self, val1, val2, val3, alpha) {
 
 function colorClass($gbl, $loc) {
     $loc.__init__ = makeFunc(colorInit, [
-        { "gray": float_ },
-        { "aplha": float_, optional },
-        { "value3": float_, optional },
-        { "hex": float_, optional }
+        { "gray": [ int_, float_ ] },
+        { "aplha": [ int_, float_ ], optional },
+        { "value3": [ int_, float_ ], optional },
+        { "hex": [ int_, float_ ], optional }
     ]);
 }
 

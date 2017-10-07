@@ -26,14 +26,14 @@ export default {
         { "b": [ int_, float_ ] },
         { "c": [ int_, float_ ] },
         { "d": [ int_, float_ ] },
-        { "t": float_ }]),
+        { "t": [ int_, float_ ] }]),
 
     bezierTangent: makeFunc(processingProxy, "bezierTangent", [
         { "a": [ int_, float_ ] },
         { "b": [ int_, float_ ] },
         { "c": [ int_, float_ ] },
         { "d": [ int_, float_ ] },
-        { "t": float_ }]),
+        { "t": [ int_, float_ ] }]),
 
     curve: makeFunc(processingProxy, "curve", [
         { "x1": [ int_, float_ ] },
@@ -57,15 +57,15 @@ export default {
         { "b": [ int_, float_ ] },
         { "c": [ int_, float_ ] },
         { "d": [ int_, float_ ] },
-        { "t": float_ }]),
+        { "t": [ int_, float_ ] }]),
 
     curveTangent: makeFunc(processingProxy, "curveTangent" [
         { "a": [ int_, float_ ] },
         { "b": [ int_, float_ ] },
         { "c": [ int_, float_ ] },
         { "d": [ int_, float_ ] },
-        { "t": float_ }]),
+        { "t": [ int_, float_ ] }]),
 
     curveTightness: makeFunc(processingProxy, "curveTightness", [
-        { "squishy": int_ }])
+        { "squishy": [ int_, float_ ] }])
 };

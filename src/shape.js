@@ -91,36 +91,36 @@ function shapeClass($gbl, $loc) {
 
     $loc.translate = makeFunc(shapeTranslate, "translate", [
         self,
-        { "x": [ float_, int_ ] },
-        { "y": [ float_, int_ ] },
-        { "z": [ float_, int_ ], optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ] },
+        { "z": [ int_, float_ ], optional }
     ]);
 
     $loc.rotate = makeFunc(shapeRotate, "rotate", [
         self,
-        { "angle": float_ }
+        { "angle": [ int_, float_ ] }
     ]);
 
     $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [
         self,
-        { "angle": float_ }
+        { "angle": [ int_, float_ ] }
     ]);
 
     $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [
         self,
-        { "angle": float_ }
+        { "angle": [ int_, float_ ] }
     ]);
 
     $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [
         self,
-        { "angle": float_ }
+        { "angle": [ int_, float_ ] }
     ]);
 
     $loc.scale = makeFunc(shapeScale, "scale" [
         self,
-        { "x": float_ },
-        { "y": float_, optional },
-        { "z": float_, optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ], optional },
+        { "z": [ int_, float_ ], optional }
     ]);
 }
 
@@ -133,10 +133,10 @@ export default {
 
     shape: makeFunc(processingProxy, "shape", [
         { "sh": "PShape" },
-        { "x": float_ },
-        { "y": float_ },
-        { "width": float_, optional },
-        { "height": float_, optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ] },
+        { "width": [ int_, float_ ], optional },
+        { "height": [ int_, float_ ], optional }
     ]),
 
     shapeMode: makeFunc(processingProxy, "shapeMode", [

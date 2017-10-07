@@ -33,7 +33,7 @@ function pyCheckTypes(name, args) {
             template[argName] = [ template[argName] ];
         }
 
-        if (!template[argName].some(a => arg instanceof a)) {
+        if (!template[argName].some(a => arg instanceof a && (!a.allowed || arg in a.allowed))) {
             throw new TypeError(`${name}: ${argName} (value: ${remapToJs(arg)}) not of type ${template[argName].map(t => t.tp$name)}`);
         }
     });

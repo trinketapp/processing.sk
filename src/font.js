@@ -19,7 +19,7 @@ export const PFontBuilder = mod => buildClass(mod, fontClass, "PFont", []);
 
 export const createFont = makeFunc(processingProxy, "createFont", [
     { "name": str },
-    { "size": float_},
+    { "size": [ int_, float_ ]},
     { "smooth": bool, optional },
     { "charset": str, optional }
 ]);

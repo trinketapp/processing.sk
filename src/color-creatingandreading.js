@@ -52,7 +52,7 @@ export default {
     lerpColor: makeFunc(lerpColor, "lerpColor", [
         { "c1": PColor },
         { "c2": PColor },
-        { "amt": float_ }
+        { "amt": [ int_, float_ ] }
     ]),
 
     red: makeFunc(processingProxy, "red", [

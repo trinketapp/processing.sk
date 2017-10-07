@@ -60,7 +60,7 @@ export default {
         { "nx": [ int_, float_ ] },
         { "ny": [ int_, float_ ] },
         { "nz": [ int_, float_ ] },
-        { "angle": float_ },
-        { "concentration": float_ }
+        { "angle": [ int_, float_ ] },
+        { "concentration": [ int_, float_ ] }
     ])
 };

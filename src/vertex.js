@@ -12,29 +12,29 @@ export default {
     endShape: makeFunc(processingProxy, "endShape"),
 
     vertex: makeFunc(processingProxy, "vertex", [
-        { "x": float_ },
-        { "y": float_ },
-        { "z": float_ },
-        { "u": float_, optional },
-        { "v": float_, optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ] },
+        { "z": [ int_, float_ ] },
+        { "u": [ int_, float_ ], optional },
+        { "v": [ int_, float_ ], optional }
     ]),
 
     bezierVertex: makeFunc(processingProxy, "bezierVertex", [
-        { "cx1": float_ },
-        { "cy1": float_ },
-        { "cz1": float_ },
-        { "cx2": float_ },
-        { "cy2": float_ },
-        { "cz2": float_ },
-        { "x": float_, optional },
-        { "y": float_, optional },
-        { "z": float_, optional }
+        { "cx1": [ int_, float_ ] },
+        { "cy1": [ int_, float_ ] },
+        { "cz1": [ int_, float_ ] },
+        { "cx2": [ int_, float_ ] },
+        { "cy2": [ int_, float_ ] },
+        { "cz2": [ int_, float_ ] },
+        { "x": [ int_, float_ ], optional },
+        { "y": [ int_, float_ ], optional },
+        { "z": [ int_, float_ ], optional }
     ]),
 
     curveVertex: makeFunc(processingProxy, "curveVertex", [
-        { "x": float_ },
-        { "y": float_ },
-        { "z": float_, optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ] },
+        { "z": [ int_, float_ ], optional }
     ]),
 
     texture: makeFunc(processingProxy, "texture" [
