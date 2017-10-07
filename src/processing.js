@@ -9,14 +9,15 @@ import colorBuilder from "./color.js";
 import { remappedConstants } from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
-import { EnvironmentBuilder, cursor, noCursor } from "./environment.js";
+import { EnvironmentBuilder, cursor, noCursor, height, width, frameCount, frameRate, focused } from "./environment.js";
 import files from "./files.js";
 import fontattribues from "./font-attributes.js";
 import fontmetrics from "./font-metrics.js";
 import { PFontBuilder, createFont, loadFont, text, textFont } from "./font.js";
 import { PGraphicsBuilder, createGraphics, hint } from "./graphics.js";
-import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
-import { KeyboardBuilder } from "./keyboard.js";
+import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage,
+    tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
+import { KeyboardBuilder, keyCode, key, keyPressed } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
 import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
@@ -46,10 +47,6 @@ const imList = [];
 
 export function isInitialised() {
     return processing == null;
-}
-
-export function setProperty(name, value) {
-    mod[name] = value;
 }
 
 export function setLooping(bool) {
@@ -112,13 +109,13 @@ export function main() {
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
         ccreatingandreading, csetting, PColor, remappedConstants, coordinates, curves,
-        { Environment, environment, cursor, noCursor }, files, fontattribues, fontmetrics,
-        { PFont, createFont, loadFont, text, textFont }, { PGraphics, createGraphics, hint },
-        PImage, { image, createImage, imageMode, loadImage, noTint, requestImage, tint, blend,
-            copy, filter, get, loadPixels, set, updatePixels }, { keyboard, Keyboard }, lights,
-        materialproperties, { Mouse, mouse, mouseX, mouseY, pmouseX, pmouseY }, output, random,
-        { Screen, screen }, PShape, structure, timeanddate, transform, trigonometry, PVector,
-        vertex, web, shape);
+        { Environment, environment, cursor, noCursor, height, width, frameCount, frameRate, focused },
+        files, fontattribues, fontmetrics, { PFont, createFont, loadFont, text, textFont },
+        { PGraphics, createGraphics, hint }, PImage, { image, createImage, imageMode, loadImage,
+            noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels },
+        { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
+            mouseX, mouseY, pmouseX, pmouseY }, output, random, { Screen, screen }, PShape, structure,
+        timeanddate, transform, trigonometry, PVector, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
         function sketchProc(proc) {

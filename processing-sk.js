@@ -911,6 +911,23 @@ var cursor = makeFunc(processingProxy, "cursor", [{ "image": [PImageBuilder, int
 
 var noCursor = makeFunc(processingProxy, "noCursor");
 
+var height = function height() {
+    return remapToPy$2(processingProxy.height);
+};
+var width = function width() {
+    return remapToPy$2(processingProxy.width);
+};
+var frameCount = function frameCount() {
+    return remapToPy$2(processingProxy.frameCount);
+};
+var frameRate = function frameRate() {
+    return remapToPy$2(processingProxy.frameRate);
+};
+
+var focused = function focused() {
+    return remapToPy$2(processingProxy.focused);
+};
+
 var str$3 = Sk.builtin.str;
 
 
@@ -1039,17 +1056,27 @@ function keyboardClass($gbl, $loc) {
     $loc.__getattr__ = new func$4(function (self, key) {
         key = remapToJs$3(key);
         if (key === "key") {
-            return remapToPy$4(processing.key.toString());
+            return remapToPy$4(processingProxy.key.toString());
         } else if (key === "keyCode") {
-            return remapToPy$4(processing.keyCode);
+            return remapToPy$4(processingProxy.keyCode);
         } else if (key === "keyPressed") {
-            return remapToPy$4(processing.keyPressed);
+            return remapToPy$4(processingProxy.__keyPressed);
         }
     });
 }
 
 var KeyboardBuilder = function KeyboardBuilder(mod) {
     return buildClass$5(mod, keyboardClass, "Keyboard", []);
+};
+
+var key = function key() {
+    return remapToPy$4(processingProxy.key.toString());
+};
+var keyCode = function keyCode() {
+    return remapToPy$4(processingProxy.keyCode);
+};
+var keyPressed = function keyPressed() {
+    return remapToPy$4(processingProxy.__keyPressed);
 };
 
 var _Sk$builtin$15 = Sk.builtin;
@@ -1095,9 +1122,7 @@ var materialproperties = {
 var _Sk$ffi$4 = Sk.ffi;
 var remapToPy$5 = _Sk$ffi$4.remapToPy;
 var remapToJs$4 = _Sk$ffi$4.remapToJs;
-var _Sk$builtin$17 = Sk.builtin;
-var func$5 = _Sk$builtin$17.func;
-var int_$17 = _Sk$builtin$17.int_;
+var func$5 = Sk.builtin.func;
 var buildClass$6 = Sk.misceval.buildClass;
 
 
@@ -1105,17 +1130,17 @@ function mouseClass($gbl, $loc) {
     $loc.__getattr__ = new func$5(function (self, key) {
         switch (remapToJs$4(key)) {
             case "x":
-                return remapToPy$5(processing.mouseX);
+                return remapToPy$5(processingProxy.mouseX);
             case "y":
-                return remapToPy$5(processing.mouseY);
+                return remapToPy$5(processingProxy.mouseY);
             case "px":
-                return remapToPy$5(processing.pmouseX);
+                return remapToPy$5(processingProxy.pmouseX);
             case "py":
-                return remapToPy$5(processing.pmouseY);
+                return remapToPy$5(processingProxy.pmouseY);
             case "pressed":
-                return remapToPy$5(processing.__mousePressed);
+                return remapToPy$5(processingProxy.__mousePressed);
             case "button":
-                return remapToPy$5(processing.mouseButton);
+                return remapToPy$5(processingProxy.mouseButton);
             default:
                 return undefined;
         }
@@ -1126,26 +1151,23 @@ var MouseBuilder = function MouseBuilder(mod) {
     return buildClass$6(mod, mouseClass, "Mouse", []);
 };
 
-var mouseX = new func$5(function () {
-    return new int_$17(processing.mouseX);
-});
+var mouseX = function mouseX() {
+    return remapToPy$5(processingProxy.mouseX);
+};
+var mouseY = function mouseY() {
+    return remapToPy$5(processingProxy.mouseY);
+};
+var pmouseX = function pmouseX() {
+    return remapToPy$5(processingProxy.pmouseX);
+};
+var pmouseY = function pmouseY() {
+    return remapToPy$5(processingProxy.pmouseY);
+};
 
-var mouseY = new func$5(function () {
-    return new int_$17(processing.mouseY);
-});
-
-var pmouseX = new func$5(function () {
-    return new int_$17(processing.pmouseX);
-});
-
-var pmouseY = new func$5(function () {
-    return new int_$17(processing.pmouseY);
-});
-
-var _Sk$builtin$18 = Sk.builtin;
-var object = _Sk$builtin$18.object;
-var str$6 = _Sk$builtin$18.str;
-var list$2 = _Sk$builtin$18.list;
+var _Sk$builtin$17 = Sk.builtin;
+var object = _Sk$builtin$17.object;
+var str$6 = _Sk$builtin$17.str;
+var list$2 = _Sk$builtin$17.list;
 
 
 var output = {
@@ -1170,30 +1192,30 @@ var output = {
     selectOuput: notImplemented
 };
 
-var _Sk$builtin$19 = Sk.builtin;
-var float_$14 = _Sk$builtin$19.float_;
-var int_$18 = _Sk$builtin$19.int_;
+var _Sk$builtin$18 = Sk.builtin;
+var float_$14 = _Sk$builtin$18.float_;
+var int_$17 = _Sk$builtin$18.int_;
 
 
 var random = {
-    noise: makeFunc(processingProxy, "noise", [{ "x": [int_$18, float_$14] }, { "y": [int_$18, float_$14], optional: optional }, { "z": [int_$18, float_$14], optional: optional }]),
+    noise: makeFunc(processingProxy, "noise", [{ "x": [int_$17, float_$14] }, { "y": [int_$17, float_$14], optional: optional }, { "z": [int_$17, float_$14], optional: optional }]),
 
-    noiseDetail: makeFunc(processingProxy, "noiseDetail", [{ "octave": int_$18 }, { "falloff": [int_$18, float_$14] }]),
+    noiseDetail: makeFunc(processingProxy, "noiseDetail", [{ "octave": int_$17 }, { "falloff": [int_$17, float_$14] }]),
 
-    noiseSeed: makeFunc(processingProxy, "noiseSeed", [{ "value": int_$18 }]),
+    noiseSeed: makeFunc(processingProxy, "noiseSeed", [{ "value": int_$17 }]),
 
-    randomSeed: makeFunc(processingProxy, "randomSeed", [{ "value": int_$18 }]),
+    randomSeed: makeFunc(processingProxy, "randomSeed", [{ "value": int_$17 }]),
 
-    random: makeFunc(processingProxy, "random", [{ low: [int_$18, float_$14] }, { high: [int_$18, float_$14], optional: optional }])
+    random: makeFunc(processingProxy, "random", [{ low: [int_$17, float_$14] }, { high: [int_$17, float_$14], optional: optional }])
 };
 
 var _Sk$ffi$5 = Sk.ffi;
 var remapToJs$5 = _Sk$ffi$5.remapToJs;
 var remapToPy$6 = _Sk$ffi$5.remapToPy;
 var buildClass$7 = Sk.misceval.buildClass;
-var _Sk$builtin$20 = Sk.builtin;
-var list$3 = _Sk$builtin$20.list;
-var func$6 = _Sk$builtin$20.func;
+var _Sk$builtin$19 = Sk.builtin;
+var list$3 = _Sk$builtin$19.list;
+var func$6 = _Sk$builtin$19.func;
 
 
 function screenClass($gbl, $loc) {
@@ -1224,11 +1246,11 @@ var ScreenBuilder = function ScreenBuilder(mod) {
 var CORNER$2 = remappedConstants.CORNER;
 var CORNERS$2 = remappedConstants.CORNERS;
 var CENTER$3 = remappedConstants.CENTER;
-var _Sk$builtin$21 = Sk.builtin;
-var str$7 = _Sk$builtin$21.str;
-var int_$19 = _Sk$builtin$21.int_;
-var float_$15 = _Sk$builtin$21.float_;
-var bool$1 = _Sk$builtin$21.bool;
+var _Sk$builtin$20 = Sk.builtin;
+var str$7 = _Sk$builtin$20.str;
+var int_$18 = _Sk$builtin$20.int_;
+var float_$15 = _Sk$builtin$20.float_;
+var bool$1 = _Sk$builtin$20.bool;
 var _Sk$ffi$6 = Sk.ffi;
 var remapToJs$6 = _Sk$ffi$6.remapToJs;
 var remapToPy$7 = _Sk$ffi$6.remapToPy;
@@ -1310,17 +1332,17 @@ function shapeClass($gbl, $loc) {
 
     $loc.getChild = makeFunc(shapeGetChild, "getChild", [self$1, { "shape": exports.PShape }]);
 
-    $loc.translate = makeFunc(shapeTranslate, "translate", [self$1, { "x": [int_$19, float_$15] }, { "y": [int_$19, float_$15] }, { "z": [int_$19, float_$15], optional: optional }]);
+    $loc.translate = makeFunc(shapeTranslate, "translate", [self$1, { "x": [int_$18, float_$15] }, { "y": [int_$18, float_$15] }, { "z": [int_$18, float_$15], optional: optional }]);
 
-    $loc.rotate = makeFunc(shapeRotate, "rotate", [self$1, { "angle": [int_$19, float_$15] }]);
+    $loc.rotate = makeFunc(shapeRotate, "rotate", [self$1, { "angle": [int_$18, float_$15] }]);
 
-    $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [self$1, { "angle": [int_$19, float_$15] }]);
+    $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [self$1, { "angle": [int_$18, float_$15] }]);
 
-    $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [self$1, { "angle": [int_$19, float_$15] }]);
+    $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [self$1, { "angle": [int_$18, float_$15] }]);
 
-    $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [self$1, { "angle": [int_$19, float_$15] }]);
+    $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [self$1, { "angle": [int_$18, float_$15] }]);
 
-    $loc.scale = makeFunc(shapeScale, "scale"[(self$1, { "x": [int_$19, float_$15] }, { "y": [int_$19, float_$15], optional: optional }, { "z": [int_$19, float_$15], optional: optional })]);
+    $loc.scale = makeFunc(shapeScale, "scale"[(self$1, { "x": [int_$18, float_$15] }, { "y": [int_$18, float_$15], optional: optional }, { "z": [int_$18, float_$15], optional: optional })]);
 }
 
 var PShapeBuilder = function PShapeBuilder(mod) {
@@ -1330,12 +1352,12 @@ var PShapeBuilder = function PShapeBuilder(mod) {
 var shape = {
     loadShape: makeFunc(processingProxy, "loadShape", [{ "filename": str$7 }]),
 
-    shape: makeFunc(processingProxy, "shape", [{ "sh": "PShape" }, { "x": [int_$19, float_$15] }, { "y": [int_$19, float_$15] }, { "width": [int_$19, float_$15], optional: optional }, { "height": [int_$19, float_$15], optional: optional }]),
+    shape: makeFunc(processingProxy, "shape", [{ "sh": "PShape" }, { "x": [int_$18, float_$15] }, { "y": [int_$18, float_$15] }, { "width": [int_$18, float_$15], optional: optional }, { "height": [int_$18, float_$15], optional: optional }]),
 
-    shapeMode: makeFunc(processingProxy, "shapeMode", [{ "img": int_$19, allowed: [CORNER$2, CORNERS$2, CENTER$3] }])
+    shapeMode: makeFunc(processingProxy, "shapeMode", [{ "img": int_$18, allowed: [CORNER$2, CORNERS$2, CENTER$3] }])
 };
 
-var int_$20 = Sk.builtin.int_;
+var int_$19 = Sk.builtin.int_;
 var P2D = remappedConstants.P2D;
 var JAVA2D = remappedConstants.JAVA2D;
 var WEBGL = remappedConstants.WEBGL;
@@ -1365,22 +1387,13 @@ function noLoop() {
 
 function size(width, height, renderer) {
     processing.size(width, height, renderer);
-    setProperty("width", processing.width);
-    setProperty("height", processing.height);
 }
 
 var structure = {
     loop: makeFunc(loop, "loop"),
     noLoop: makeFunc(noLoop, "noLoop"),
 
-    width: makeFunc(function () {
-        return processing.width;
-    }, "width"),
-    height: makeFunc(function () {
-        return processing.height;
-    }, "height"),
-
-    size: makeFunc(size, "size", [{ "width": int_$20 }, { "height": int_$20 }, { "renderer": int_$20, allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF] }]),
+    size: makeFunc(size, "size", [{ "width": int_$19 }, { "height": int_$19 }, { "renderer": int_$19, allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF] }]),
 
     exit: makeFunc(processingProxy, "exit")
 };
@@ -1395,46 +1408,46 @@ var timeanddate = {
     year: makeFunc(processingProxy, "year")
 };
 
-var _Sk$builtin$22 = Sk.builtin;
-var float_$16 = _Sk$builtin$22.float_;
-var int_$21 = _Sk$builtin$22.int_;
+var _Sk$builtin$21 = Sk.builtin;
+var float_$16 = _Sk$builtin$21.float_;
+var int_$20 = _Sk$builtin$21.int_;
 
 
 var transform = {
-    applyMatrix: makeFunc(processingProxy, "applyMatrix", [{ "n00": [int_$21, float_$16] }, { "n01": [int_$21, float_$16] }, { "n02": [int_$21, float_$16] }, { "n03": [int_$21, float_$16] }, { "n04": [int_$21, float_$16] }, { "n05": [int_$21, float_$16] }, { "n06": [int_$21, float_$16] }, { "n07": [int_$21, float_$16] }, { "n08": [int_$21, float_$16] }, { "n09": [int_$21, float_$16] }, { "n10": [int_$21, float_$16] }, { "n11": [int_$21, float_$16] }, { "n12": [int_$21, float_$16] }, { "n13": [int_$21, float_$16] }, { "n14": [int_$21, float_$16] }, { "n15": [int_$21, float_$16] }]),
+    applyMatrix: makeFunc(processingProxy, "applyMatrix", [{ "n00": [int_$20, float_$16] }, { "n01": [int_$20, float_$16] }, { "n02": [int_$20, float_$16] }, { "n03": [int_$20, float_$16] }, { "n04": [int_$20, float_$16] }, { "n05": [int_$20, float_$16] }, { "n06": [int_$20, float_$16] }, { "n07": [int_$20, float_$16] }, { "n08": [int_$20, float_$16] }, { "n09": [int_$20, float_$16] }, { "n10": [int_$20, float_$16] }, { "n11": [int_$20, float_$16] }, { "n12": [int_$20, float_$16] }, { "n13": [int_$20, float_$16] }, { "n14": [int_$20, float_$16] }, { "n15": [int_$20, float_$16] }]),
 
     popMatrix: makeFunc(processingProxy, "popMatrix"),
     printMatrix: makeFunc(processingProxy, "printMatrix"),
     pushMatrix: makeFunc(processingProxy, "pushMatrix"),
     resetMatrix: makeFunc(processingProxy, "resetMatrix"),
 
-    rotate: makeFunc(processingProxy, "rotate", [{ "angle": [int_$21, float_$16] }]),
+    rotate: makeFunc(processingProxy, "rotate", [{ "angle": [int_$20, float_$16] }]),
 
-    rotateX: makeFunc(processingProxy, "rotateX", [{ "angle": [int_$21, float_$16] }]),
+    rotateX: makeFunc(processingProxy, "rotateX", [{ "angle": [int_$20, float_$16] }]),
 
-    rotateY: makeFunc(processingProxy, "rotateY", [{ "angle": [int_$21, float_$16] }]),
+    rotateY: makeFunc(processingProxy, "rotateY", [{ "angle": [int_$20, float_$16] }]),
 
-    rotateZ: makeFunc(processingProxy, "rotateZ", [{ "angle": [int_$21, float_$16] }]),
+    rotateZ: makeFunc(processingProxy, "rotateZ", [{ "angle": [int_$20, float_$16] }]),
 
-    scale: makeFunc(processingProxy, "scale", [{ "size": [int_$21, float_$16] }, { "y": [int_$21, float_$16], optional: optional }, { "z": [int_$21, float_$16], optional: optional }]),
+    scale: makeFunc(processingProxy, "scale", [{ "size": [int_$20, float_$16] }, { "y": [int_$20, float_$16], optional: optional }, { "z": [int_$20, float_$16], optional: optional }]),
 
-    translate: makeFunc(processingProxy, "translate", [{ "x": [int_$21, float_$16] }, { "y": [int_$21, float_$16] }, { "z": [int_$21, float_$16], optional: optional }])
+    translate: makeFunc(processingProxy, "translate", [{ "x": [int_$20, float_$16] }, { "y": [int_$20, float_$16] }, { "z": [int_$20, float_$16], optional: optional }])
+};
+
+var _Sk$builtin$22 = Sk.builtin;
+var int_$21 = _Sk$builtin$22.int_;
+var float_$17 = _Sk$builtin$22.float_;
+
+
+var trigonometry = {
+    degrees: makeFunc(processingProxy, "degrees", [{ "angle": [int_$21, float_$17] }]),
+
+    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$21, float_$17] }])
 };
 
 var _Sk$builtin$23 = Sk.builtin;
 var int_$22 = _Sk$builtin$23.int_;
-var float_$17 = _Sk$builtin$23.float_;
-
-
-var trigonometry = {
-    degrees: makeFunc(processingProxy, "degrees", [{ "angle": [int_$22, float_$17] }]),
-
-    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$22, float_$17] }])
-};
-
-var _Sk$builtin$24 = Sk.builtin;
-var int_$23 = _Sk$builtin$24.int_;
-var float_$18 = _Sk$builtin$24.float_;
+var float_$18 = _Sk$builtin$23.float_;
 var _Sk$misceval = Sk.misceval;
 var callsim$2 = _Sk$misceval.callsim;
 var buildClass$9 = _Sk$misceval.buildClass;
@@ -1508,7 +1521,7 @@ function vectorLimit(self, value) {
 }
 
 function vectorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(vectorInit, "__init__", [self, { "x": int_$23 }, { "y": int_$23, optional: optional }, { "z": int_$23, optional: optional }]);
+    $loc.__init__ = makeFunc(vectorInit, "__init__", [self, { "x": int_$22 }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
@@ -1521,7 +1534,7 @@ function vectorClass($gbl, $loc) {
         }
     });
 
-    $loc.get = makeFunc(vectorGet, "get", [self]), $loc.set = makeFunc(vectorSet, "set", [self, { "x": int_$23 }, { "x": int_$23, optional: optional }, { "x": int_$23, optional: optional }]);
+    $loc.get = makeFunc(vectorGet, "get", [self]), $loc.set = makeFunc(vectorSet, "set", [self, { "x": int_$22 }, { "x": int_$22, optional: optional }, { "x": int_$22, optional: optional }]);
 
     $loc.mag = makeFunc(function (self) {
         return self.v.mag();
@@ -1537,7 +1550,7 @@ function vectorClass($gbl, $loc) {
 
     $loc.dist = makeFunc(vectorDist, "dist", [self, { "vector": "PVector" }]);
 
-    $loc.dot = makeFunc(vectorDot, "dot", [self, { "x": [int_$23, float_$18] }, { "y": [int_$23, float_$18], optional: optional }, { "z": [int_$23, float_$18], optional: optional }]);
+    $loc.dot = makeFunc(vectorDot, "dot", [self, { "x": [int_$22, float_$18] }, { "y": [int_$22, float_$18], optional: optional }, { "z": [int_$22, float_$18], optional: optional }]);
 
     $loc.cross = makeFunc(vectorCross, "cross", [self, { "vector": "PVector" }]);
 
@@ -1545,7 +1558,7 @@ function vectorClass($gbl, $loc) {
         return self.normalize();
     }, "normalize", [self]);
 
-    $loc.limit = makeFunc(vectorLimit, "limit", [self, { "value": [int_$23, float_$18] }]);
+    $loc.limit = makeFunc(vectorLimit, "limit", [self, { "value": [int_$22, float_$18] }]);
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [self, { "vector": "PVector" }]);
 
@@ -1558,9 +1571,9 @@ var vectorBuilder = (function (mod) {
     return buildClass$9(mod, vectorClass, "PVector", []);
 });
 
-var _Sk$builtin$25 = Sk.builtin;
-var float_$19 = _Sk$builtin$25.float_;
-var int_$24 = _Sk$builtin$25.int_;
+var _Sk$builtin$24 = Sk.builtin;
+var float_$19 = _Sk$builtin$24.float_;
+var int_$23 = _Sk$builtin$24.int_;
 var IMAGE = remappedConstants.IMAGE;
 var NORMALIZED = remappedConstants.NORMALIZED;
 
@@ -1570,15 +1583,15 @@ var vertex = {
 
     endShape: makeFunc(processingProxy, "endShape"),
 
-    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$24, float_$19] }, { "y": [int_$24, float_$19] }, { "z": [int_$24, float_$19] }, { "u": [int_$24, float_$19], optional: optional }, { "v": [int_$24, float_$19], optional: optional }]),
+    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19] }, { "u": [int_$23, float_$19], optional: optional }, { "v": [int_$23, float_$19], optional: optional }]),
 
-    bezierVertex: makeFunc(processingProxy, "bezierVertex", [{ "cx1": [int_$24, float_$19] }, { "cy1": [int_$24, float_$19] }, { "cz1": [int_$24, float_$19] }, { "cx2": [int_$24, float_$19] }, { "cy2": [int_$24, float_$19] }, { "cz2": [int_$24, float_$19] }, { "x": [int_$24, float_$19], optional: optional }, { "y": [int_$24, float_$19], optional: optional }, { "z": [int_$24, float_$19], optional: optional }]),
+    bezierVertex: makeFunc(processingProxy, "bezierVertex", [{ "cx1": [int_$23, float_$19] }, { "cy1": [int_$23, float_$19] }, { "cz1": [int_$23, float_$19] }, { "cx2": [int_$23, float_$19] }, { "cy2": [int_$23, float_$19] }, { "cz2": [int_$23, float_$19] }, { "x": [int_$23, float_$19], optional: optional }, { "y": [int_$23, float_$19], optional: optional }, { "z": [int_$23, float_$19], optional: optional }]),
 
-    curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$24, float_$19] }, { "y": [int_$24, float_$19] }, { "z": [int_$24, float_$19], optional: optional }]),
+    curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19], optional: optional }]),
 
     texture: makeFunc(processingProxy, "texture"[{ "img": PImageBuilder }]),
 
-    textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$24, allowed: [IMAGE, NORMALIZED] }])
+    textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$23, allowed: [IMAGE, NORMALIZED] }])
 };
 
 var str$8 = Sk.builtin.str;
@@ -1602,10 +1615,6 @@ var imList = [];
 
 function isInitialised() {
     return processing == null;
-}
-
-function setProperty(name, value) {
-    mod[name] = value;
 }
 
 function setLooping(bool) {
@@ -1666,8 +1675,9 @@ function main() {
     var Screen = ScreenBuilder(mod);
     var screen = callsim(Screen);
 
-    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, exports.PColor, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, exports.PImage, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage, noTint: noTint, requestImage: requestImage, tint: tint, blend: blend,
-        copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels }, { keyboard: keyboard, Keyboard: Keyboard }, lights, materialproperties, { Mouse: Mouse, mouse: mouse, mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY }, output, random, { Screen: Screen, screen: screen }, exports.PShape, structure, timeanddate, transform, trigonometry, exports.PVector, vertex, web, shape);
+    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, exports.PColor, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, exports.PImage, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
+        noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
+        mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY }, output, random, { Screen: Screen, screen: screen }, exports.PShape, structure, timeanddate, transform, trigonometry, exports.PVector, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
         function sketchProc(proc) {
@@ -1755,7 +1765,6 @@ function main() {
 }
 
 exports.isInitialised = isInitialised;
-exports.setProperty = setProperty;
 exports.setLooping = setLooping;
 exports.pushImage = pushImage;
 exports.processing = processing;

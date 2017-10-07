@@ -38,3 +38,10 @@ export const cursor = makeFunc(processingProxy, "cursor", [
 ]);
 
 export const noCursor = makeFunc(processingProxy, "noCursor");
+
+export const height = () => remapToPy(processingProxy.height);
+export const width = () => remapToPy(processingProxy.width);
+export const frameCount = () => remapToPy(processingProxy.frameCount);
+export const frameRate = () => remapToPy(processingProxy.frameRate);
+export const online = () => remapToPy(processingProxy.online);
+export const focused = () => remapToPy(processingProxy.focused);

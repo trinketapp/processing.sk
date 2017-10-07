@@ -1,4 +1,4 @@
-import { processing, setProperty, setLooping, isInitialised } from "./processing.js";
+import { processing, setLooping, isInitialised } from "./processing.js";
 import { processingProxy, makeFunc } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
@@ -26,16 +26,11 @@ function noLoop() {
 
 function size(width, height, renderer) {
     processing.size(width, height, renderer);
-    setProperty("width", processing.width);
-    setProperty("height", processing.height);
 }
 
 export default {
     loop: makeFunc(loop, "loop"),
     noLoop: makeFunc(noLoop, "noLoop"),
-
-    width: makeFunc(() => processing.width, "width"),
-    height: makeFunc(() => processing.height, "height"),
 
     size: makeFunc(size, "size", [
         { "width": int_ },

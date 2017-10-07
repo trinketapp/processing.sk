@@ -18,7 +18,6 @@
   ],
   "dependencies": {
     "skulpt": "^0.11.0",
-    "Processing.js": "^1.6.6",
-    "proxy-polyfill": "^0.1.7"
+    "Processing.js": "^1.6.6"
   }
 }
