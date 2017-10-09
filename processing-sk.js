@@ -1699,20 +1699,36 @@ function main() {
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY }, output, random, { Screen: Screen, screen: screen }, exports.PShape, structure, timeanddate, transform, trigonometry, exports.PVector, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
+        var susp = new Sk.misceval.Suspension();
+        var exceptionOccurred = null;
+        var finish = null;
+
+        susp.resume = function () {
+            if (susp.data["error"]) {
+                throw susp.data["error"];
+            }
+
+            return Sk.builtin.none.none$;
+        };
+
+        susp.data = {
+            type: "Sk.promise", promise: new Promise(function (resolve, reject) {
+                exceptionOccurred = reject;
+                finish = resolve;
+            })
+        };
+
         function sketchProc(proc) {
             exports.processingInstance = proc;
 
-            // processing.setup = function() {
-            //     if Sk.globals["setup"]
-            //         Sk.misceval.callsim(Sk.globals["setup"])
-            // }
-            // initialise classes
+            proc.onExit = finish;
 
             // FIXME if no Sk.globals["draw"], then no need for this
             proc.draw = function () {
                 // if there are pending image loads then just use the natural looping calls to
                 // retry until all the images are loaded.  If noLoop was called in setup then make
                 // sure to revert to that after all the images in hand.
+
                 var wait = false;
 
                 for (var i in imList) {
@@ -1734,9 +1750,13 @@ function main() {
                     }
                 }
 
-                mod.frameCount = proc.frameCount;
                 if (Sk.globals["draw"]) {
-                    Sk.misceval.callsim(Sk.globals["draw"]);
+                    try {
+                        Sk.misceval.callsim(Sk.globals["draw"]);
+                    } catch (e) {
+                        exceptionOccurred(e);
+                        proc.exit();
+                    }
                 }
             };
 
@@ -1744,12 +1764,25 @@ function main() {
 
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
-                    proc[callBacks[cb]] = new Function("try {Sk.misceval.callsim(Sk.globals['" + callBacks[cb] + "']);} catch(e) {Sk.uncaughtException(e);}");
+                    (function () {
+                        var callback = callBacks[cb];
+                        proc[callback] = function () {
+                            try {
+                                Sk.misceval.callsim(Sk.globals[callback]);
+                            } catch (e) {
+                                exceptionOccurred(e);
+                                if (exports.processingInstance) {
+                                    exports.processingInstance.exit();
+                                }
+                            }
+                        };
+                    })();
                 }
             }
         }
 
         var canvas = document.getElementById(Sk.canvas);
+
         if (canvas.tagName !== "CANVAS") {
             var mydiv = canvas;
             canvas = document.createElement("canvas");
@@ -1774,6 +1807,8 @@ function main() {
         }
 
         mod.p = new window.Processing(canvas, sketchProc);
+
+        return susp;
     });
 
     return mod;
