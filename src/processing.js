@@ -156,12 +156,7 @@ export function main() {
 
                 mod.frameCount = proc.frameCount;
                 if (Sk.globals["draw"]) {
-                    try {
-                        Sk.misceval.callsim(Sk.globals["draw"]);
-                    }
-                    catch (e) {
-                        Sk.uncaughtException(e);
-                    }
+                    Sk.misceval.callsim(Sk.globals["draw"]);
                 }
             };
 

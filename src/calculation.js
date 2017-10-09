@@ -27,11 +27,11 @@ export default {
         { "z2": [ int_, float_ ], optional }
     ]),
 
-    exp: akeFunc(processingProxy, "exp", [
+    exp: makeFunc(processingProxy, "exp", [
         { "value": [ int_, float_ ] }
     ]),
 
-    floor: akeFunc(processingProxy, "floor", [
+    floor: makeFunc(processingProxy, "floor", [
         { "value": [ int_, float_ ] }
     ]),
 
@@ -56,15 +56,15 @@ export default {
     ]),
 
     max: makeFunc(processingProxy, "max", [
-        { "values": [ list_, int_ ] },
-        { "b": [ list_, int_ ], optional },
-        { "c": [ list_, int_ ], optional }
+        { "values": [ list, int_, float_  ] },
+        { "b": [ int_, float_  ], optional },
+        { "c": [ int_, float_  ], optional }
     ]),
 
     min: makeFunc(processingProxy, "min", [
-        { "values": [ list_, int_ ] },
-        { "b": [ list_, int_ ], optional },
-        { "c": [ list_, int_ ], optional }
+        { "values": [ list, int_, float_  ] },
+        { "b": [ int_, float_  ], optional },
+        { "c": [ int_, float_  ], optional }
     ]),
 
     norm: makeFunc(processingProxy, "norm", [

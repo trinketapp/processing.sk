@@ -524,12 +524,21 @@ var attributes = {
 var _Sk$builtin$4 = Sk.builtin;
 var int_$3 = _Sk$builtin$4.int_;
 var float_$2 = _Sk$builtin$4.float_;
+var list = _Sk$builtin$4.list;
 
 
 var calculation = {
+    abs: makeFunc(processingProxy, "abs", [{ "value": [int_$3, float_$2] }]),
+
+    ceil: makeFunc(processingProxy, "ceil", [{ "value": [int_$3, float_$2] }]),
+
     constrain: makeFunc(processingProxy, "contrain", [{ "value": [int_$3, float_$2] }, { "min": [int_$3, float_$2] }, { "max": [int_$3, float_$2] }]),
 
     dist: makeFunc(processingProxy, "dist", [{ "x1": [int_$3, float_$2] }, { "y1": [int_$3, float_$2] }, { "z1": [int_$3, float_$2] }, { "x2": [int_$3, float_$2] }, { "y2": [int_$3, float_$2], optional: optional }, { "z2": [int_$3, float_$2], optional: optional }]),
+
+    exp: makeFunc(processingProxy, "exp", [{ "value": [int_$3, float_$2] }]),
+
+    floor: makeFunc(processingProxy, "floor", [{ "value": [int_$3, float_$2] }]),
 
     lerp: makeFunc(processingProxy, "lerp", [{ "value1": [int_$3, float_$2] }, { "value2": [int_$3, float_$2] }, { "amt": [int_$3, float_$2] }]),
 
@@ -537,9 +546,19 @@ var calculation = {
 
     map: makeFunc(processingProxy, "map", [{ "value": [int_$3, float_$2] }, { "low1": [int_$3, float_$2] }, { "high1": [int_$3, float_$2] }, { "low2": [int_$3, float_$2] }, { "high2": [int_$3, float_$2] }]),
 
+    max: makeFunc(processingProxy, "max", [{ "values": [list, int_$3, float_$2] }, { "b": [int_$3, float_$2], optional: optional }, { "c": [int_$3, float_$2], optional: optional }]),
+
+    min: makeFunc(processingProxy, "min", [{ "values": [list, int_$3, float_$2] }, { "b": [int_$3, float_$2], optional: optional }, { "c": [int_$3, float_$2], optional: optional }]),
+
     norm: makeFunc(processingProxy, "norm", [{ "value": [int_$3, float_$2] }, { "low": [int_$3, float_$2] }, { "high": [int_$3, float_$2] }]),
 
-    sq: makeFunc(processingProxy, "sq", [{ "value": [int_$3, float_$2] }])
+    pow: makeFunc(processingProxy, "pow", [{ "n": [int_$3, float_$2] }, { "e": [int_$3, float_$2] }]),
+
+    round: makeFunc(processingProxy, "round", [{ "value": [int_$3, float_$2] }]),
+
+    sq: makeFunc(processingProxy, "sq", [{ "value": [int_$3, float_$2] }]),
+
+    sqrt: makeFunc(processingProxy, "sq", [{ "value": [int_$3, float_$2] }])
 };
 
 var _Sk$builtin$5 = Sk.builtin;
@@ -703,7 +722,7 @@ var curves = {
 var _Sk$builtin$12 = Sk.builtin;
 var func$2 = _Sk$builtin$12.func;
 var int_$11 = _Sk$builtin$12.int_;
-var list = _Sk$builtin$12.list;
+var list$1 = _Sk$builtin$12.list;
 var str$2 = _Sk$builtin$12.str;
 var float_$9 = _Sk$builtin$12.float_;
 var buildClass$2 = Sk.misceval.buildClass;
@@ -822,7 +841,7 @@ function imageClass($gbl, $loc) {
 
     $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$11, exports.PImage] }, { "sx": int_$11 }, { "sy": int_$11 }, { "swidth": int_$11 }, { "sheight": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11, optional: optional }]);
 
-    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": [exports.PImage, list] }]);
+    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": [exports.PImage, list$1] }]);
 
     $loc.blend = makeFunc(imageBlend, "blend", [self$1, { "srcImg": [int_$11, exports.PImage] }, { "x": int_$11 }, { "y": int_$11 }, { "width": int_$11 }, { "height": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11 }, { "MODE": int_$11, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$1, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
 
@@ -975,7 +994,7 @@ var fontmetrics = {
 var _Sk$builtin$14 = Sk.builtin;
 var func$3 = _Sk$builtin$14.func;
 var float_$11 = _Sk$builtin$14.float_;
-var list$1 = _Sk$builtin$14.list;
+var list$2 = _Sk$builtin$14.list;
 var str$5 = _Sk$builtin$14.str;
 var bool = _Sk$builtin$14.bool;
 var int_$13 = _Sk$builtin$14.int_;
@@ -988,7 +1007,7 @@ function fontClass($gbl, $loc) {
     }, "__init__", [self$1, { "input ": str$5 }]);
 
     $loc.list = new func$3(function (self) {
-        return new list$1(self.v.list());
+        return new list$2(self.v.list());
     });
 }
 
@@ -1167,7 +1186,7 @@ var pmouseY = function pmouseY() {
 var _Sk$builtin$17 = Sk.builtin;
 var object = _Sk$builtin$17.object;
 var str$6 = _Sk$builtin$17.str;
-var list$2 = _Sk$builtin$17.list;
+var list$3 = _Sk$builtin$17.list;
 
 
 var output = {
@@ -1177,7 +1196,7 @@ var output = {
 
     saveFrame: makeFunc(processingProxy, "saveFrame", [{ "filename": str$6 }, { "ext": str$6, allowed: ["tif", "tga", "jpg", "png"] }]),
 
-    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$6 }, { "strings": list$2 }]),
+    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$6 }, { "strings": list$3 }]),
 
     PrintWriter: notImplemented,
     beginRaw: notImplemented,
@@ -1214,7 +1233,7 @@ var remapToJs$5 = _Sk$ffi$5.remapToJs;
 var remapToPy$6 = _Sk$ffi$5.remapToPy;
 var buildClass$7 = Sk.misceval.buildClass;
 var _Sk$builtin$19 = Sk.builtin;
-var list$3 = _Sk$builtin$19.list;
+var list$4 = _Sk$builtin$19.list;
 var func$6 = _Sk$builtin$19.func;
 
 
@@ -1232,7 +1251,7 @@ function screenClass($gbl, $loc) {
                 return remapToPy$6(processing.width);
             case "pixels":
                 if (self.pixels == null) {
-                    self.pixels = new list$3(processing.pixels.toArray());
+                    self.pixels = new list$4(processing.pixels.toArray());
                 }
                 return self.pixels;
         }
@@ -1717,11 +1736,7 @@ function main() {
 
                 mod.frameCount = proc.frameCount;
                 if (Sk.globals["draw"]) {
-                    try {
-                        Sk.misceval.callsim(Sk.globals["draw"]);
-                    } catch (e) {
-                        Sk.uncaughtException(e);
-                    }
+                    Sk.misceval.callsim(Sk.globals["draw"]);
                 }
             };
 
