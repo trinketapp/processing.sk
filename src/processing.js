@@ -140,7 +140,7 @@ export function main() {
         function sketchProc(proc) {
             processingInstance = proc;
 
-            proc.onExit = finish;
+            proc.externals.sketch.onExit = finish;
 
             // FIXME if no Sk.globals["draw"], then no need for this
             proc.draw = function () {
