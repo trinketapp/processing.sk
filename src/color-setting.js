@@ -1,14 +1,13 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 import { remappedConstants } from "./constants.js";
-import PColor from "./color.js";
 
 const { RGB, HSB } = remappedConstants;
 const { int_, float_ } = Sk.builtin;
 
 export default {
     background: makeFunc(processingProxy, "background", [
-        { "value1": [ int_, float_, PColor ] },
+        { "value1": [ int_, float_, "color" ] },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }
@@ -23,7 +22,7 @@ export default {
     ]),
 
     fill: makeFunc(processingProxy, "fill", [
-        { "value1": [ int_, float_, PColor ] },
+        { "value1": [ int_, float_, "color" ] },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }
@@ -34,7 +33,7 @@ export default {
     noStroke: makeFunc(processingProxy, "noStroke"),
 
     stroke: makeFunc(processingProxy, "stroke", [
-        { "value1": [ int_, float_, PColor ] },
+        { "value1": [ int_, float_, "color" ] },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }

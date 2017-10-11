@@ -57,7 +57,7 @@ export function pushImage(url) {
     imList.push(url);
 }
 
-export let PColor;
+export let color;
 export let PImage;
 export let PShape;
 export let PGraphics;
@@ -91,7 +91,7 @@ export function main() {
     //
     //  //////////////////////////////////////////////////////////////////////
 
-    PColor = colorBuilder(mod);
+    color = colorBuilder(mod);
     PImage = PImageBuilder(mod);
     PShape = PShapeBuilder(mod);
     PGraphics = PGraphicsBuilder(mod);
@@ -108,14 +108,14 @@ export function main() {
     let screen = callsim(Screen);
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
-        ccreatingandreading, csetting, PColor, remappedConstants, coordinates, curves,
+        ccreatingandreading, csetting, { color }, remappedConstants, coordinates, curves,
         { Environment, environment, cursor, noCursor, height, width, frameCount, frameRate, focused },
         files, fontattribues, fontmetrics, { PFont, createFont, loadFont, text, textFont },
-        { PGraphics, createGraphics, hint }, PImage, { image, createImage, imageMode, loadImage,
+        { PGraphics, createGraphics, hint }, { PImage }, { image, createImage, imageMode, loadImage,
             noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels },
         { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
-            mouseX, mouseY, pmouseX, pmouseY }, output, random, { Screen, screen }, PShape, structure,
-        timeanddate, transform, trigonometry, PVector, vertex, web, shape);
+            mouseX, mouseY, pmouseX, pmouseY }, output, random, { Screen, screen }, { PShape }, structure,
+        timeanddate, transform, trigonometry, { PVector }, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
         let susp = new Sk.misceval.Suspension();

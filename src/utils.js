@@ -33,7 +33,19 @@ function pyCheckTypes(name, args) {
             template[argName] = [ template[argName] ];
         }
 
-        if (!template[argName].some(a => arg instanceof a && (!a.allowed || arg in a.allowed))) {
+        // if a is true i.e. a short cut if you don't want the type to be checked Any or self.
+        // and it has to be really true not just truthy.
+        if (!template[argName].some(a => {
+            if (a === true) {
+                return true;
+            }
+
+            if (typeof a === "string" && arg.tp$name === a) {
+                return true;
+            }
+
+            return arg instanceof a && (!a.allowed || arg in a.allowed);
+        })) {
             throw new TypeError(`${name}: ${argName} (value: ${remapToJs(arg)}) not of type ${template[argName].map(t => t.tp$name)}`);
         }
     });
@@ -59,13 +71,14 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let args = argsToArray(arguments);
 
-        let js_args = args.filter((a, i) => largs_template[i] != self).map(remapToJs);
+        let js_args = args.map((a, i) => largs_template[i] === self ? a : remapToJs(a));
 
         pyCheckArgs(name, args, countNonOptionalArgs(largs_template), args.length, true);
 
         pyCheckTypes(name, join((l, r) => [l,r], args, largs_template));
 
         let result = functionToWrap.apply(null, js_args);
+
         return remapToPy(result);
     };
 

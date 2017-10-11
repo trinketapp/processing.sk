@@ -1,7 +1,6 @@
 import { pushImage, PImage } from "./processing.js";
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, self } from "./utils.js";
-import PColor from "./color.js";
 import { remappedConstants } from "./constants.js";
 
 const { func, int_, list, str, float_ } = Sk.builtin;
@@ -105,7 +104,7 @@ function imageClass($gbl, $loc) {
         self,
         { "x": int_ },
         { "y": int_ },
-        { "color": PColor }
+        { "color": "color" }
     ]);
 
     $loc.copy = makeFunc(imageCopy, "copy", [
@@ -203,7 +202,7 @@ export const requestImage = makeFunc(imageRequestImage, "requestImage", [
 ]);
 
 export const tint = makeFunc(processingProxy, "tint", [
-    { "value1": [ "PColor", int_, float_ ] },
+    { "value1": [ "color", int_, float_ ] },
     { "value2": [ int_, float_ ], optional },
     { "value3": [ int_, float_ ], optional },
     { "alpha": [ int_, float_ ], optional }
@@ -252,7 +251,7 @@ export const loadPixels = makeFunc(processingProxy, "loadPixels");
 export const set = makeFunc(processingProxy, "set", [
     { "x": int_ },
     { "y": int_ },
-    { "image": [ PColor, "PImage" ] },
+    { "image": [ "color", "PImage" ] },
 ]);
 
 export const updatePixels = makeFunc(processingProxy, "updatePixels");
