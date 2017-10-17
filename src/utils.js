@@ -40,8 +40,8 @@ function pyCheckTypes(name, args) {
                 return true;
             }
 
-            if (typeof a === "string" && arg.tp$name === a) {
-                return true;
+            if (typeof a === "string") {
+                return arg.tp$name === a;
             }
 
             return arg instanceof a && (!a.allowed || arg in a.allowed);
@@ -69,7 +69,7 @@ export function makeFunc(thingToWrap, name, args_template) {
             throw new Error("Couldn't infer function to wrap");
         }
 
-        let args = argsToArray(arguments);
+        let args = argsToArray(arguments).filter(a => a !== undefined);
 
         let js_args = args.map((a, i) => largs_template[i] === self ? a : remapToJs(a));
 

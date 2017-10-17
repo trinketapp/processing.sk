@@ -1,47 +1,55 @@
 import { PGraphics } from "./processing.js";
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, self } from "./utils.js";
+import { processingProxy, makeFunc, self, optional } from "./utils.js";
+import constants from "./constants.js";
 
-const { int_ } = Sk.builtin;
-const { buildClass } = Sk.misceval;
+const { P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF } = constants;
+const { int_, func } = Sk.builtin;
+const { buildClass, callsim } = Sk.misceval;
+const { remapToPy, remapToJs } = Sk.ffi;
 
-function graphicsInit(self, width, height, applet) {
-    self.v = new processingProxy.PGraphics(width, height, applet);
+function graphicsInit(self, width, height, renderer) {
+    self.v = processingProxy.createGraphics(width, height, renderer);
 }
 
 function graphicsClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(graphicsInit, [
+    $loc.__init__ = makeFunc(graphicsInit, "__init__", [
         self,
         { "width": int_ },
-        { "width": int_ },
-        { "width": "PApplet" }
+        { "height": int_ },
+        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ], optional }
     ]);
 
-    $loc.beginDraw = new Sk.builtin.func(function (self) {
+    $loc.beginDraw = new func(function (self) {
         self.v.beginDraw();
     });
 
-    $loc.endDraw = new Sk.builtin.func(function (self) {
+    $loc.endDraw = new func(function (self) {
         self.v.endDraw();
+    });
+
+    $loc.__getattr__ = new func(function(self, key) {
+        let prop = self.v[remapToJs(key)];
+        if (prop !== undefined) {
+            if (typeof prop === "function") {
+                return new func(function(self) {
+                    let args = Array.from(arguments).map(remapToJs);
+                    return remapToPy(prop.apply(self.v, args));
+                });
+            }
+
+            return remapToPy(prop);
+        }
     });
 }
 
 export const PGraphicsBuilder = mod => buildClass(mod, graphicsClass, "PGraphics", []);
 
-export const createGraphics = new Sk.builtin.func(function (width, height, renderer, filename) {
-    // createGraphics(width, height, renderer)
-    // createGraphics(width, height, renderer, filename)
-    var graphics = Sk.misceval.callsim(PGraphics);
-    if (typeof (filename) === "undefined") {
-        graphics.v = processingProxy.createGraphics(width.v, height.v, renderer.v);
-    } else {
-        graphics.v = processingProxy.createGraphics(width.v, height.v, renderer.v, filename.v);
-    }
-    return graphics;
+export const createGraphics = new func(function (width, height, renderer) {
+    return callsim(PGraphics, width, height, renderer);
 });
 
-
-export const hint = new Sk.builtin.func(function (item) {
+export const hint = new func(function (item) {
     // hint(item)
     processingProxy.hint(item);
 });

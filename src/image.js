@@ -179,7 +179,7 @@ export const createImage = new Sk.builtin.func(function (width, height, format) 
 });
 
 export const image = makeFunc(processingProxy, "image", [
-    { "img": "PImage" },
+    { "img": [ "PImage", "PGraphics"] },
     { "x": int_ },
     { "y": int_ },
     { "width": int_, optional },
