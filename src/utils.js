@@ -16,7 +16,7 @@ const {
 const argsToArray = Array.from;
 
 function countNonOptionalArgs(args) {
-    args.filter(a => a.optional).length;
+    return args === undefined ? 0 : args.filter(a => a.optional).length;
 }
 
 function join(func, arr1, arr2) {
