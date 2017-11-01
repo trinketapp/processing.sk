@@ -63,7 +63,7 @@ var remapToPy = _Sk$ffi.remapToPy;
 var argsToArray = Array.from;
 
 function countNonOptionalArgs(args) {
-    args.filter(function (a) {
+    return args === undefined ? 0 : args.filter(function (a) {
         return a.optional;
     }).length;
 }
@@ -133,7 +133,7 @@ function makeFunc(thingToWrap, name, args_template) {
             return largs_template[i] === self$1 ? a : remapToJs(a);
         });
 
-        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), args.length, true);
+        pyCheckArgs(name, args, largs_template.length, countNonOptionalArgs(largs_template), true);
 
         pyCheckTypes(name, join(function (l, r) {
             return [l, r];
@@ -1626,12 +1626,20 @@ var float_$19 = _Sk$builtin$25.float_;
 var int_$23 = _Sk$builtin$25.int_;
 var IMAGE = remappedConstants.IMAGE;
 var NORMALIZED = remappedConstants.NORMALIZED;
+var POINTS = remappedConstants.POINTS;
+var LINES = remappedConstants.LINES;
+var TRIANGLES = remappedConstants.TRIANGLES;
+var TRIANGLE_FAN = remappedConstants.TRIANGLE_FAN;
+var TRIANGLE_STRIP = remappedConstants.TRIANGLE_STRIP;
+var QUADS = remappedConstants.QUADS;
+var QUAD_STRIP = remappedConstants.QUAD_STRIP;
+var CLOSE = remappedConstants.CLOSE;
 
 
 var vertex = {
-    beginShape: makeFunc(processingProxy, "beginShape"),
+    beginShape: makeFunc(processingProxy, "beginShape", [{ "MODE": int_$23, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
 
-    endShape: makeFunc(processingProxy, "endShape"),
+    endShape: makeFunc(processingProxy, "endShape", [{ "MODE": int_$23, allowed: [CLOSE], optional: optional }]),
 
     vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19] }, { "u": [int_$23, float_$19], optional: optional }, { "v": [int_$23, float_$19], optional: optional }]),
 

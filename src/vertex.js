@@ -4,12 +4,18 @@ import PImage from "./image.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 
 const { float_, int_ } = Sk.builtin;
-const { IMAGE, NORMALIZED } = remappedConstants;
+const { IMAGE, NORMALIZED, POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP,
+    QUADS, QUAD_STRIP, CLOSE } = remappedConstants;
 
 export default {
-    beginShape: makeFunc(processingProxy, "beginShape"),
+    beginShape: makeFunc(processingProxy, "beginShape", [
+        { "MODE": int_, allowed: [ POINTS, LINES, TRIANGLES, TRIANGLE_FAN,
+            TRIANGLE_STRIP, QUADS, QUAD_STRIP ], optional }
+    ]),
 
-    endShape: makeFunc(processingProxy, "endShape"),
+    endShape: makeFunc(processingProxy, "endShape", [
+        { "MODE": int_, allowed: [ CLOSE ], optional }
+    ]),
 
     vertex: makeFunc(processingProxy, "vertex", [
         { "x": [ int_, float_ ] },
