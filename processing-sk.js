@@ -831,9 +831,7 @@ function imageUpdatePixels(self, x, y, w, h) {
 
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
-    $loc.__init__ = makeFunc(imageInit, "__init__", [
-    // TODO: implement [] in type in makefunt
-    { "width": [int_$11, str$2], optional: optional }, { "height": int_$11, optional: optional }, { "format": int_$11, allowed: [1, 2, 4], optional: optional }]);
+    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$11, str$2], optional: optional }, { "height": int_$11, optional: optional }, { "format": int_$11, allowed: [1, 2, 4], optional: optional }]);
 
     $loc.__getattr__ = new func$2(function (self, key) {
         key = remapToJs$2(key);
