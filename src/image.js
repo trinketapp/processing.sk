@@ -73,7 +73,7 @@ function imageUpdatePixels(self, x, y, w, h) {
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [
-        // TODO: implement [] in type in makefunt
+        self,
         { "width": [ int_, str ], optional },
         { "height": int_, optional },
         { "format": int_, allowed: [ 1, 2, 4 ], optional }
