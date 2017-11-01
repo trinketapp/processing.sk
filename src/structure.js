@@ -1,5 +1,5 @@
 import { processing, setLooping, isInitialised } from "./processing.js";
-import { processingProxy, makeFunc } from "./utils.js";
+import { processingProxy, makeFunc, optional } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
@@ -35,7 +35,7 @@ export default {
     size: makeFunc(size, "size", [
         { "width": int_ },
         { "height": int_ },
-        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ] }
+        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ], optional }
     ]),
 
     exit: makeFunc(processingProxy, "exit")

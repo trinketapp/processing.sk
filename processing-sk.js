@@ -64,7 +64,7 @@ var argsToArray = Array.from;
 
 function countNonOptionalArgs(args) {
     return args === undefined ? 0 : args.filter(function (a) {
-        return a.optional;
+        return !a.optional;
     }).length;
 }
 
@@ -1443,7 +1443,7 @@ var structure = {
     loop: makeFunc(loop, "loop"),
     noLoop: makeFunc(noLoop, "noLoop"),
 
-    size: makeFunc(size, "size", [{ "width": int_$19 }, { "height": int_$19 }, { "renderer": int_$19, allowed: [P2D$1, JAVA2D$1, WEBGL$1, P3D$1, OPENGL$1, PDF$1, DXF$1] }]),
+    size: makeFunc(size, "size", [{ "width": int_$19 }, { "height": int_$19 }, { "renderer": int_$19, allowed: [P2D$1, JAVA2D$1, WEBGL$1, P3D$1, OPENGL$1, PDF$1, DXF$1], optional: optional }]),
 
     exit: makeFunc(processingProxy, "exit")
 };
