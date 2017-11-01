@@ -786,7 +786,7 @@ function imageRequestImage(filename, extension) {
 }
 
 function imageInit(self, arg1, arg2, arg3) {
-    self.v = new processingProxy.PImage(arg1.v, arg2.v, arg3.v);
+    self.v = new processingProxy.PImage(arg1, arg2, arg3);
 }
 
 function imageGet(self, x, y, width, height) {
