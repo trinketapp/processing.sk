@@ -76,7 +76,7 @@ function imageClass($gbl, $loc) {
         // TODO: implement [] in type in makefunt
         { "width": [ int_, str ], optional },
         { "height": int_, optional },
-        { "format": int_, allowed: [ 1, 2, 4 ] }
+        { "format": int_, allowed: [ 1, 2, 4 ], optional }
     ]);
 
     $loc.__getattr__ = new func(function (self, key) {
