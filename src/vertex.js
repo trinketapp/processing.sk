@@ -1,6 +1,5 @@
 import Sk from "./skulpt.js";
 import { remappedConstants } from "./constants.js";
-import PImage from "./image.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 
 const { float_, int_ } = Sk.builtin;
@@ -44,7 +43,7 @@ export default {
     ]),
 
     texture: makeFunc(processingProxy, "texture", [
-        { "img": PImage }
+        { "img": "PImage" }
     ]),
 
     textureMode: makeFunc(processingProxy, "textureMode", [

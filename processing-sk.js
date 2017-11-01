@@ -1647,7 +1647,7 @@ var vertex = {
 
     curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19], optional: optional }]),
 
-    texture: makeFunc(processingProxy, "texture", [{ "img": PImageBuilder }]),
+    texture: makeFunc(processingProxy, "texture", [{ "img": "PImage" }]),
 
     textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$23, allowed: [IMAGE, NORMALIZED] }])
 };
