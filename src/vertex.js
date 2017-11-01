@@ -43,7 +43,7 @@ export default {
         { "z": [ int_, float_ ], optional }
     ]),
 
-    texture: makeFunc(processingProxy, "texture" [
+    texture: makeFunc(processingProxy, "texture", [
         { "img": PImage }
     ]),
 

@@ -172,7 +172,7 @@ export function main() {
 
                 if (Sk.globals["draw"]) {
                     try {
-                        Sk.misceval.callsim(Sk.globals["draw"]);
+                        Sk.misceval.callsimOrSuspend(Sk.globals["draw"]);
                     } catch (e) {
                         exceptionOccurred(e);
                         proc.exit();
@@ -191,7 +191,7 @@ export function main() {
                         let callback = callBacks[cb];
                         proc[callback] = () =>  {
                             try {
-                                Sk.misceval.callsim(Sk.globals[callback]);
+                                Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
                             } catch(e) {
                                 exceptionOccurred(e);
                                 if (processingInstance) {

@@ -1647,7 +1647,7 @@ var vertex = {
 
     curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19], optional: optional }]),
 
-    texture: makeFunc(processingProxy, "texture"[{ "img": PImageBuilder }]),
+    texture: makeFunc(processingProxy, "texture", [{ "img": PImageBuilder }]),
 
     textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$23, allowed: [IMAGE, NORMALIZED] }])
 };
@@ -1791,7 +1791,7 @@ function main() {
 
                 if (Sk.globals["draw"]) {
                     try {
-                        Sk.misceval.callsim(Sk.globals["draw"]);
+                        Sk.misceval.callsimOrSuspend(Sk.globals["draw"]);
                     } catch (e) {
                         exceptionOccurred(e);
                         proc.exit();
@@ -1807,7 +1807,7 @@ function main() {
                         var callback = callBacks[cb];
                         proc[callback] = function () {
                             try {
-                                Sk.misceval.callsim(Sk.globals[callback]);
+                                Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
                             } catch (e) {
                                 exceptionOccurred(e);
                                 if (exports.processingInstance) {
