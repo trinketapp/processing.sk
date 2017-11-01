@@ -36,6 +36,7 @@ import Sk from "./skulpt.js";
 import { processingProxy } from "./utils.js";
 
 const { callsim } = Sk.misceval;
+const { IOError } = Sk.builtin;
 
 let looping = true;
 
@@ -151,7 +152,11 @@ export function main() {
                 let wait = false;
 
                 for (var i in imList) {
-                    if (imList[i].width === 0) {
+                    if (imList[i].sourceImg.width === 0) {
+                        if (imList[i].sourceImg.complete) {
+                            throw new IOError("couldn't load image " + imList[i].sourceImg.src);
+                        }
+
                         wait = true;
                     }
                 }

@@ -1661,6 +1661,7 @@ var web = {
 };
 
 var callsim = Sk.misceval.callsim;
+var IOError = Sk.builtin.IOError;
 
 
 var looping = true;
@@ -1771,7 +1772,11 @@ function main() {
                 var wait = false;
 
                 for (var i in imList) {
-                    if (imList[i].width === 0) {
+                    if (imList[i].sourceImg.width === 0) {
+                        if (imList[i].sourceImg.complete) {
+                            throw new IOError("couldn't load image " + imList[i].sourceImg.src);
+                        }
+
                         wait = true;
                     }
                 }
