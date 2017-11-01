@@ -13,7 +13,7 @@ const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
 
 function imageLoadImage(img) {
     var i = processingProxy.loadImage(img);
-    pushImage(img);
+    pushImage(i);
 
     var image = Sk.misceval.callsim(PImage);
     image.v = i;

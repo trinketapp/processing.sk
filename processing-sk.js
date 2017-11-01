@@ -772,7 +772,7 @@ var CENTER$1 = remappedConstants.CENTER;
 
 function imageLoadImage(img) {
     var i = processingProxy.loadImage(img);
-    pushImage(img);
+    pushImage(i);
 
     var image = Sk.misceval.callsim(exports.PImage);
     image.v = i;
@@ -1679,8 +1679,8 @@ function setLooping(bool) {
     looping = bool;
 }
 
-function pushImage(url) {
-    imList.push(url);
+function pushImage(image$$1) {
+    imList.push(image$$1);
 }
 
 exports.color = void 0;

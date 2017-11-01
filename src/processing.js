@@ -53,8 +53,8 @@ export function setLooping(bool) {
     looping = bool;
 }
 
-export function pushImage(url) {
-    imList.push(url);
+export function pushImage(image) {
+    imList.push(image);
 }
 
 export let color;
