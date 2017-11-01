@@ -133,7 +133,7 @@ function makeFunc(thingToWrap, name, args_template) {
             return largs_template[i] === self$1 ? a : remapToJs(a);
         });
 
-        pyCheckArgs(name, args, largs_template.length, countNonOptionalArgs(largs_template), true);
+        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, true);
 
         pyCheckTypes(name, join(function (l, r) {
             return [l, r];
