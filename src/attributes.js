@@ -7,7 +7,7 @@ const { ROUND, SQUARE, BUTT, MITTER, BEVEL,
     CENTER, RADIUS, CORNER, CORNERS  } = remappedConstants;
 
 export default {
-    elipseMode: makeFunc(processingProxy, "elipseMode", [
+    ellipseMode: makeFunc(processingProxy, "ellipseMode", [
         { "mode": int_, allowed: [ CENTER, RADIUS, CORNER, CORNERS ] }
     ]),
 

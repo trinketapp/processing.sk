@@ -520,7 +520,7 @@ var CORNERS = remappedConstants.CORNERS;
 
 
 var attributes = {
-    elipseMode: makeFunc(processingProxy, "elipseMode", [{ "mode": int_$2, allowed: [CENTER, RADIUS, CORNER, CORNERS] }]),
+    ellipseMode: makeFunc(processingProxy, "ellipseMode", [{ "mode": int_$2, allowed: [CENTER, RADIUS, CORNER, CORNERS] }]),
 
     noSmooth: makeFunc(processingProxy, "noSmooth"),
     smooth: makeFunc(processingProxy, "smooth"),
