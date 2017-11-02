@@ -1235,6 +1235,12 @@ var pmouseX = function pmouseX() {
 var pmouseY = function pmouseY() {
     return remapToPy$6(processingProxy.pmouseY);
 };
+var mousePressed = function mousePressed() {
+    return remapToPy$6(processingProxy.__mousePressed);
+};
+var mouseButton = function mouseButton() {
+    return remapToPy$6(processingProxy.mouseButton);
+};
 
 var _Sk$builtin$18 = Sk.builtin;
 var object = _Sk$builtin$18.object;
@@ -1531,7 +1537,21 @@ var float_$17 = _Sk$builtin$23.float_;
 var trigonometry = {
     degrees: makeFunc(processingProxy, "degrees", [{ "angle": [int_$21, float_$17] }]),
 
-    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$21, float_$17] }])
+    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$21, float_$17] }]),
+
+    cos: makeFunc(processingProxy, "cos", [{ "angle": [int_$21, float_$17] }]),
+
+    sin: makeFunc(processingProxy, "sin", [{ "angle": [int_$21, float_$17] }]),
+
+    tan: makeFunc(processingProxy, "tan", [{ "angle": [int_$21, float_$17] }]),
+
+    acos: makeFunc(processingProxy, "acos", [{ "value": [int_$21, float_$17] }]),
+
+    asin: makeFunc(processingProxy, "asin", [{ "value": [int_$21, float_$17] }]),
+
+    atan: makeFunc(processingProxy, "tan", [{ "angle": [int_$21, float_$17] }]),
+
+    atan2: makeFunc(processingProxy, "atan2", [{ "x": [int_$21, float_$17] }, { "y": [int_$21, float_$17] }])
 };
 
 var _Sk$builtin$24 = Sk.builtin;
@@ -1775,7 +1795,7 @@ function main() {
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: exports.color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
-        mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape);
+        mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
         var susp = new Sk.misceval.Suspension();

@@ -20,7 +20,7 @@ import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, reques
 import { KeyboardBuilder, keyCode, key, keyPressed } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
-import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY } from "./mouse.js";
+import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton } from "./mouse.js";
 import output from "./output.js";
 import random from "./random.js";
 import { ScreenBuilder } from "./screen.js";
@@ -115,7 +115,7 @@ export function main() {
         { PGraphics, createGraphics, hint }, { PImage }, { image, createImage, imageMode, loadImage,
             noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels },
         { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
-            mouseX, mouseY, pmouseX, pmouseY }, output, random, { Screen, screen }, { PShape }, structure,
+            mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
