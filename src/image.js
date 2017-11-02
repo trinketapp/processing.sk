@@ -12,7 +12,13 @@ const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     CORNER, CORNERS, CENTER } = remappedConstants;
 
 function imageLoadImage(img) {
-    var i = processingProxy.loadImage(img);
+    let imageUrl = img;
+
+    if (typeof Sk.imageProxy === "function") {
+        imageUrl = Sk.imageProxy(img);
+    }
+
+    var i = processingProxy.loadImage(imageUrl);
     pushImage(i);
 
     var image = Sk.misceval.callsim(PImage);
