@@ -25,6 +25,23 @@ function noLoop() {
 }
 
 function size(width, height, renderer) {
+    if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
+        // monkey patching image to make sure toImageData returns something.
+        // 2017 Chrome 64 doesn't always return something the first call.
+        // this is a VERY HACKY way to deal with that synchronously.
+        processing.toImageData = function(x, y, w, h) {
+            x = x !== undefined ? x : 0;
+            y = y !== undefined ? y : 0;
+            w = w !== undefined ? w : processing.width;
+            h = h !== undefined ? h : processing.height;
+            let res = undefined;
+            while (res === undefined) {
+                res = processing.externals.context.getImageData(x, y, w, h);
+            }
+            return res;
+        };
+    }
+
     processing.size(width, height, renderer);
 }
 

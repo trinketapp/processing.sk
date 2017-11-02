@@ -1,6 +1,5 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
-import PImage from "./image.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
@@ -32,7 +31,7 @@ function environmentClass($gbl, $loc) {
 export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
 
 export const cursor = makeFunc(processingProxy, "cursor", [
-    { "image": [ PImage, int_ ], optional },
+    { "image": [ "PImage", int_ ], optional },
     { "x": int_, optional },
     { "y": int_, optional }
 ]);

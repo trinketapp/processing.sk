@@ -732,16 +732,224 @@ var curves = {
     curveTightness: makeFunc(processingProxy, "curveTightness", [{ "squishy": [int_$9, float_$8] }])
 };
 
+var _Sk$ffi$1 = Sk.ffi;
+var remapToPy$2 = _Sk$ffi$1.remapToPy;
+var remapToJs$1 = _Sk$ffi$1.remapToJs;
+var _Sk$builtin$11 = Sk.builtin;
+var func$1 = _Sk$builtin$11.func;
+var int_$10 = _Sk$builtin$11.int_;
+var buildClass$1 = Sk.misceval.buildClass;
+
+
+function environmentClass($gbl, $loc) {
+    $loc.__getattr__ = new func$1(function (self, key) {
+        switch (remapToJs$1(key)) {
+            case "frameCount":
+                return remapToPy$2(processingProxy.frameCount);
+            case "frameRate":
+                return remapToPy$2(processingProxy.frameRate);
+            case "height":
+                return remapToPy$2(processingProxy.height);
+            case "width":
+                return remapToPy$2(processingProxy.width);
+            case "online":
+                return remapToPy$2(processingProxy.online);
+            case "focused":
+                return remapToPy$2(processingProxy.focused);
+            default:
+                return undefined;
+        }
+    });
+}
+
+var EnvironmentBuilder = function EnvironmentBuilder(mod) {
+    return buildClass$1(mod, environmentClass, "Environment", []);
+};
+
+var cursor = makeFunc(processingProxy, "cursor", [{ "image": ["PImage", int_$10], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
+
+var noCursor = makeFunc(processingProxy, "noCursor");
+
+var height = function height() {
+    return remapToPy$2(processingProxy.height);
+};
+var width = function width() {
+    return remapToPy$2(processingProxy.width);
+};
+var frameCount = function frameCount() {
+    return remapToPy$2(processingProxy.frameCount);
+};
+var frameRate = function frameRate() {
+    return remapToPy$2(processingProxy.frameRate);
+};
+
+var focused = function focused() {
+    return remapToPy$2(processingProxy.focused);
+};
+
+var str$2 = Sk.builtin.str;
+
+
+var files = {
+    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$2 }]),
+    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$2 }]),
+    createInput: notImplemented,
+    open: notImplemented,
+    selectFolder: notImplemented,
+    selectInput: notImplemented
+};
+
+var LEFT = remappedConstants.LEFT;
+var CENTER$1 = remappedConstants.CENTER;
+var RIGHT = remappedConstants.RIGHT;
+var TOP = remappedConstants.TOP;
+var BOTTOM = remappedConstants.BOTTOM;
+var BASELINE = remappedConstants.BASELINE;
+var MODEL = remappedConstants.MODEL;
+var SCREEN$1 = remappedConstants.SCREEN;
+var SHAPE = remappedConstants.SHAPE;
 var _Sk$builtin$12 = Sk.builtin;
-var func$2 = _Sk$builtin$12.func;
 var int_$11 = _Sk$builtin$12.int_;
-var list$1 = _Sk$builtin$12.list;
-var str$2 = _Sk$builtin$12.str;
 var float_$9 = _Sk$builtin$12.float_;
+var str$3 = _Sk$builtin$12.str;
+
+
+var fontattribues = {
+    textAlign: makeFunc(processingProxy, "textAlign", [{ "ALIGN": int_$11, allowed: [LEFT, CENTER$1, RIGHT] }, { "YALIGN": int_$11, allowed: [TOP, BOTTOM, BASELINE, CENTER$1] }]),
+
+    textLeading: makeFunc(processingProxy, "textLeading", [{ "dist": [int_$11, float_$9] }]),
+
+    textMode: makeFunc(processingProxy, "textMode", [{ "MODE": int_$11, allowed: [MODEL, SCREEN$1, SHAPE] }]),
+
+    textSize: makeFunc(processingProxy, "textSize", [{ "size": [int_$11, float_$9] }]),
+
+    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$3 }])
+};
+
+var fontmetrics = {
+    textAscent: makeFunc(processingProxy, "textAscent"),
+    textDescent: makeFunc(processingProxy, "textDescent")
+};
+
+var _Sk$builtin$13 = Sk.builtin;
+var func$2 = _Sk$builtin$13.func;
+var float_$10 = _Sk$builtin$13.float_;
+var list$1 = _Sk$builtin$13.list;
+var str$4 = _Sk$builtin$13.str;
+var bool = _Sk$builtin$13.bool;
+var int_$12 = _Sk$builtin$13.int_;
 var buildClass$2 = Sk.misceval.buildClass;
+
+
+function fontClass($gbl, $loc) {
+    $loc.__init__ = makeFunc(function (self, input) {
+        self.v = new processingProxy.PFont(input);
+    }, "__init__", [self$1, { "input ": str$4 }]);
+
+    $loc.list = new func$2(function (self) {
+        return new list$1(self.v.list());
+    });
+}
+
+var PFontBuilder = function PFontBuilder(mod) {
+    return buildClass$2(mod, fontClass, "PFont", []);
+};
+
+var createFont = makeFunc(processingProxy, "createFont", [{ "name": str$4 }, { "size": [int_$12, float_$10] }, { "smooth": bool, optional: optional }, { "charset": str$4, optional: optional }]);
+
+var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$4 }]);
+
+var text = makeFunc(processingProxy, "text", [{ "data": [str$4, int_$12, float_$10] }, { "x": [int_$12, float_$10] }, { "y": [int_$12, float_$10] }, { "z": [int_$12, float_$10], optional: optional }, { "height": [int_$12, float_$10], optional: optional }, { "z": [int_$12, float_$10], optional: optional }]);
+
+var textFont = makeFunc(processingProxy, "textFont", [{ "font": "PFont" }, { "size": [int_$12, float_$10], optional: optional }]);
+
+var P2D = constants.P2D;
+var JAVA2D = constants.JAVA2D;
+var WEBGL = constants.WEBGL;
+var P3D = constants.P3D;
+var OPENGL = constants.OPENGL;
+var PDF = constants.PDF;
+var DXF = constants.DXF;
+var _Sk$builtin$14 = Sk.builtin;
+var int_$13 = _Sk$builtin$14.int_;
+var func$3 = _Sk$builtin$14.func;
+var _Sk$misceval = Sk.misceval;
+var buildClass$3 = _Sk$misceval.buildClass;
+var callsim$2 = _Sk$misceval.callsim;
 var _Sk$ffi$2 = Sk.ffi;
-var remapToJs$2 = _Sk$ffi$2.remapToJs;
 var remapToPy$3 = _Sk$ffi$2.remapToPy;
+var remapToJs$2 = _Sk$ffi$2.remapToJs;
+
+
+function graphicsInit(self, width, height, renderer) {
+    self.v = processingProxy.createGraphics(width, height, renderer);
+    if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
+        // monkey patching image to make sure toImageData returns something.
+        // 2017 Chrome 64 doesn't always return something the first call.
+        // this is a VERY HACKY way to deal with that synchronously.
+        self.v.toImageData = function (x, y, w, h) {
+            x = x !== undefined ? x : 0;
+            y = y !== undefined ? y : 0;
+            w = w !== undefined ? w : processingProxy.width;
+            h = h !== undefined ? h : processingProxy.height;
+            var res = undefined;
+            while (res === undefined) {
+                res = self.v.externals.context.getImageData(x, y, w, h);
+            }
+            return res;
+        };
+    }
+}
+
+function graphicsClass($gbl, $loc) {
+    $loc.__init__ = makeFunc(graphicsInit, "__init__", [self$1, { "width": int_$13 }, { "height": int_$13 }, { "renderer": int_$13, allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF], optional: optional }]);
+
+    $loc.beginDraw = new func$3(function (self) {
+        self.v.beginDraw();
+    });
+
+    $loc.endDraw = new func$3(function (self) {
+        self.v.endDraw();
+    });
+
+    $loc.__getattr__ = new func$3(function (self, key) {
+        var prop = self.v[remapToJs$2(key)];
+        if (prop !== undefined) {
+            if (typeof prop === "function") {
+                return new func$3(function (self) {
+                    var args = Array.from(arguments).map(remapToJs$2);
+                    return remapToPy$3(prop.apply(self.v, args));
+                });
+            }
+
+            return remapToPy$3(prop);
+        }
+    });
+}
+
+var PGraphicsBuilder = function PGraphicsBuilder(mod) {
+    return buildClass$3(mod, graphicsClass, "PGraphics", []);
+};
+
+var createGraphics = new func$3(function (width, height, renderer) {
+    return callsim$2(exports.PGraphics, width, height, renderer);
+});
+
+var hint = new func$3(function (item) {
+    // hint(item)
+    processingProxy.hint(item);
+});
+
+var _Sk$builtin$15 = Sk.builtin;
+var func$4 = _Sk$builtin$15.func;
+var int_$14 = _Sk$builtin$15.int_;
+var list$2 = _Sk$builtin$15.list;
+var str$5 = _Sk$builtin$15.str;
+var float_$11 = _Sk$builtin$15.float_;
+var buildClass$4 = Sk.misceval.buildClass;
+var _Sk$ffi$3 = Sk.ffi;
+var remapToJs$3 = _Sk$ffi$3.remapToJs;
+var remapToPy$4 = _Sk$ffi$3.remapToPy;
 var BLEND$1 = remappedConstants.BLEND;
 var ADD$1 = remappedConstants.ADD;
 var SUBTRACT$1 = remappedConstants.SUBTRACT;
@@ -750,7 +958,7 @@ var DARKEST$1 = remappedConstants.DARKEST;
 var DIFFERENCE$1 = remappedConstants.DIFFERENCE;
 var EXCLUSION = remappedConstants.EXCLUSION;
 var MULTIPLY$1 = remappedConstants.MULTIPLY;
-var SCREEN$1 = remappedConstants.SCREEN;
+var SCREEN$2 = remappedConstants.SCREEN;
 var OVERLAY$1 = remappedConstants.OVERLAY;
 var HARD = remappedConstants.HARD;
 var LIGHT = remappedConstants.LIGHT;
@@ -767,11 +975,17 @@ var ERODE = remappedConstants.ERODE;
 var DILATE = remappedConstants.DILATE;
 var CORNER$1 = remappedConstants.CORNER;
 var CORNERS$1 = remappedConstants.CORNERS;
-var CENTER$1 = remappedConstants.CENTER;
+var CENTER$2 = remappedConstants.CENTER;
 
 
 function imageLoadImage(img) {
-    var i = processingProxy.loadImage(img);
+    var imageUrl = img;
+
+    if (typeof Sk.imageProxy === "function") {
+        imageUrl = Sk.imageProxy(img);
+    }
+
+    var i = processingProxy.loadImage(imageUrl);
     pushImage(i);
 
     var image = Sk.misceval.callsim(exports.PImage);
@@ -831,44 +1045,44 @@ function imageUpdatePixels(self, x, y, w, h) {
 
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
-    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$11, str$2], optional: optional }, { "height": int_$11, optional: optional }, { "format": int_$11, allowed: [1, 2, 4], optional: optional }]);
+    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$5], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
 
-    $loc.__getattr__ = new func$2(function (self, key) {
-        key = remapToJs$2(key);
+    $loc.__getattr__ = new func$4(function (self, key) {
+        key = remapToJs$3(key);
         if (key === "width") {
-            return remapToPy$3(self.v.width);
+            return remapToPy$4(self.v.width);
         }
         if (key === "height") {
-            return remapToPy$3(self.v.height);
+            return remapToPy$4(self.v.height);
         }
         if (key === "pixels") {
-            return remapToPy$3(self.v.pixels);
+            return remapToPy$4(self.v.pixels);
         }
     });
 
-    $loc.get = makeFunc(imageGet, "get", [self$1, { "x": int_$11 }, { "y": int_$11 }, { "width": int_$11, optional: optional }, { "height": int_$11, optional: optional }]);
+    $loc.get = makeFunc(imageGet, "get", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
 
-    $loc.set = makeFunc(imageSet, "set", [self$1, { "x": int_$11 }, { "y": int_$11 }, { "color": "color" }]);
+    $loc.set = makeFunc(imageSet, "set", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "color": "color" }]);
 
-    $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$11, exports.PImage] }, { "sx": int_$11 }, { "sy": int_$11 }, { "swidth": int_$11 }, { "sheight": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11, optional: optional }]);
+    $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$14, exports.PImage] }, { "sx": int_$14 }, { "sy": int_$14 }, { "swidth": int_$14 }, { "sheight": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14, optional: optional }]);
 
-    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": [exports.PImage, list$1] }]);
+    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": [exports.PImage, list$2] }]);
 
-    $loc.blend = makeFunc(imageBlend, "blend", [self$1, { "srcImg": [int_$11, exports.PImage] }, { "x": int_$11 }, { "y": int_$11 }, { "width": int_$11 }, { "height": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11 }, { "MODE": int_$11, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$1, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
+    $loc.blend = makeFunc(imageBlend, "blend", [self$1, { "srcImg": [int_$14, exports.PImage] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14 }, { "height": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14 }, { "MODE": int_$14, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$2, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
 
-    $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$11, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": exports.PImage, optional: optional }]);
+    $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": exports.PImage, optional: optional }]);
 
-    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$2 }]);
+    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$5 }]);
 
-    $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$11 }, { "high": int_$11 }]);
+    $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$14 }, { "high": int_$14 }]);
 
     $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
 
-    $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [self$1, { "x": int_$11, optional: optional }, { "y": int_$11, optional: optional }, { "w": int_$11, optional: optional }, { "h": int_$11, optional: optional }]);
+    $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [self$1, { "x": int_$14, optional: optional }, { "y": int_$14, optional: optional }, { "w": int_$14, optional: optional }, { "h": int_$14, optional: optional }]);
 }
 
 var PImageBuilder = function PImageBuilder(mod) {
-    return buildClass$2(mod, imageClass, "PImage", []);
+    return buildClass$4(mod, imageClass, "PImage", []);
 };
 
 var createImage = new Sk.builtin.func(function (width, height, format) {
@@ -877,223 +1091,31 @@ var createImage = new Sk.builtin.func(function (width, height, format) {
     return image;
 });
 
-var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"] }, { "x": int_$11 }, { "y": int_$11 }, { "width": int_$11, optional: optional }, { "height": int_$11, optional: optional }]);
+var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
 
-var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$11, allowed: [CORNER$1, CORNERS$1, CENTER$1] }]);
+var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$14, allowed: [CORNER$1, CORNERS$1, CENTER$2] }]);
 
-var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$2 }]);
+var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$5 }]);
 
 var noTint = makeFunc(processingProxy, "noTint");
 
-var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$2 }, { "extension": str$2, optional: optional }]);
+var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$5 }, { "extension": str$5, optional: optional }]);
 
-var tint = makeFunc(processingProxy, "tint", [{ "value1": ["color", int_$11, float_$9] }, { "value2": [int_$11, float_$9], optional: optional }, { "value3": [int_$11, float_$9], optional: optional }, { "alpha": [int_$11, float_$9], optional: optional }]);
+var tint = makeFunc(processingProxy, "tint", [{ "value1": ["color", int_$14, float_$11] }, { "value2": [int_$14, float_$11], optional: optional }, { "value3": [int_$14, float_$11], optional: optional }, { "alpha": [int_$14, float_$11], optional: optional }]);
 
-var blend = makeFunc(processingProxy, "blend", [{ "srcImg": [int_$11, "PImage"] }, { "x": int_$11 }, { "y": int_$11 }, { "width": int_$11 }, { "height": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11 }, { "MODE": int_$11, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$1, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
+var blend = makeFunc(processingProxy, "blend", [{ "srcImg": [int_$14, "PImage"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14 }, { "height": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14 }, { "MODE": int_$14, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$2, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
 
-var copy = makeFunc(processingProxy, "copy", [{ "srcImg": [int_$11, "PImage"] }, { "sx": int_$11 }, { "sy": int_$11 }, { "swidth": int_$11 }, { "sheight": int_$11 }, { "dx": int_$11 }, { "dy": int_$11 }, { "dwidth": int_$11 }, { "dheight": int_$11, optional: optional }]);
+var copy = makeFunc(processingProxy, "copy", [{ "srcImg": [int_$14, "PImage"] }, { "sx": int_$14 }, { "sy": int_$14 }, { "swidth": int_$14 }, { "sheight": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14, optional: optional }]);
 
-var filter = makeFunc(processingProxy, "filter", [{ "MODE": int_$11, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": "PImage", optional: optional }]);
+var filter = makeFunc(processingProxy, "filter", [{ "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": "PImage", optional: optional }]);
 
-var get$1 = makeFunc(processingProxy, "get", [{ "x": int_$11, optional: optional }, { "y": int_$11, optional: optional }, { "width": int_$11, optional: optional }, { "height": int_$11, optional: optional }]);
+var get$1 = makeFunc(processingProxy, "get", [{ "x": int_$14, optional: optional }, { "y": int_$14, optional: optional }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
 
 var loadPixels = makeFunc(processingProxy, "loadPixels");
 
-var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$11 }, { "y": int_$11 }, { "image": ["color", "PImage"] }]);
+var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$14 }, { "y": int_$14 }, { "image": ["color", "PImage"] }]);
 
 var updatePixels = makeFunc(processingProxy, "updatePixels");
-
-var _Sk$ffi$1 = Sk.ffi;
-var remapToPy$2 = _Sk$ffi$1.remapToPy;
-var remapToJs$1 = _Sk$ffi$1.remapToJs;
-var _Sk$builtin$11 = Sk.builtin;
-var func$1 = _Sk$builtin$11.func;
-var int_$10 = _Sk$builtin$11.int_;
-var buildClass$1 = Sk.misceval.buildClass;
-
-
-function environmentClass($gbl, $loc) {
-    $loc.__getattr__ = new func$1(function (self, key) {
-        switch (remapToJs$1(key)) {
-            case "frameCount":
-                return remapToPy$2(processingProxy.frameCount);
-            case "frameRate":
-                return remapToPy$2(processingProxy.frameRate);
-            case "height":
-                return remapToPy$2(processingProxy.height);
-            case "width":
-                return remapToPy$2(processingProxy.width);
-            case "online":
-                return remapToPy$2(processingProxy.online);
-            case "focused":
-                return remapToPy$2(processingProxy.focused);
-            default:
-                return undefined;
-        }
-    });
-}
-
-var EnvironmentBuilder = function EnvironmentBuilder(mod) {
-    return buildClass$1(mod, environmentClass, "Environment", []);
-};
-
-var cursor = makeFunc(processingProxy, "cursor", [{ "image": [PImageBuilder, int_$10], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
-
-var noCursor = makeFunc(processingProxy, "noCursor");
-
-var height = function height() {
-    return remapToPy$2(processingProxy.height);
-};
-var width = function width() {
-    return remapToPy$2(processingProxy.width);
-};
-var frameCount = function frameCount() {
-    return remapToPy$2(processingProxy.frameCount);
-};
-var frameRate = function frameRate() {
-    return remapToPy$2(processingProxy.frameRate);
-};
-
-var focused = function focused() {
-    return remapToPy$2(processingProxy.focused);
-};
-
-var str$3 = Sk.builtin.str;
-
-
-var files = {
-    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$3 }]),
-    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$3 }]),
-    createInput: notImplemented,
-    open: notImplemented,
-    selectFolder: notImplemented,
-    selectInput: notImplemented
-};
-
-var LEFT = remappedConstants.LEFT;
-var CENTER$2 = remappedConstants.CENTER;
-var RIGHT = remappedConstants.RIGHT;
-var TOP = remappedConstants.TOP;
-var BOTTOM = remappedConstants.BOTTOM;
-var BASELINE = remappedConstants.BASELINE;
-var MODEL = remappedConstants.MODEL;
-var SCREEN$2 = remappedConstants.SCREEN;
-var SHAPE = remappedConstants.SHAPE;
-var _Sk$builtin$13 = Sk.builtin;
-var int_$12 = _Sk$builtin$13.int_;
-var float_$10 = _Sk$builtin$13.float_;
-var str$4 = _Sk$builtin$13.str;
-
-
-var fontattribues = {
-    textAlign: makeFunc(processingProxy, "textAlign", [{ "ALIGN": int_$12, allowed: [LEFT, CENTER$2, RIGHT] }, { "YALIGN": int_$12, allowed: [TOP, BOTTOM, BASELINE, CENTER$2] }]),
-
-    textLeading: makeFunc(processingProxy, "textLeading", [{ "dist": [int_$12, float_$10] }]),
-
-    textMode: makeFunc(processingProxy, "textMode", [{ "MODE": int_$12, allowed: [MODEL, SCREEN$2, SHAPE] }]),
-
-    textSize: makeFunc(processingProxy, "textSize", [{ "size": [int_$12, float_$10] }]),
-
-    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$4 }])
-};
-
-var fontmetrics = {
-    textAscent: makeFunc(processingProxy, "textAscent"),
-    textDescent: makeFunc(processingProxy, "textDescent")
-};
-
-var _Sk$builtin$14 = Sk.builtin;
-var func$3 = _Sk$builtin$14.func;
-var float_$11 = _Sk$builtin$14.float_;
-var list$2 = _Sk$builtin$14.list;
-var str$5 = _Sk$builtin$14.str;
-var bool = _Sk$builtin$14.bool;
-var int_$13 = _Sk$builtin$14.int_;
-var buildClass$3 = Sk.misceval.buildClass;
-
-
-function fontClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(function (self, input) {
-        self.v = new processingProxy.PFont(input);
-    }, "__init__", [self$1, { "input ": str$5 }]);
-
-    $loc.list = new func$3(function (self) {
-        return new list$2(self.v.list());
-    });
-}
-
-var PFontBuilder = function PFontBuilder(mod) {
-    return buildClass$3(mod, fontClass, "PFont", []);
-};
-
-var createFont = makeFunc(processingProxy, "createFont", [{ "name": str$5 }, { "size": [int_$13, float_$11] }, { "smooth": bool, optional: optional }, { "charset": str$5, optional: optional }]);
-
-var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$5 }]);
-
-var text = makeFunc(processingProxy, "text", [{ "data": [str$5, int_$13, float_$11] }, { "x": [int_$13, float_$11] }, { "y": [int_$13, float_$11] }, { "z": [int_$13, float_$11], optional: optional }, { "height": [int_$13, float_$11], optional: optional }, { "z": [int_$13, float_$11], optional: optional }]);
-
-var textFont = makeFunc(processingProxy, "textFont", [{ "font": "PFont" }, { "size": [int_$13, float_$11], optional: optional }]);
-
-var P2D = constants.P2D;
-var JAVA2D = constants.JAVA2D;
-var WEBGL = constants.WEBGL;
-var P3D = constants.P3D;
-var OPENGL = constants.OPENGL;
-var PDF = constants.PDF;
-var DXF = constants.DXF;
-var _Sk$builtin$15 = Sk.builtin;
-var int_$14 = _Sk$builtin$15.int_;
-var func$4 = _Sk$builtin$15.func;
-var _Sk$misceval = Sk.misceval;
-var buildClass$4 = _Sk$misceval.buildClass;
-var callsim$2 = _Sk$misceval.callsim;
-var _Sk$ffi$3 = Sk.ffi;
-var remapToPy$4 = _Sk$ffi$3.remapToPy;
-var remapToJs$3 = _Sk$ffi$3.remapToJs;
-
-
-function graphicsInit(self, width, height, renderer) {
-    self.v = processingProxy.createGraphics(width, height, renderer);
-}
-
-function graphicsClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(graphicsInit, "__init__", [self$1, { "width": int_$14 }, { "height": int_$14 }, { "renderer": int_$14, allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF], optional: optional }]);
-
-    $loc.beginDraw = new func$4(function (self) {
-        self.v.beginDraw();
-    });
-
-    $loc.endDraw = new func$4(function (self) {
-        self.v.endDraw();
-    });
-
-    $loc.__getattr__ = new func$4(function (self, key) {
-        var prop = self.v[remapToJs$3(key)];
-        if (prop !== undefined) {
-            if (typeof prop === "function") {
-                return new func$4(function (self) {
-                    var args = Array.from(arguments).map(remapToJs$3);
-                    return remapToPy$4(prop.apply(self.v, args));
-                });
-            }
-
-            return remapToPy$4(prop);
-        }
-    });
-}
-
-var PGraphicsBuilder = function PGraphicsBuilder(mod) {
-    return buildClass$4(mod, graphicsClass, "PGraphics", []);
-};
-
-var createGraphics = new func$4(function (width, height, renderer) {
-    return callsim$2(exports.PGraphics, width, height, renderer);
-});
-
-var hint = new func$4(function (item) {
-    // hint(item)
-    processingProxy.hint(item);
-});
 
 var _Sk$ffi$4 = Sk.ffi;
 var remapToPy$5 = _Sk$ffi$4.remapToPy;
@@ -1436,6 +1458,23 @@ function noLoop() {
 }
 
 function size(width, height, renderer) {
+    if (renderer === undefined || renderer === P2D$1 || renderer === JAVA2D$1) {
+        // monkey patching image to make sure toImageData returns something.
+        // 2017 Chrome 64 doesn't always return something the first call.
+        // this is a VERY HACKY way to deal with that synchronously.
+        processing.toImageData = function (x, y, w, h) {
+            x = x !== undefined ? x : 0;
+            y = y !== undefined ? y : 0;
+            w = w !== undefined ? w : processing.width;
+            h = h !== undefined ? h : processing.height;
+            var res = undefined;
+            while (res === undefined) {
+                res = processing.externals.context.getImageData(x, y, w, h);
+            }
+            return res;
+        };
+    }
+
     processing.size(width, height, renderer);
 }
 

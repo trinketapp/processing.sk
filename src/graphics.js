@@ -10,6 +10,22 @@ const { remapToPy, remapToJs } = Sk.ffi;
 
 function graphicsInit(self, width, height, renderer) {
     self.v = processingProxy.createGraphics(width, height, renderer);
+    if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
+        // monkey patching image to make sure toImageData returns something.
+        // 2017 Chrome 64 doesn't always return something the first call.
+        // this is a VERY HACKY way to deal with that synchronously.
+        self.v.toImageData = function(x, y, w, h) {
+            x = x !== undefined ? x : 0;
+            y = y !== undefined ? y : 0;
+            w = w !== undefined ? w : processingProxy.width;
+            h = h !== undefined ? h : processingProxy.height;
+            let res = undefined;
+            while (res === undefined) {
+                res = self.v.externals.context.getImageData(x, y, w, h);
+            }
+            return res;
+        };
+    }
 }
 
 function graphicsClass($gbl, $loc) {
