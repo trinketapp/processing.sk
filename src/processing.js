@@ -63,6 +63,7 @@ export let PImage;
 export let PShape;
 export let PGraphics;
 export let PVector;
+export let PFont;
 
 export let processing = processingProxy;
 
@@ -97,10 +98,10 @@ export function main() {
     PShape = PShapeBuilder(mod);
     PGraphics = PGraphicsBuilder(mod);
     PVector = vectorBuilder(mod);
+    PFont = PFontBuilder(mod);
 
     let Environment = EnvironmentBuilder(mod);
     let environment = callsim(Environment);
-    let PFont = PFontBuilder(mod);
     let Mouse = MouseBuilder(mod);
     let mouse = callsim(Mouse);
     let Keyboard = KeyboardBuilder(mod);

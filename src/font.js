@@ -1,23 +1,35 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, self } from "./utils.js";
-
+import { PFont } from "./processing.js";
 const { func, float_, list, str, bool, int_ } = Sk.builtin;
-const { buildClass } = Sk.misceval;
+const { buildClass, callsim, loadname } = Sk.misceval;
+
+
+function createFontFunction (name, size, smooth, charset) {
+    let font = processingProxy.createFont(name, size, smooth, charset);
+    let pfont = callsim(PFont);
+    pfont.v = font;
+    return pfont;
+}
 
 function fontClass ($gbl, $loc) {
     $loc.__init__ = makeFunc(function (self, input) {
-        self.v = new processingProxy.PFont(input);
+        if (input) {
+            self.v = new processingProxy.PFont(input);
+        }
     }, "__init__", [
         self,
-        { "input ": str }
+        { "input ": str, optional }
     ]);
 
-    $loc.list = new func((self) => new list(self.v.list()));
+    let staticmethod = loadname("staticmethod", $gbl);
+    let list_func = new func(() => new list(processingProxy.PFont.list()));
+    $loc.list = callsim(staticmethod, list_func);
 }
 
 export const PFontBuilder = mod => buildClass(mod, fontClass, "PFont", []);
 
-export const createFont = makeFunc(processingProxy, "createFont", [
+export const createFont = makeFunc(createFontFunction, "createFont", [
     { "name": str },
     { "size": [ int_, float_ ]},
     { "smooth": bool, optional },

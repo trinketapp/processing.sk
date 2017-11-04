@@ -838,24 +838,38 @@ var list$1 = _Sk$builtin$13.list;
 var str$4 = _Sk$builtin$13.str;
 var bool = _Sk$builtin$13.bool;
 var int_$12 = _Sk$builtin$13.int_;
-var buildClass$2 = Sk.misceval.buildClass;
+var _Sk$misceval = Sk.misceval;
+var buildClass$2 = _Sk$misceval.buildClass;
+var callsim$2 = _Sk$misceval.callsim;
+var loadname = _Sk$misceval.loadname;
 
+
+function createFontFunction(name, size, smooth, charset) {
+    var font = processingProxy.createFont(name, size, smooth, charset);
+    var pfont = callsim$2(exports.PFont);
+    pfont.v = font;
+    return pfont;
+}
 
 function fontClass($gbl, $loc) {
     $loc.__init__ = makeFunc(function (self, input) {
-        self.v = new processingProxy.PFont(input);
-    }, "__init__", [self$1, { "input ": str$4 }]);
+        if (input) {
+            self.v = new processingProxy.PFont(input);
+        }
+    }, "__init__", [self$1, { "input ": str$4, optional: optional }]);
 
-    $loc.list = new func$2(function (self) {
-        return new list$1(self.v.list());
+    var staticmethod = loadname("staticmethod", $gbl);
+    var list_func = new func$2(function () {
+        return new list$1(processingProxy.PFont.list());
     });
+    $loc.list = callsim$2(staticmethod, list_func);
 }
 
 var PFontBuilder = function PFontBuilder(mod) {
     return buildClass$2(mod, fontClass, "PFont", []);
 };
 
-var createFont = makeFunc(processingProxy, "createFont", [{ "name": str$4 }, { "size": [int_$12, float_$10] }, { "smooth": bool, optional: optional }, { "charset": str$4, optional: optional }]);
+var createFont = makeFunc(createFontFunction, "createFont", [{ "name": str$4 }, { "size": [int_$12, float_$10] }, { "smooth": bool, optional: optional }, { "charset": str$4, optional: optional }]);
 
 var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$4 }]);
 
@@ -873,9 +887,9 @@ var DXF = constants.DXF;
 var _Sk$builtin$14 = Sk.builtin;
 var int_$13 = _Sk$builtin$14.int_;
 var func$3 = _Sk$builtin$14.func;
-var _Sk$misceval = Sk.misceval;
-var buildClass$3 = _Sk$misceval.buildClass;
-var callsim$2 = _Sk$misceval.callsim;
+var _Sk$misceval$1 = Sk.misceval;
+var buildClass$3 = _Sk$misceval$1.buildClass;
+var callsim$3 = _Sk$misceval$1.callsim;
 var _Sk$ffi$2 = Sk.ffi;
 var remapToPy$3 = _Sk$ffi$2.remapToPy;
 var remapToJs$2 = _Sk$ffi$2.remapToJs;
@@ -932,7 +946,7 @@ var PGraphicsBuilder = function PGraphicsBuilder(mod) {
 };
 
 var createGraphics = new func$3(function (width, height, renderer) {
-    return callsim$2(exports.PGraphics, width, height, renderer);
+    return callsim$3(exports.PGraphics, width, height, renderer);
 });
 
 var hint = new func$3(function (item) {
@@ -1557,9 +1571,9 @@ var trigonometry = {
 var _Sk$builtin$24 = Sk.builtin;
 var int_$22 = _Sk$builtin$24.int_;
 var float_$18 = _Sk$builtin$24.float_;
-var _Sk$misceval$1 = Sk.misceval;
-var callsim$3 = _Sk$misceval$1.callsim;
-var buildClass$9 = _Sk$misceval$1.buildClass;
+var _Sk$misceval$2 = Sk.misceval;
+var callsim$4 = _Sk$misceval$2.callsim;
+var buildClass$9 = _Sk$misceval$2.buildClass;
 var remapToPy$9 = Sk.ffi.remapToPy;
 
 
@@ -1572,55 +1586,55 @@ function vectorSet(self, x, y, z) {
 }
 
 function vectorGet(self) {
-    var vector = callsim$3(exports.PVector);
+    var vector = callsim$4(exports.PVector);
     vector.v = self.v.get();
     return vector;
 }
 
 function vectorAdd(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.add(vec);
     return new_vec;
 }
 
 function vectorSub(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.sub(vec);
     return new_vec;
 }
 
 function vectorMult(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.mult(vec);
     return new_vec;
 }
 
 function vectorDiv(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.div(vec);
     return new_vec;
 }
 
 function vectorDot(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.dot(vec);
     return new_vec;
 }
 
 function vectorCross(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.cross(vec);
     return new_vec;
 }
 
 function vectorDist(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.dist(vec);
     return new_vec;
 }
 
 function vectorAngleBetween(self, vec) {
-    var new_vec = callsim$3(exports.PVector);
+    var new_vec = callsim$4(exports.PVector);
     new_vec.v = self.v.angleBetween(vec);
     return new_vec;
 }
@@ -1748,6 +1762,7 @@ exports.PImage = void 0;
 exports.PShape = void 0;
 exports.PGraphics = void 0;
 exports.PVector = void 0;
+exports.PFont = void 0;
 
 var processing = processingProxy;
 
@@ -1782,10 +1797,10 @@ function main() {
     exports.PShape = PShapeBuilder(mod);
     exports.PGraphics = PGraphicsBuilder(mod);
     exports.PVector = vectorBuilder(mod);
+    exports.PFont = PFontBuilder(mod);
 
     var Environment = EnvironmentBuilder(mod);
     var environment = callsim(Environment);
-    var PFont = PFontBuilder(mod);
     var Mouse = MouseBuilder(mod);
     var mouse = callsim(Mouse);
     var Keyboard = KeyboardBuilder(mod);
@@ -1793,7 +1808,7 @@ function main() {
     var Screen = ScreenBuilder(mod);
     var screen = callsim(Screen);
 
-    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: exports.color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
+    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: exports.color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: exports.PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape);
 
