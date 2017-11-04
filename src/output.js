@@ -2,9 +2,10 @@ import Sk from "./skulpt.js";
 import { processingProxy, notImplemented, makeFunc } from "./utils.js";
 
 const { object, str, list } = Sk.builtin;
+const { print_ } = Sk.misceval;
 
 export default {
-    println: makeFunc(processingProxy, "println", [
+    println: makeFunc(print_, "println", [
         { "data": object }
     ]),
 

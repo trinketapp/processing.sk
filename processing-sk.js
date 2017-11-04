@@ -1260,10 +1260,11 @@ var _Sk$builtin$18 = Sk.builtin;
 var object = _Sk$builtin$18.object;
 var str$6 = _Sk$builtin$18.str;
 var list$3 = _Sk$builtin$18.list;
+var print_ = Sk.misceval.print_;
 
 
 var output = {
-    println: makeFunc(processingProxy, "println", [{ "data": object }]),
+    println: makeFunc(print_, "println", [{ "data": object }]),
 
     save: makeFunc(processingProxy, "save", [{ "filename": str$6 }]),
 
