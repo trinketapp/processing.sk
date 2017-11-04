@@ -181,7 +181,7 @@ var twodprimitives = {
 
     rect: makeFunc(processingProxy, "rect", [{ "x": [int_, float_] }, { "y": [int_, float_] }, { "width": [int_, float_] }, { "height": [int_, float_] }, { "tlradius": [int_, float_], optional: optional }, { "trradius": [int_, float_], optional: optional }, { "brradius": [int_, float_], optional: optional }, { "blradius": [int_, float_], optional: optional }]),
 
-    triagle: makeFunc(processingProxy, "triangle", [{ "x1": [int_, float_] }, { "y1": [int_, float_] }, { "x2": [int_, float_] }, { "y2": [int_, float_] }, { "x3": [int_, float_] }, { "y3": [int_, float_] }])
+    triangle: makeFunc(processingProxy, "triangle", [{ "x1": [int_, float_] }, { "y1": [int_, float_] }, { "x2": [int_, float_] }, { "y2": [int_, float_] }, { "x3": [int_, float_] }, { "y3": [int_, float_] }])
 };
 
 var _Sk$builtin$2 = Sk.builtin;

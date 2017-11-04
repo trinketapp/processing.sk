@@ -51,7 +51,7 @@ export default {
         { "brradius": [ int_, float_ ], optional },
         { "blradius": [ int_, float_ ], optional }]),
 
-    triagle: makeFunc(processingProxy, "triangle", [
+    triangle: makeFunc(processingProxy, "triangle", [
         { "x1": [ int_, float_ ] },
         { "y1": [ int_, float_ ] },
         { "x2": [ int_, float_ ] },
