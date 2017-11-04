@@ -115,7 +115,7 @@ function imageClass($gbl, $loc) {
 
     $loc.copy = makeFunc(imageCopy, "copy", [
         self,
-        { "srcImg": [ int_, PImage ]},
+        { "srcImg": [ int_, "PImage" ]},
         { "sx": int_ },
         { "sy": int_ },
         { "swidth": int_ },
@@ -128,12 +128,12 @@ function imageClass($gbl, $loc) {
 
     $loc.mask = makeFunc(imageMask, "mask", [
         self,
-        { "maskImg": [PImage, list] }
+        { "maskImg": ["PImage", list] }
     ]);
 
     $loc.blend = makeFunc(imageBlend, "blend", [
         self,
-        { "srcImg": [ int_, PImage ]},
+        { "srcImg": [ int_, "PImage" ]},
         { "x": int_ },
         { "y": int_ },
         { "width": int_ },
@@ -149,7 +149,7 @@ function imageClass($gbl, $loc) {
     $loc.filter = makeFunc(imageFilter, "filter", [
         self,
         { "MODE": int_, allowed: [ THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE ]},
-        { "srcImg": PImage, optional }
+        { "srcImg": "PImage", optional }
     ]);
 
     $loc.save = makeFunc(imageSave, "save", [

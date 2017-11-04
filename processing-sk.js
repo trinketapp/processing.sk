@@ -1078,13 +1078,13 @@ function imageClass($gbl, $loc) {
 
     $loc.set = makeFunc(imageSet, "set", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "color": "color" }]);
 
-    $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$14, exports.PImage] }, { "sx": int_$14 }, { "sy": int_$14 }, { "swidth": int_$14 }, { "sheight": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14, optional: optional }]);
+    $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$14, "PImage"] }, { "sx": int_$14 }, { "sy": int_$14 }, { "swidth": int_$14 }, { "sheight": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14, optional: optional }]);
 
-    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": [exports.PImage, list$2] }]);
+    $loc.mask = makeFunc(imageMask, "mask", [self$1, { "maskImg": ["PImage", list$2] }]);
 
-    $loc.blend = makeFunc(imageBlend, "blend", [self$1, { "srcImg": [int_$14, exports.PImage] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14 }, { "height": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14 }, { "MODE": int_$14, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$2, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
+    $loc.blend = makeFunc(imageBlend, "blend", [self$1, { "srcImg": [int_$14, "PImage"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14 }, { "height": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14 }, { "MODE": int_$14, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$2, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
 
-    $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": exports.PImage, optional: optional }]);
+    $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": "PImage", optional: optional }]);
 
     $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$5 }]);
 
