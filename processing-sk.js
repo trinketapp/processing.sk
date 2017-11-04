@@ -1715,7 +1715,7 @@ var vertex = {
 
     endShape: makeFunc(processingProxy, "endShape", [{ "MODE": int_$23, allowed: [CLOSE], optional: optional }]),
 
-    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19] }, { "u": [int_$23, float_$19], optional: optional }, { "v": [int_$23, float_$19], optional: optional }]),
+    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$23, float_$19] }, { "y": [int_$23, float_$19] }, { "z": [int_$23, float_$19], optional: optional }, { "u": [int_$23, float_$19], optional: optional }, { "v": [int_$23, float_$19], optional: optional }]),
 
     bezierVertex: makeFunc(processingProxy, "bezierVertex", [{ "cx1": [int_$23, float_$19] }, { "cy1": [int_$23, float_$19] }, { "cz1": [int_$23, float_$19] }, { "cx2": [int_$23, float_$19] }, { "cy2": [int_$23, float_$19] }, { "cz2": [int_$23, float_$19] }, { "x": [int_$23, float_$19], optional: optional }, { "y": [int_$23, float_$19], optional: optional }, { "z": [int_$23, float_$19], optional: optional }]),
 

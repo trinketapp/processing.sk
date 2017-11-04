@@ -19,7 +19,7 @@ export default {
     vertex: makeFunc(processingProxy, "vertex", [
         { "x": [ int_, float_ ] },
         { "y": [ int_, float_ ] },
-        { "z": [ int_, float_ ] },
+        { "z": [ int_, float_ ], optional },
         { "u": [ int_, float_ ], optional },
         { "v": [ int_, float_ ], optional }
     ]),
