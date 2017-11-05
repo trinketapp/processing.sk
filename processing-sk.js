@@ -1016,14 +1016,16 @@ function imageLoadImage(img) {
 
     susp.data = {
         type: "Sk.promise",
-        promise: new Promise(function (resolve) {
+        promise: Promise.race([new Promise(function (resolve) {
+            return setTimeout(resolve, 3000);
+        }), new Promise(function (resolve) {
             var image = callsim$4(exports.PImage);
             var i = processingProxy.loadImage(imageUrl, {}, function () {
                 image.v = i;
                 resolve(image);
             });
-        }).then(function (image) {
-            if (image.v.sourceImg.width === 0) {
+        })]).then(function (image) {
+            if (!image) {
                 throw new IOError("[Errno 2] No such file or directory: '" + img + "'");
             } else {
                 return image;
@@ -1873,7 +1875,6 @@ function main() {
 
                     // keep calling draw untill all promisses have been resolved
                     if (wait) {
-                        Sk.misceval.print_("waiting");
                         return;
                     }
 

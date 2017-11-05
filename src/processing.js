@@ -151,7 +151,6 @@ export function main() {
 
                     // keep calling draw untill all promisses have been resolved
                     if (wait) {
-                        Sk.misceval.print_("waiting");
                         return;
                     }
 

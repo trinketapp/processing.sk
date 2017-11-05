@@ -31,14 +31,17 @@ function imageLoadImage(img) {
 
     susp.data = {
         type: "Sk.promise",
-        promise: new Promise(resolve => {
-            var image = callsim(PImage);
-            var i = processingProxy.loadImage(imageUrl, {}, () => {
-                image.v = i;
-                resolve(image);
-            });
-        }).then(image => {
-            if (image.v.sourceImg.width === 0) {
+        promise: Promise.race([
+            new Promise(resolve => setTimeout(resolve, 3000)),
+            new Promise(resolve => {
+                var image = callsim(PImage);
+                var i = processingProxy.loadImage(imageUrl, {}, () => {
+                    image.v = i;
+                    resolve(image);
+                });
+            })
+        ]).then(image => {
+            if (!image) {
                 throw new IOError(`[Errno 2] No such file or directory: '${img}'`);
             } else {
                 return image;
