@@ -960,7 +960,11 @@ var int_$14 = _Sk$builtin$15.int_;
 var list$2 = _Sk$builtin$15.list;
 var str$5 = _Sk$builtin$15.str;
 var float_$11 = _Sk$builtin$15.float_;
-var buildClass$4 = Sk.misceval.buildClass;
+var IOError = _Sk$builtin$15.IOError;
+var _Sk$misceval$2 = Sk.misceval;
+var buildClass$4 = _Sk$misceval$2.buildClass;
+var callsim$4 = _Sk$misceval$2.callsim;
+var Suspension = _Sk$misceval$2.Suspension;
 var _Sk$ffi$3 = Sk.ffi;
 var remapToJs$3 = _Sk$ffi$3.remapToJs;
 var remapToPy$4 = _Sk$ffi$3.remapToPy;
@@ -993,18 +997,41 @@ var CENTER$2 = remappedConstants.CENTER;
 
 
 function imageLoadImage(img) {
+
     var imageUrl = img;
 
     if (typeof Sk.imageProxy === "function") {
         imageUrl = Sk.imageProxy(img);
     }
 
-    var i = processingProxy.loadImage(imageUrl);
-    pushImage(i);
+    var susp = new Suspension();
 
-    var image = Sk.misceval.callsim(exports.PImage);
-    image.v = i;
-    return image;
+    susp.resume = function () {
+        if (susp.data["error"]) {
+            throw susp.data["error"];
+        }
+
+        return susp.data["result"];
+    };
+
+    susp.data = {
+        type: "Sk.promise",
+        promise: new Promise(function (resolve) {
+            var image = callsim$4(exports.PImage);
+            var i = processingProxy.loadImage(imageUrl, {}, function () {
+                image.v = i;
+                resolve(image);
+            });
+        }).then(function (image) {
+            if (image.v.sourceImg.width === 0) {
+                throw new IOError("[Errno 2] No such file or directory: '" + img + "'");
+            } else {
+                return image;
+            }
+        })
+    };
+
+    return susp;
 }
 
 function imageRequestImage(filename, extension) {
@@ -1465,7 +1492,6 @@ function loop() {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
-    setLooping(true);
     processing.loop();
 }
 
@@ -1474,7 +1500,6 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    setLooping(false);
     processing.noLoop();
 }
 
@@ -1572,9 +1597,9 @@ var trigonometry = {
 var _Sk$builtin$24 = Sk.builtin;
 var int_$22 = _Sk$builtin$24.int_;
 var float_$18 = _Sk$builtin$24.float_;
-var _Sk$misceval$2 = Sk.misceval;
-var callsim$4 = _Sk$misceval$2.callsim;
-var buildClass$9 = _Sk$misceval$2.buildClass;
+var _Sk$misceval$3 = Sk.misceval;
+var callsim$5 = _Sk$misceval$3.callsim;
+var buildClass$9 = _Sk$misceval$3.buildClass;
 var remapToPy$9 = Sk.ffi.remapToPy;
 
 
@@ -1587,55 +1612,55 @@ function vectorSet(self, x, y, z) {
 }
 
 function vectorGet(self) {
-    var vector = callsim$4(exports.PVector);
+    var vector = callsim$5(exports.PVector);
     vector.v = self.v.get();
     return vector;
 }
 
 function vectorAdd(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.add(vec);
     return new_vec;
 }
 
 function vectorSub(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.sub(vec);
     return new_vec;
 }
 
 function vectorMult(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.mult(vec);
     return new_vec;
 }
 
 function vectorDiv(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.div(vec);
     return new_vec;
 }
 
 function vectorDot(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.dot(vec);
     return new_vec;
 }
 
 function vectorCross(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.cross(vec);
     return new_vec;
 }
 
 function vectorDist(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.dist(vec);
     return new_vec;
 }
 
 function vectorAngleBetween(self, vec) {
-    var new_vec = callsim$4(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.angleBetween(vec);
     return new_vec;
 }
@@ -1735,27 +1760,14 @@ var web = {
 };
 
 var callsim = Sk.misceval.callsim;
-var IOError = Sk.builtin.IOError;
 
-
-var looping = true;
 
 exports.processingInstance = {};
 
 var mod = {};
 
-var imList = [];
-
 function isInitialised() {
     return processing == null;
-}
-
-function setLooping(bool) {
-    looping = bool;
-}
-
-function pushImage(image$$1) {
-    imList.push(image$$1);
 }
 
 exports.color = void 0;
@@ -1844,31 +1856,6 @@ function main() {
                 // retry until all the images are loaded.  If noLoop was called in setup then make
                 // sure to revert to that after all the images in hand.
 
-                var wait = false;
-
-                for (var i in imList) {
-                    if (imList[i].sourceImg.width === 0) {
-                        if (imList[i].sourceImg.complete) {
-                            throw new IOError("couldn't load image " + imList[i].sourceImg.src);
-                        }
-
-                        wait = true;
-                    }
-                }
-
-                if (wait === true) {
-                    if (looping === true) {
-                        return;
-                    } else {
-                        processing.loop();
-                        return;
-                    }
-                } else {
-                    if (looping === false) {
-                        processing.noLoop();
-                    }
-                }
-
                 if (Sk.globals["draw"]) {
                     try {
                         Sk.misceval.callsimOrSuspend(Sk.globals["draw"]);
@@ -1934,8 +1921,6 @@ function main() {
 }
 
 exports.isInitialised = isInitialised;
-exports.setLooping = setLooping;
-exports.pushImage = pushImage;
 exports.processing = processing;
 exports.init = init;
 exports.main = main;

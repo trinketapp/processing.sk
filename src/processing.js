@@ -36,26 +36,13 @@ import Sk from "./skulpt.js";
 import { processingProxy } from "./utils.js";
 
 const { callsim } = Sk.misceval;
-const { IOError } = Sk.builtin;
-
-let looping = true;
-
-export let processingInstance = {};
 
 const mod = {};
 
-const imList = [];
+export let processingInstance = {};
 
 export function isInitialised() {
     return processing == null;
-}
-
-export function setLooping(bool) {
-    looping = bool;
-}
-
-export function pushImage(image) {
-    imList.push(image);
 }
 
 export let color;
@@ -149,32 +136,6 @@ export function main() {
                 // if there are pending image loads then just use the natural looping calls to
                 // retry until all the images are loaded.  If noLoop was called in setup then make
                 // sure to revert to that after all the images in hand.
-
-                let wait = false;
-
-                for (var i in imList) {
-                    if (imList[i].sourceImg.width === 0) {
-                        if (imList[i].sourceImg.complete) {
-                            throw new IOError("couldn't load image " + imList[i].sourceImg.src);
-                        }
-
-                        wait = true;
-                    }
-                }
-
-                if (wait === true) {
-                    if (looping === true) {
-                        return;
-                    }
-                    else {
-                        processing.loop();
-                        return;
-                    }
-                } else {
-                    if (looping === false) {
-                        processing.noLoop();
-                    }
-                }
 
                 if (Sk.globals["draw"]) {
                     try {

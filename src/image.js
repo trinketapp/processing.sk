@@ -1,10 +1,10 @@
-import { pushImage, PImage } from "./processing.js";
+import { PImage } from "./processing.js";
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, self } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
-const { func, int_, list, str, float_ } = Sk.builtin;
-const { buildClass } = Sk.misceval;
+const { func, int_, list, str, float_, IOError } = Sk.builtin;
+const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
@@ -12,18 +12,41 @@ const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     CORNER, CORNERS, CENTER } = remappedConstants;
 
 function imageLoadImage(img) {
+
     let imageUrl = img;
 
     if (typeof Sk.imageProxy === "function") {
         imageUrl = Sk.imageProxy(img);
     }
 
-    var i = processingProxy.loadImage(imageUrl);
-    pushImage(i);
+    let susp = new Suspension();
 
-    var image = Sk.misceval.callsim(PImage);
-    image.v = i;
-    return image;
+    susp.resume = function() {
+        if (susp.data["error"]) {
+            throw susp.data["error"];
+        }
+
+        return susp.data["result"];
+    };
+
+    susp.data = {
+        type: "Sk.promise",
+        promise: new Promise(resolve => {
+            var image = callsim(PImage);
+            var i = processingProxy.loadImage(imageUrl, {}, () => {
+                image.v = i;
+                resolve(image);
+            });
+        }).then(image => {
+            if (image.v.sourceImg.width === 0) {
+                throw new IOError(`[Errno 2] No such file or directory: '${img}'`);
+            } else {
+                return image;
+            }
+        })
+    };
+
+    return susp;
 }
 
 function imageRequestImage(filename, extension) {

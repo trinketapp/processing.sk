@@ -1,4 +1,4 @@
-import { processing, setLooping, isInitialised } from "./processing.js";
+import { processing, isInitialised } from "./processing.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
@@ -11,7 +11,6 @@ function loop() {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
-    setLooping(true);
     processing.loop();
 }
 
@@ -20,7 +19,6 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    setLooping(false);
     processing.noLoop();
 }
 
