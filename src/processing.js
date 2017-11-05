@@ -35,9 +35,11 @@ import web from "./web.js";
 import Sk from "./skulpt.js";
 import { processingProxy } from "./utils.js";
 
-const { callsim } = Sk.misceval;
+const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
 const mod = {};
+
+let noLoopAfterAync = false;
 
 export let processingInstance = {};
 
@@ -62,6 +64,10 @@ export function init(path) {
             path: `${path}/__init__.js`,
         },
     });
+}
+
+export function requestNoLoop() {
+    noLoopAfterAync = true;
 }
 
 export function main() {
@@ -127,28 +133,46 @@ export function main() {
         };
 
         function sketchProc(proc) {
+            let promisses = [];
+            let wait = true;
+
             processingInstance = proc;
 
             proc.externals.sketch.onExit = finish;
 
-            // FIXME if no Sk.globals["draw"], then no need for this
-            proc.draw = function () {
-                // if there are pending image loads then just use the natural looping calls to
-                // retry until all the images are loaded.  If noLoop was called in setup then make
-                // sure to revert to that after all the images in hand.
+            if (Sk.globals["draw"]) {
+                proc.draw = function () {
+                    Promise.all(promisses)
+                        .then(() => wait = false)
+                        .catch(e => {
+                            exceptionOccurred(e);
+                            proc.exit();
+                        });
 
-                if (Sk.globals["draw"]) {
-                    try {
-                        Sk.misceval.callsimOrSuspend(Sk.globals["draw"]);
-                    } catch (e) {
-                        exceptionOccurred(e);
-                        proc.exit();
+                    // keep calling draw untill all promisses have been resolved
+                    if (wait) {
+                        Sk.misceval.print_("waiting");
+                        return;
                     }
-                }
-            };
+
+                    // if noLoop was called from python only stop looping after all
+                    // async stuff happened.
+                    if (noLoopAfterAync) {
+                        proc.noLoop();
+                        return;
+                    }
+
+                    promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"])));
+                };
+            }
+
+            if (Sk.globals["setup"])
+            {
+                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"])));
+            }
 
             var callBacks = [
-                "setup", "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
+                "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
                 "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"
             ];
 
@@ -158,7 +182,8 @@ export function main() {
                         let callback = callBacks[cb];
                         proc[callback] = () =>  {
                             try {
-                                Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
+                                // event handlers can't be asynchronous.
+                                Sk.misceval.callsim(Sk.globals[callback]);
                             } catch(e) {
                                 exceptionOccurred(e);
                                 if (processingInstance) {

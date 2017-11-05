@@ -838,10 +838,10 @@ var list$1 = _Sk$builtin$13.list;
 var str$4 = _Sk$builtin$13.str;
 var bool = _Sk$builtin$13.bool;
 var int_$12 = _Sk$builtin$13.int_;
-var _Sk$misceval = Sk.misceval;
-var buildClass$2 = _Sk$misceval.buildClass;
-var callsim$2 = _Sk$misceval.callsim;
-var loadname = _Sk$misceval.loadname;
+var _Sk$misceval$1 = Sk.misceval;
+var buildClass$2 = _Sk$misceval$1.buildClass;
+var callsim$2 = _Sk$misceval$1.callsim;
+var loadname = _Sk$misceval$1.loadname;
 
 
 function createFontFunction(name, size, smooth, charset) {
@@ -887,9 +887,9 @@ var DXF = constants.DXF;
 var _Sk$builtin$14 = Sk.builtin;
 var int_$13 = _Sk$builtin$14.int_;
 var func$3 = _Sk$builtin$14.func;
-var _Sk$misceval$1 = Sk.misceval;
-var buildClass$3 = _Sk$misceval$1.buildClass;
-var callsim$3 = _Sk$misceval$1.callsim;
+var _Sk$misceval$2 = Sk.misceval;
+var buildClass$3 = _Sk$misceval$2.buildClass;
+var callsim$3 = _Sk$misceval$2.callsim;
 var _Sk$ffi$2 = Sk.ffi;
 var remapToPy$3 = _Sk$ffi$2.remapToPy;
 var remapToJs$2 = _Sk$ffi$2.remapToJs;
@@ -961,10 +961,10 @@ var list$2 = _Sk$builtin$15.list;
 var str$5 = _Sk$builtin$15.str;
 var float_$11 = _Sk$builtin$15.float_;
 var IOError = _Sk$builtin$15.IOError;
-var _Sk$misceval$2 = Sk.misceval;
-var buildClass$4 = _Sk$misceval$2.buildClass;
-var callsim$4 = _Sk$misceval$2.callsim;
-var Suspension = _Sk$misceval$2.Suspension;
+var _Sk$misceval$3 = Sk.misceval;
+var buildClass$4 = _Sk$misceval$3.buildClass;
+var callsim$4 = _Sk$misceval$3.callsim;
+var Suspension = _Sk$misceval$3.Suspension;
 var _Sk$ffi$3 = Sk.ffi;
 var remapToJs$3 = _Sk$ffi$3.remapToJs;
 var remapToPy$4 = _Sk$ffi$3.remapToPy;
@@ -1488,7 +1488,7 @@ var DXF$1 = remappedConstants.DXF;
 
 
 function loop() {
-    if (isInitialised) {
+    if (isInitialised()) {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
@@ -1500,7 +1500,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    processing.noLoop();
+    processing.requestNoLoop();
 }
 
 function size(width, height, renderer) {
@@ -1597,9 +1597,9 @@ var trigonometry = {
 var _Sk$builtin$24 = Sk.builtin;
 var int_$22 = _Sk$builtin$24.int_;
 var float_$18 = _Sk$builtin$24.float_;
-var _Sk$misceval$3 = Sk.misceval;
-var callsim$5 = _Sk$misceval$3.callsim;
-var buildClass$9 = _Sk$misceval$3.buildClass;
+var _Sk$misceval$4 = Sk.misceval;
+var callsim$5 = _Sk$misceval$4.callsim;
+var buildClass$9 = _Sk$misceval$4.buildClass;
 var remapToPy$9 = Sk.ffi.remapToPy;
 
 
@@ -1759,12 +1759,17 @@ var web = {
     status: makeFunc(processingProxy, "status", [{ "text": str$8 }])
 };
 
-var callsim = Sk.misceval.callsim;
+var _Sk$misceval = Sk.misceval;
+var callsim = _Sk$misceval.callsim;
+var asyncToPromise = _Sk$misceval.asyncToPromise;
+var callsimOrSuspend = _Sk$misceval.callsimOrSuspend;
 
-
-exports.processingInstance = {};
 
 var mod = {};
+
+var noLoopAfterAync = false;
+
+exports.processingInstance = {};
 
 function isInitialised() {
     return processing == null;
@@ -1787,6 +1792,10 @@ function init(path) {
             path: path + "/__init__.js"
         }
     });
+}
+
+function requestNoLoop() {
+    noLoopAfterAync = true;
 }
 
 function main() {
@@ -1846,27 +1855,48 @@ function main() {
         };
 
         function sketchProc(proc) {
+            var promisses = [];
+            var wait = true;
+
             exports.processingInstance = proc;
 
             proc.externals.sketch.onExit = finish;
 
-            // FIXME if no Sk.globals["draw"], then no need for this
-            proc.draw = function () {
-                // if there are pending image loads then just use the natural looping calls to
-                // retry until all the images are loaded.  If noLoop was called in setup then make
-                // sure to revert to that after all the images in hand.
-
-                if (Sk.globals["draw"]) {
-                    try {
-                        Sk.misceval.callsimOrSuspend(Sk.globals["draw"]);
-                    } catch (e) {
+            if (Sk.globals["draw"]) {
+                proc.draw = function () {
+                    Promise.all(promisses).then(function () {
+                        return wait = false;
+                    }).catch(function (e) {
                         exceptionOccurred(e);
                         proc.exit();
-                    }
-                }
-            };
+                    });
 
-            var callBacks = ["setup", "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
+                    // keep calling draw untill all promisses have been resolved
+                    if (wait) {
+                        Sk.misceval.print_("waiting");
+                        return;
+                    }
+
+                    // if noLoop was called from python only stop looping after all
+                    // async stuff happened.
+                    if (noLoopAfterAync) {
+                        proc.noLoop();
+                        return;
+                    }
+
+                    promisses.push(asyncToPromise(function () {
+                        return callsimOrSuspend(Sk.globals["draw"]);
+                    }));
+                };
+            }
+
+            if (Sk.globals["setup"]) {
+                promisses.push(asyncToPromise(function () {
+                    return callsimOrSuspend(Sk.globals["setup"]);
+                }));
+            }
+
+            var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
 
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
@@ -1874,7 +1904,8 @@ function main() {
                         var callback = callBacks[cb];
                         proc[callback] = function () {
                             try {
-                                Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
+                                // event handlers can't be asynchronous.
+                                Sk.misceval.callsim(Sk.globals[callback]);
                             } catch (e) {
                                 exceptionOccurred(e);
                                 if (exports.processingInstance) {
@@ -1923,6 +1954,7 @@ function main() {
 exports.isInitialised = isInitialised;
 exports.processing = processing;
 exports.init = init;
+exports.requestNoLoop = requestNoLoop;
 exports.main = main;
 
 Object.defineProperty(exports, '__esModule', { value: true });

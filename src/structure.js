@@ -7,7 +7,7 @@ const { int_ } = Sk.builtin;
 const { P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF } = remappedConstants;
 
 function loop() {
-    if (isInitialised) {
+    if (isInitialised()) {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
@@ -19,7 +19,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    processing.noLoop();
+    processing.requestNoLoop();
 }
 
 function size(width, height, renderer) {
