@@ -4,12 +4,15 @@ import { processingProxy, makeFunc, optional, self } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
 const { func, int_, list, str, float_, IOError } = Sk.builtin;
+const { sattr } = Sk.abstr;
 const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
     THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE,
     CORNER, CORNERS, CENTER } = remappedConstants;
+
+let PixelProxy = null;
 
 function imageLoadImage(img) {
 
@@ -59,6 +62,7 @@ function imageRequestImage(filename, extension) {
 }
 
 function imageInit(self, arg1, arg2, arg3) {
+    sattr(self, "pixels", callsim(PixelProxy, self));
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
 }
 
@@ -102,6 +106,29 @@ function imageUpdatePixels(self, x, y, w, h) {
     self.v.updatePixels(x, y, w, h);
 }
 
+function pixelProxy($glb, $loc) {
+    $loc.__init__ = makeFunc(function(self, image) {
+        self.image = image;
+    }, "__init__", [
+        self,
+        { "image": "PImage" }
+    ]);
+
+    $loc.__getitem__ = makeFunc(function(self, index) {
+        let x = Math.floor(index / self.image.v.width);
+        let y = index % self.image.v.width;
+        return self.image.v.get(x, y);
+    }, "__getitem__", [ self, { "index": int_ }]);
+
+    $loc.__setitem__ = makeFunc(function(self, index, color) {
+        let x = Math.floor(index / self.image.v.width);
+        let y = index % self.image.v.width;
+        return self.image.v.set(x, y, color);
+    }, "__setitem__", [ self, { "index": int_, "color": "PColor" }]);
+
+    $loc.__len__ = makeFunc(() => self.image.v.width * self.image.v.height, "__len__");
+}
+
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [
@@ -118,9 +145,6 @@ function imageClass($gbl, $loc) {
         }
         if (key === "height") {
             return remapToPy(self.v.height);
-        }
-        if (key === "pixels") {
-            return remapToPy(self.v.pixels);
         }
     });
 
@@ -200,7 +224,10 @@ function imageClass($gbl, $loc) {
     ]);
 }
 
-const PImageBuilder = mod => buildClass(mod, imageClass, "PImage", []);
+const PImageBuilder = mod => {
+    PixelProxy = buildClass(mod, pixelProxy, "ImageProxy", []);
+    return buildClass(mod, imageClass, "PImage", []);
+};
 
 export default PImageBuilder;
 

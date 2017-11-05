@@ -961,6 +961,7 @@ var list$2 = _Sk$builtin$15.list;
 var str$5 = _Sk$builtin$15.str;
 var float_$11 = _Sk$builtin$15.float_;
 var IOError = _Sk$builtin$15.IOError;
+var sattr = Sk.abstr.sattr;
 var _Sk$misceval$3 = Sk.misceval;
 var buildClass$4 = _Sk$misceval$3.buildClass;
 var callsim$4 = _Sk$misceval$3.callsim;
@@ -995,6 +996,8 @@ var CORNER$1 = remappedConstants.CORNER;
 var CORNERS$1 = remappedConstants.CORNERS;
 var CENTER$2 = remappedConstants.CENTER;
 
+
+var PixelProxy = null;
 
 function imageLoadImage(img) {
 
@@ -1043,6 +1046,7 @@ function imageRequestImage(filename, extension) {
 }
 
 function imageInit(self, arg1, arg2, arg3) {
+    sattr(self, "pixels", callsim$4(PixelProxy, self));
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
 }
 
@@ -1086,6 +1090,28 @@ function imageUpdatePixels(self, x, y, w, h) {
     self.v.updatePixels(x, y, w, h);
 }
 
+function pixelProxy($glb, $loc) {
+    $loc.__init__ = makeFunc(function (self, image) {
+        self.image = image;
+    }, "__init__", [self$1, { "image": "PImage" }]);
+
+    $loc.__getitem__ = makeFunc(function (self, index) {
+        var x = Math.floor(index / self.image.v.width);
+        var y = index % self.image.v.width;
+        return self.image.v.get(x, y);
+    }, "__getitem__", [self$1, { "index": int_$14 }]);
+
+    $loc.__setitem__ = makeFunc(function (self, index, color$$1) {
+        var x = Math.floor(index / self.image.v.width);
+        var y = index % self.image.v.width;
+        return self.image.v.set(x, y, color$$1);
+    }, "__setitem__", [self$1, { "index": int_$14, "color": "PColor" }]);
+
+    $loc.__len__ = makeFunc(function () {
+        return self$1.image.v.width * self$1.image.v.height;
+    }, "__len__");
+}
+
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$5], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
@@ -1097,9 +1123,6 @@ function imageClass($gbl, $loc) {
         }
         if (key === "height") {
             return remapToPy$4(self.v.height);
-        }
-        if (key === "pixels") {
-            return remapToPy$4(self.v.pixels);
         }
     });
 
@@ -1125,6 +1148,7 @@ function imageClass($gbl, $loc) {
 }
 
 var PImageBuilder = function PImageBuilder(mod) {
+    PixelProxy = buildClass$4(mod, pixelProxy, "ImageProxy", []);
     return buildClass$4(mod, imageClass, "PImage", []);
 };
 
