@@ -16,7 +16,7 @@ import fontmetrics from "./font-metrics.js";
 import { PFontBuilder, createFont, loadFont, text, textFont } from "./font.js";
 import { PGraphicsBuilder, createGraphics, hint } from "./graphics.js";
 import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage,
-    tint, blend, copy, filter, get, loadPixels, set, updatePixels } from "./image.js";
+    tint, blend, copy, filter, get, loadPixels, set, updatePixels, pixels } from "./image.js";
 import { KeyboardBuilder, keyCode, key, keyPressed } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
@@ -107,7 +107,7 @@ export function main() {
         { Environment, environment, cursor, noCursor, height, width, frameCount, frameRate, focused },
         files, fontattribues, fontmetrics, { PFont, createFont, loadFont, text, textFont },
         { PGraphics, createGraphics, hint }, { PImage }, { image, createImage, imageMode, loadImage,
-            noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels },
+            noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels, pixels },
         { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
             mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape);

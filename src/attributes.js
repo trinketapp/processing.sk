@@ -1,8 +1,8 @@
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc } from "./utils.js";
+import { processingProxy, makeFunc, ignored, optional } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
-const { int_, str } = Sk.builtin;
+const { int_, str, float_ } = Sk.builtin;
 const { ROUND, SQUARE, BUTT, MITTER, BEVEL,
     CENTER, RADIUS, CORNER, CORNERS  } = remappedConstants;
 
@@ -12,7 +12,10 @@ export default {
     ]),
 
     noSmooth: makeFunc(processingProxy, "noSmooth"),
-    smooth: makeFunc(processingProxy, "smooth"),
+
+    smooth: makeFunc(processingProxy, "smooth", [
+        { "level": int_, allows: [ 2, 4, 8 ], ignored, optional }
+    ]),
 
     rectMode: makeFunc(processingProxy, "rectMode", [
         { "mode": int_, allowed: [ CENTER, RADIUS, CORNER, CORNERS ] }
@@ -27,6 +30,6 @@ export default {
     ]),
 
     strokeWeight: makeFunc(processingProxy, "strokeWeight", [
-        { "width": int_ }
+        { "width": [ int_, float_ ] }
     ])
 };

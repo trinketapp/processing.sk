@@ -71,7 +71,9 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let args = argsToArray(arguments).filter(a => a !== undefined);
 
-        let js_args = args.map((a, i) => largs_template[i] === self ? a : remapToJs(a));
+        let js_args =
+            args.filter((a, i) => largs_template[i].ignored === undefined || ! largs_template[i].ignored)
+                .map((a, i) => largs_template[i] === self ? a : remapToJs(a));
 
         pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
 
@@ -86,6 +88,8 @@ export function makeFunc(thingToWrap, name, args_template) {
 }
 
 export const optional = true;
+
+export const ignored = true;
 
 export const self = { "self": true };
 

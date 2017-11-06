@@ -26,5 +26,7 @@ export default {
     random: makeFunc(processingProxy, "random", [
         { low: [ int_, float_ ] },
         { high: [ int_, float_ ], optional }
-    ])
+    ]),
+
+    randomGaussian: makeFunc(processingProxy, "randomGaussian")
 };

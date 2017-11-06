@@ -325,9 +325,9 @@ export const set = makeFunc(processingProxy, "set", [
 export const updatePixels = makeFunc(processingProxy, "updatePixels");
 
 export function pixels() {
-    let pp = callsim(PixelProxy)
+    let pp = callsim(PixelProxy);
     pp.image = {
         pixels: processingProxy.pixels
-    }
+    };
     return pp;
 }
