@@ -1054,7 +1054,9 @@ function imageInit(self, arg1, arg2, arg3) {
 }
 
 function imageGet(self, x, y, width, height) {
-    return self.v.get(x, y, width, height);
+    return self.v.get.apply(self.v[(x, y, width, height)].filter(function (a) {
+        return a !== undefined;
+    }));
 }
 
 function imageSet(self, x, y, color$$1) {
