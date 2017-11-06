@@ -1054,9 +1054,17 @@ function imageInit(self, arg1, arg2, arg3) {
 }
 
 function imageGet(self, x, y, width, height) {
-    return self.v.get.apply(self.v[(x, y, width, height)].filter(function (a) {
+    var args = [x, y, width, height].filter(function (a) {
         return a !== undefined;
-    }));
+    });
+    if (args.length == 2) {
+        return self.v.get.apply(self.v, args);
+    }
+
+    var image = callsim$4(exports.PImage);
+    image.v = self.v.get.apply(self.v, args);
+    sattr(image, "pixels", callsim$4(PixelProxy, image));
+    return image;
 }
 
 function imageSet(self, x, y, color$$1) {
@@ -1164,7 +1172,7 @@ var createImage = makeFunc(function (width, height, format) {
     return image;
 }, "createFunc", [{ "width": int_$14 }, { "height": int_$14 }, { "format": int_$14, allowed: [RGB$1, ARGB, ALPHA] }]);
 
-var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
+var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"] }, { "x": [int_$14, float_$11] }, { "y": [int_$14, float_$11] }, { "width": [int_$14, float_$11], optional: optional }, { "height": [int_$14, float_$11], optional: optional }]);
 
 var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$14, allowed: [CORNER$1, CORNERS$1, CENTER$2] }]);
 

@@ -67,7 +67,15 @@ function imageInit(self, arg1, arg2, arg3) {
 }
 
 function imageGet(self, x, y, width, height) {
-    return self.v.get.apply(self.v [x, y, width, height].filter(a => a !== undefined));
+    var args = [x, y, width, height].filter(a => a !== undefined);
+    if (args.length == 2) {
+        return self.v.get.apply(self.v, args);
+    }
+
+    var image = callsim(PImage);
+    image.v = self.v.get.apply(self.v, args);
+    sattr(image, "pixels", callsim(PixelProxy, image));
+    return image;
 }
 
 function imageSet(self, x, y, color) {
@@ -244,10 +252,10 @@ export const createImage = makeFunc(function (width, height, format) {
 
 export const image = makeFunc(processingProxy, "image", [
     { "img": [ "PImage", "PGraphics"] },
-    { "x": int_ },
-    { "y": int_ },
-    { "width": int_, optional },
-    { "height": int_, optional }
+    { "x": [ int_, float_ ] },
+    { "y": [ int_, float_ ] },
+    { "width": [ int_, float_ ], optional },
+    { "height": [ int_, float_ ], optional }
 ]);
 
 export const imageMode = makeFunc(processingProxy, "imageMode", [
