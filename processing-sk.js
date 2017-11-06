@@ -1254,7 +1254,7 @@ var lights = {
 
     pointLight: makeFunc(processingProxy, "pointLight", [{ "v1": [int_$15, float_$12] }, { "v2": [int_$15, float_$12] }, { "v3": [int_$15, float_$12] }, { "nx": [int_$15, float_$12] }, { "ny": [int_$15, float_$12] }, { "nz": [int_$15, float_$12] }]),
 
-    spotLight: makeFunc(processingProxy, "spotLight", [{ "v1": [int_$15, float_$12] }, { "v2": [int_$15, float_$12] }, { "v3": [int_$15, float_$12] }, { "nx": [int_$15, float_$12] }, { "ny": [int_$15, float_$12] }, { "nz": [int_$15, float_$12] }, { "angle": [int_$15, float_$12] }, { "concentration": [int_$15, float_$12] }])
+    spotLight: makeFunc(processingProxy, "spotLight", [{ "v1": [int_$15, float_$12] }, { "v2": [int_$15, float_$12] }, { "v3": [int_$15, float_$12] }, { "x": [int_$15, float_$12] }, { "y": [int_$15, float_$12] }, { "z": [int_$15, float_$12] }, { "nx": [int_$15, float_$12] }, { "ny": [int_$15, float_$12] }, { "nz": [int_$15, float_$12] }, { "angle": [int_$15, float_$12] }, { "concentration": [int_$15, float_$12] }])
 };
 
 var _Sk$builtin$17 = Sk.builtin;
