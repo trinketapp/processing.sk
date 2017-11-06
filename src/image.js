@@ -119,19 +119,15 @@ function pixelProxy($glb, $loc) {
         self.image = image;
     }, "__init__", [
         self,
-        { "image": "PImage" }
+        { "image": "PImage", optional }
     ]);
 
     $loc.__getitem__ = makeFunc(function(self, index) {
-        let x = index % self.image.width;
-        let y = Math.floor(index / self.image.width);
-        return self.image.get(x, y);
+        return self.image.pixels[index];
     }, "__getitem__", [ self, { "index": int_ }]);
 
     $loc.__setitem__ = makeFunc(function(self, index, color) {
-        let x = index % self.image.width;
-        let y = Math.floor(index / self.image.width);
-        return self.image.set(x, y, color);
+        return self.image.pixels[index] = color;
     }, "__setitem__", [ self, { "index": int_ }, { "color": "color" }]);
 
     $loc.__len__ = makeFunc(self => self.image.width * self.image.height, "__len__", [ self ]);
@@ -327,3 +323,11 @@ export const set = makeFunc(processingProxy, "set", [
 ]);
 
 export const updatePixels = makeFunc(processingProxy, "updatePixels");
+
+export function pixels() {
+    let pp = callsim(PixelProxy)
+    pp.image = {
+        pixels: processingProxy.pixels
+    }
+    return pp;
+}
