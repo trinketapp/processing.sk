@@ -12,7 +12,7 @@ export default {
         { "value": [ int_, float_ ] }
     ]),
 
-    constrain: makeFunc(processingProxy, "contrain", [
+    constrain: makeFunc(processingProxy, "constrain", [
         { "value": [ int_, float_ ] },
         { "min" : [ int_, float_ ] },
         { "max": [ int_, float_ ] }

@@ -545,7 +545,7 @@ var calculation = {
 
     ceil: makeFunc(processingProxy, "ceil", [{ "value": [int_$3, float_$2] }]),
 
-    constrain: makeFunc(processingProxy, "contrain", [{ "value": [int_$3, float_$2] }, { "min": [int_$3, float_$2] }, { "max": [int_$3, float_$2] }]),
+    constrain: makeFunc(processingProxy, "constrain", [{ "value": [int_$3, float_$2] }, { "min": [int_$3, float_$2] }, { "max": [int_$3, float_$2] }]),
 
     dist: makeFunc(processingProxy, "dist", [{ "x1": [int_$3, float_$2] }, { "y1": [int_$3, float_$2] }, { "z1": [int_$3, float_$2] }, { "x2": [int_$3, float_$2] }, { "y2": [int_$3, float_$2], optional: optional }, { "z2": [int_$3, float_$2], optional: optional }]),
 
