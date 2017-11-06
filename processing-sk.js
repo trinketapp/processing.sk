@@ -995,6 +995,9 @@ var DILATE = remappedConstants.DILATE;
 var CORNER$1 = remappedConstants.CORNER;
 var CORNERS$1 = remappedConstants.CORNERS;
 var CENTER$2 = remappedConstants.CENTER;
+var RGB$1 = remappedConstants.RGB;
+var ARGB = remappedConstants.ARGB;
+var ALPHA = remappedConstants.ALPHA;
 
 
 var PixelProxy = null;
@@ -1046,8 +1049,8 @@ function imageRequestImage(filename, extension) {
 }
 
 function imageInit(self, arg1, arg2, arg3) {
-    sattr(self, "pixels", callsim$4(PixelProxy, self));
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
+    sattr(self, "pixels", callsim$4(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -1096,20 +1099,20 @@ function pixelProxy($glb, $loc) {
     }, "__init__", [self$1, { "image": "PImage" }]);
 
     $loc.__getitem__ = makeFunc(function (self, index) {
-        var x = Math.floor(index / self.image.v.width);
-        var y = index % self.image.v.width;
-        return self.image.v.get(x, y);
+        var x = index % self.image.width;
+        var y = Math.floor(index / self.image.width);
+        return self.image.get(x, y);
     }, "__getitem__", [self$1, { "index": int_$14 }]);
 
     $loc.__setitem__ = makeFunc(function (self, index, color$$1) {
-        var x = Math.floor(index / self.image.v.width);
-        var y = index % self.image.v.width;
-        return self.image.v.set(x, y, color$$1);
-    }, "__setitem__", [self$1, { "index": int_$14, "color": "PColor" }]);
+        var x = index % self.image.width;
+        var y = Math.floor(index / self.image.width);
+        return self.image.set(x, y, color$$1);
+    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": "color" }]);
 
-    $loc.__len__ = makeFunc(function () {
-        return self$1.image.v.width * self$1.image.v.height;
-    }, "__len__");
+    $loc.__len__ = makeFunc(function (self) {
+        return self.image.width * self.image.height;
+    }, "__len__", [self$1]);
 }
 
 function imageClass($gbl, $loc) {
@@ -1152,11 +1155,12 @@ var PImageBuilder = function PImageBuilder(mod) {
     return buildClass$4(mod, imageClass, "PImage", []);
 };
 
-var createImage = new Sk.builtin.func(function (width, height, format) {
+var createImage = makeFunc(function (width, height, format) {
     var image = Sk.misceval.callsim(exports.PImage);
-    image.v = processingProxy.createImage(width.v, height.v, format.v);
+    image.v = processingProxy.createImage(width, height, format);
+    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
-});
+}, "createFunc", [{ "width": int_$14 }, { "height": int_$14 }, { "format": int_$14, allowed: [RGB$1, ARGB, ALPHA] }]);
 
 var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
 

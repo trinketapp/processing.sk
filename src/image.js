@@ -10,7 +10,7 @@ const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
     MULTIPLY, SCREEN, OVERLAY, HARD, LIGHT, SOFT_LIGHT, DODGE, BURN,
     THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE,
-    CORNER, CORNERS, CENTER } = remappedConstants;
+    CORNER, CORNERS, CENTER, RGB, ARGB, ALPHA} = remappedConstants;
 
 let PixelProxy = null;
 
@@ -62,8 +62,8 @@ function imageRequestImage(filename, extension) {
 }
 
 function imageInit(self, arg1, arg2, arg3) {
-    sattr(self, "pixels", callsim(PixelProxy, self));
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
+    sattr(self, "pixels", callsim(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -115,18 +115,18 @@ function pixelProxy($glb, $loc) {
     ]);
 
     $loc.__getitem__ = makeFunc(function(self, index) {
-        let x = Math.floor(index / self.image.v.width);
-        let y = index % self.image.v.width;
-        return self.image.v.get(x, y);
+        let x = index % self.image.width;
+        let y = Math.floor(index / self.image.width);
+        return self.image.get(x, y);
     }, "__getitem__", [ self, { "index": int_ }]);
 
     $loc.__setitem__ = makeFunc(function(self, index, color) {
-        let x = Math.floor(index / self.image.v.width);
-        let y = index % self.image.v.width;
-        return self.image.v.set(x, y, color);
-    }, "__setitem__", [ self, { "index": int_, "color": "PColor" }]);
+        let x = index % self.image.width;
+        let y = Math.floor(index / self.image.width);
+        return self.image.set(x, y, color);
+    }, "__setitem__", [ self, { "index": int_ }, { "color": "color" }]);
 
-    $loc.__len__ = makeFunc(() => self.image.v.width * self.image.v.height, "__len__");
+    $loc.__len__ = makeFunc(self => self.image.width * self.image.height, "__len__", [ self ]);
 }
 
 function imageClass($gbl, $loc) {
@@ -231,11 +231,16 @@ const PImageBuilder = mod => {
 
 export default PImageBuilder;
 
-export const createImage = new Sk.builtin.func(function (width, height, format) {
-    var image = Sk.misceval.callsim(PImage);
-    image.v = processingProxy.createImage(width.v, height.v, format.v);
+export const createImage = makeFunc(function (width, height, format) {
+    let image = Sk.misceval.callsim(PImage);
+    image.v = processingProxy.createImage(width, height, format);
+    sattr(image, "pixels", callsim(PixelProxy, image));
     return image;
-});
+}, "createFunc", [
+    { "width": int_ },
+    { "height": int_ },
+    { "format": int_, allowed: [ RGB, ARGB, ALPHA ] }
+]);
 
 export const image = makeFunc(processingProxy, "image", [
     { "img": [ "PImage", "PGraphics"] },
