@@ -39,7 +39,7 @@ const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
 const mod = {};
 
-let noLoopAfterAync = false;
+let noLoopAfterAsync = false;
 
 export let processingInstance = {};
 
@@ -67,7 +67,7 @@ export function init(path) {
 }
 
 export function requestNoLoop() {
-    noLoopAfterAync = true;
+    noLoopAfterAsync = true;
 }
 
 export function main() {
@@ -113,6 +113,7 @@ export function main() {
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
+        noLoopAfterAsync = false;
         let susp = new Sk.misceval.Suspension();
         let exceptionOccurred = null;
         let finish = null;
@@ -156,9 +157,8 @@ export function main() {
 
                     // if noLoop was called from python only stop looping after all
                     // async stuff happened.
-                    if (noLoopAfterAync) {
+                    if (noLoopAfterAsync) {
                         proc.noLoop();
-                        return;
                     }
 
                     promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"])));

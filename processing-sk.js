@@ -1530,7 +1530,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    processing.requestNoLoop();
+    requestNoLoop();
 }
 
 function size(width, height, renderer) {
@@ -1797,7 +1797,7 @@ var callsimOrSuspend = _Sk$misceval.callsimOrSuspend;
 
 var mod = {};
 
-var noLoopAfterAync = false;
+var noLoopAfterAsync = false;
 
 exports.processingInstance = {};
 
@@ -1825,7 +1825,7 @@ function init(path) {
 }
 
 function requestNoLoop() {
-    noLoopAfterAync = true;
+    noLoopAfterAsync = true;
 }
 
 function main() {
@@ -1865,6 +1865,7 @@ function main() {
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape);
 
     mod.run = new Sk.builtin.func(function () {
+        noLoopAfterAsync = false;
         var susp = new Sk.misceval.Suspension();
         var exceptionOccurred = null;
         var finish = null;
@@ -1908,9 +1909,8 @@ function main() {
 
                     // if noLoop was called from python only stop looping after all
                     // async stuff happened.
-                    if (noLoopAfterAync) {
+                    if (noLoopAfterAsync) {
                         proc.noLoop();
-                        return;
                     }
 
                     promisses.push(asyncToPromise(function () {
