@@ -6,6 +6,8 @@ const {
     func,
     NotImplementedError,
     pyCheckArgs,
+    ValueError,
+    TypeError
 } = Sk.builtin;
 
 const {
@@ -73,7 +75,19 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let js_args =
             args.filter((a, i) => largs_template[i].ignored === undefined || ! largs_template[i].ignored)
-                .map((a, i) => largs_template[i] === self ? a : remapToJs(a));
+                .map((a, i) => {
+                    let template = largs_template[i];
+
+                    if (template === self) {
+                        return a;
+                    }
+
+                    if (template.converter) {
+                        return template.converter(remapToJs(a));
+                    }
+
+                    return remapToJs(a);
+                });
 
         pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
 
@@ -85,6 +99,19 @@ export function makeFunc(thingToWrap, name, args_template) {
     };
 
     return new func(jsfunc);
+}
+
+export function strToColor(input) {
+    if (typeof input === "string") {
+        let res = /#([A-F0-9]{6})/g.exec(input);
+        if (res.length !== 2) {
+            throw new ValueError(`${input} not in the correct format for a color expecting "#AB12F4"`);
+        }
+
+        return parseInt(res[1], 16) + 0xFF000000;
+    }
+
+    return input;
 }
 
 export const optional = true;

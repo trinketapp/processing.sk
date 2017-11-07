@@ -55,6 +55,8 @@ var str = _Sk$builtin$1.str;
 var func = _Sk$builtin$1.func;
 var NotImplementedError = _Sk$builtin$1.NotImplementedError;
 var pyCheckArgs = _Sk$builtin$1.pyCheckArgs;
+var ValueError = _Sk$builtin$1.ValueError;
+var TypeError$1 = _Sk$builtin$1.TypeError;
 var _Sk$ffi = Sk.ffi;
 var remapToJs = _Sk$ffi.remapToJs;
 var remapToPy = _Sk$ffi.remapToPy;
@@ -100,7 +102,7 @@ function pyCheckTypes(name, args) {
 
             return arg instanceof a && (!a.allowed || arg in a.allowed);
         })) {
-            throw new TypeError(name + ": " + argName + " (value: " + remapToJs(arg) + ") not of type " + template[argName].map(function (t) {
+            throw new TypeError$1(name + ": " + argName + " (value: " + remapToJs(arg) + ") not of type " + template[argName].map(function (t) {
                 return t.tp$name;
             }));
         }
@@ -132,7 +134,17 @@ function makeFunc(thingToWrap, name, args_template) {
         var js_args = args.filter(function (a, i) {
             return largs_template[i].ignored === undefined || !largs_template[i].ignored;
         }).map(function (a, i) {
-            return largs_template[i] === self$1 ? a : remapToJs(a);
+            var template = largs_template[i];
+
+            if (template === self$1) {
+                return a;
+            }
+
+            if (template.converter) {
+                return template.converter(remapToJs(a));
+            }
+
+            return remapToJs(a);
         });
 
         pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
@@ -147,6 +159,19 @@ function makeFunc(thingToWrap, name, args_template) {
     };
 
     return new func(jsfunc);
+}
+
+function strToColor(input) {
+    if (typeof input === "string") {
+        var res = /#([A-F0-9]{6})/g.exec(input);
+        if (res.length !== 2) {
+            throw new ValueError(input + " not in the correct format for a color expecting \"#AB12F4\"");
+        }
+
+        return parseInt(res[1], 16) + 0xFF000000;
+    }
+
+    return input;
 }
 
 var optional = true;
@@ -660,6 +685,7 @@ var HSB = remappedConstants.HSB;
 var _Sk$builtin$7 = Sk.builtin;
 var int_$6 = _Sk$builtin$7.int_;
 var float_$6 = _Sk$builtin$7.float_;
+var str$2 = _Sk$builtin$7.str;
 
 
 var csetting = {
@@ -667,7 +693,7 @@ var csetting = {
 
     colorMode: makeFunc(processingProxy, "colorMode", [{ "mode": int_$6, allowed: [RGB, HSB] }, { "range1": [int_$6, float_$6], optional: optional }, { "range2": [int_$6, float_$6], optional: optional }, { "range3": [int_$6, float_$6], optional: optional }, { "range4": [int_$6, float_$6], optional: optional }]),
 
-    fill: makeFunc(processingProxy, "fill", [{ "value1": [int_$6, float_$6, "color"] }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
+    fill: makeFunc(processingProxy, "fill", [{ "value1": [int_$6, float_$6, "color", str$2], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
 
     noFill: makeFunc(processingProxy, "noFill"),
 
@@ -679,6 +705,7 @@ var csetting = {
 var _Sk$builtin$8 = Sk.builtin;
 var float_$7 = _Sk$builtin$8.float_;
 var int_$7 = _Sk$builtin$8.int_;
+var str$3 = _Sk$builtin$8.str;
 var buildClass = Sk.misceval.buildClass;
 
 
@@ -687,7 +714,7 @@ function colorInit(self, val1, val2, val3, alpha) {
 }
 
 function colorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(colorInit, "__init__", [self$1, { "gray": [int_$7, float_$7] }, { "aplha": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "hex": [int_$7, float_$7], optional: optional }]);
+    $loc.__init__ = makeFunc(colorInit, "__init__", [self$1, { "gray": [int_$7, float_$7, str$3], "converter": strToColor }, { "aplha": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "hex": [int_$7, float_$7], optional: optional }]);
 }
 
 var colorBuilder = (function (mod) {
@@ -793,12 +820,12 @@ var focused = function focused() {
     return remapToPy$2(processingProxy.focused);
 };
 
-var str$2 = Sk.builtin.str;
+var str$4 = Sk.builtin.str;
 
 
 var files = {
-    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$2 }]),
-    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$2 }]),
+    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$4 }]),
+    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$4 }]),
     createInput: notImplemented,
     open: notImplemented,
     selectFolder: notImplemented,
@@ -817,7 +844,7 @@ var SHAPE = remappedConstants.SHAPE;
 var _Sk$builtin$12 = Sk.builtin;
 var int_$11 = _Sk$builtin$12.int_;
 var float_$10 = _Sk$builtin$12.float_;
-var str$3 = _Sk$builtin$12.str;
+var str$5 = _Sk$builtin$12.str;
 
 
 var fontattribues = {
@@ -829,7 +856,7 @@ var fontattribues = {
 
     textSize: makeFunc(processingProxy, "textSize", [{ "size": [int_$11, float_$10] }]),
 
-    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$3 }])
+    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$5 }])
 };
 
 var fontmetrics = {
@@ -841,7 +868,7 @@ var _Sk$builtin$13 = Sk.builtin;
 var func$2 = _Sk$builtin$13.func;
 var float_$11 = _Sk$builtin$13.float_;
 var list$1 = _Sk$builtin$13.list;
-var str$4 = _Sk$builtin$13.str;
+var str$6 = _Sk$builtin$13.str;
 var bool = _Sk$builtin$13.bool;
 var int_$12 = _Sk$builtin$13.int_;
 var _Sk$misceval$1 = Sk.misceval;
@@ -862,7 +889,7 @@ function fontClass($gbl, $loc) {
         if (input) {
             self.v = new processingProxy.PFont(input);
         }
-    }, "__init__", [self$1, { "input ": str$4, optional: optional }]);
+    }, "__init__", [self$1, { "input ": str$6, optional: optional }]);
 
     var staticmethod = loadname("staticmethod", $gbl);
     var list_func = new func$2(function () {
@@ -875,11 +902,11 @@ var PFontBuilder = function PFontBuilder(mod) {
     return buildClass$2(mod, fontClass, "PFont", []);
 };
 
-var createFont = makeFunc(createFontFunction, "createFont", [{ "name": str$4 }, { "size": [int_$12, float_$11] }, { "smooth": bool, optional: optional }, { "charset": str$4, optional: optional }]);
+var createFont = makeFunc(createFontFunction, "createFont", [{ "name": str$6 }, { "size": [int_$12, float_$11] }, { "smooth": bool, optional: optional }, { "charset": str$6, optional: optional }]);
 
-var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$4 }]);
+var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$6 }]);
 
-var text = makeFunc(processingProxy, "text", [{ "data": [str$4, int_$12, float_$11] }, { "x": [int_$12, float_$11] }, { "y": [int_$12, float_$11] }, { "z": [int_$12, float_$11], optional: optional }, { "height": [int_$12, float_$11], optional: optional }, { "z": [int_$12, float_$11], optional: optional }]);
+var text = makeFunc(processingProxy, "text", [{ "data": [str$6, int_$12, float_$11] }, { "x": [int_$12, float_$11] }, { "y": [int_$12, float_$11] }, { "z": [int_$12, float_$11], optional: optional }, { "height": [int_$12, float_$11], optional: optional }, { "z": [int_$12, float_$11], optional: optional }]);
 
 var textFont = makeFunc(processingProxy, "textFont", [{ "font": "PFont" }, { "size": [int_$12, float_$11], optional: optional }]);
 
@@ -964,7 +991,7 @@ var _Sk$builtin$15 = Sk.builtin;
 var func$4 = _Sk$builtin$15.func;
 var int_$14 = _Sk$builtin$15.int_;
 var list$2 = _Sk$builtin$15.list;
-var str$5 = _Sk$builtin$15.str;
+var str$7 = _Sk$builtin$15.str;
 var float_$12 = _Sk$builtin$15.float_;
 var IOError = _Sk$builtin$15.IOError;
 var sattr = Sk.abstr.sattr;
@@ -1129,7 +1156,7 @@ function pixelProxy($glb, $loc) {
 
 function imageClass($gbl, $loc) {
     /* images are loaded async.. so its best to preload them */
-    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$5], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
+    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$7], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
 
     $loc.__getattr__ = new func$4(function (self, key) {
         key = remapToJs$3(key);
@@ -1153,7 +1180,7 @@ function imageClass($gbl, $loc) {
 
     $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": "PImage", optional: optional }]);
 
-    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$5 }]);
+    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$7 }]);
 
     $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$14 }, { "high": int_$14 }]);
 
@@ -1178,11 +1205,11 @@ var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"]
 
 var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$14, allowed: [CORNER$1, CORNERS$1, CENTER$2] }]);
 
-var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$5 }]);
+var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$7 }]);
 
 var noTint = makeFunc(processingProxy, "noTint");
 
-var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$5 }, { "extension": str$5, optional: optional }]);
+var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$7 }, { "extension": str$7, optional: optional }]);
 
 var tint = makeFunc(processingProxy, "tint", [{ "value1": ["color", int_$14, float_$12] }, { "value2": [int_$14, float_$12], optional: optional }, { "value3": [int_$14, float_$12], optional: optional }, { "alpha": [int_$14, float_$12], optional: optional }]);
 
@@ -1335,7 +1362,7 @@ var mouseButton = function mouseButton() {
 
 var _Sk$builtin$18 = Sk.builtin;
 var object = _Sk$builtin$18.object;
-var str$6 = _Sk$builtin$18.str;
+var str$8 = _Sk$builtin$18.str;
 var list$3 = _Sk$builtin$18.list;
 var print_ = Sk.misceval.print_;
 
@@ -1343,11 +1370,11 @@ var print_ = Sk.misceval.print_;
 var output = {
     println: makeFunc(print_, "println", [{ "data": object }]),
 
-    save: makeFunc(processingProxy, "save", [{ "filename": str$6 }]),
+    save: makeFunc(processingProxy, "save", [{ "filename": str$8 }]),
 
-    saveFrame: makeFunc(processingProxy, "saveFrame", [{ "filename": str$6 }, { "ext": str$6, allowed: ["tif", "tga", "jpg", "png"] }]),
+    saveFrame: makeFunc(processingProxy, "saveFrame", [{ "filename": str$8 }, { "ext": str$8, allowed: ["tif", "tga", "jpg", "png"] }]),
 
-    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$6 }, { "strings": list$3 }]),
+    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$8 }, { "strings": list$3 }]),
 
     PrintWriter: notImplemented,
     beginRaw: notImplemented,
@@ -1419,7 +1446,7 @@ var CORNER$2 = remappedConstants.CORNER;
 var CORNERS$2 = remappedConstants.CORNERS;
 var CENTER$3 = remappedConstants.CENTER;
 var _Sk$builtin$21 = Sk.builtin;
-var str$7 = _Sk$builtin$21.str;
+var str$9 = _Sk$builtin$21.str;
 var int_$18 = _Sk$builtin$21.int_;
 var float_$16 = _Sk$builtin$21.float_;
 var bool$1 = _Sk$builtin$21.bool;
@@ -1522,7 +1549,7 @@ var PShapeBuilder = function PShapeBuilder(mod) {
 };
 
 var shape = {
-    loadShape: makeFunc(processingProxy, "loadShape", [{ "filename": str$7 }]),
+    loadShape: makeFunc(processingProxy, "loadShape", [{ "filename": str$9 }]),
 
     shape: makeFunc(processingProxy, "shape", [{ "sh": "PShape" }, { "x": [int_$18, float_$16] }, { "y": [int_$18, float_$16] }, { "width": [int_$18, float_$16], optional: optional }, { "height": [int_$18, float_$16], optional: optional }]),
 
@@ -1803,12 +1830,12 @@ var vertex = {
     textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$23, allowed: [IMAGE, NORMALIZED] }])
 };
 
-var str$8 = Sk.builtin.str;
+var str$10 = Sk.builtin.str;
 
 
 var web = {
-    link: makeFunc(processingProxy, "link"[({ "url": str$8 }, { "target": str$8, optional: optional })]),
-    status: makeFunc(processingProxy, "status", [{ "text": str$8 }])
+    link: makeFunc(processingProxy, "link"[({ "url": str$10 }, { "target": str$10, optional: optional })]),
+    status: makeFunc(processingProxy, "status", [{ "text": str$10 }])
 };
 
 var _Sk$misceval = Sk.misceval;
@@ -1917,6 +1944,10 @@ function main() {
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
+                    if (promisses.length === 0) {
+                        return;
+                    }
+
                     Promise.all(promisses).then(function () {
                         return wait = false;
                     }).catch(function (e) {
@@ -1945,6 +1976,8 @@ function main() {
                 promisses.push(asyncToPromise(function () {
                     return callsimOrSuspend(Sk.globals["setup"]);
                 }));
+            } else {
+                promisses.push(Promise.resolve());
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
@@ -1977,16 +2010,11 @@ function main() {
             while (mydiv.firstChild) {
                 mydiv.removeChild(mydiv.firstChild);
             }
+
             mydiv.appendChild(canvas);
         }
 
         canvas.style.display = "block";
-
-        window.Processing.logger = {
-            log: function log(message) {
-                Sk.misceval.print_(message);
-            }
-        };
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
         var instance = window.Processing.getInstanceById(Sk.canvas);

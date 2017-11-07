@@ -209,16 +209,11 @@ export function main() {
             while (mydiv.firstChild) {
                 mydiv.removeChild(mydiv.firstChild);
             }
+
             mydiv.appendChild(canvas);
         }
 
         canvas.style.display = "block";
-
-        window.Processing.logger = {
-            log: function (message) {
-                Sk.misceval.print_(message);
-            }
-        };
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
         let instance = window.Processing.getInstanceById(Sk.canvas);
