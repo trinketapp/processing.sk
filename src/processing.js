@@ -143,6 +143,10 @@ export function main() {
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
+                    if (promisses.length === 0) {
+                        return;
+                    }
+
                     Promise.all(promisses)
                         .then(() => wait = false)
                         .catch(e => {
@@ -168,6 +172,8 @@ export function main() {
             if (Sk.globals["setup"])
             {
                 promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"])));
+            } else {
+                promisses.push(Promise.resolve());
             }
 
             var callBacks = [
