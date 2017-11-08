@@ -1749,7 +1749,7 @@ function vectorLimit(self, value) {
 }
 
 function vectorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(vectorInit, "__init__", [self, { "x": int_$22, optional: optional }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
+    $loc.__init__ = makeFunc(vectorInit, "__init__", [self$1, { "x": int_$22, optional: optional }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
@@ -1762,37 +1762,37 @@ function vectorClass($gbl, $loc) {
         }
     });
 
-    $loc.get = makeFunc(vectorGet, "get", [self]), $loc.set = makeFunc(vectorSet, "set", [self, { "x": int_$22 }, { "x": int_$22, optional: optional }, { "x": int_$22, optional: optional }]);
+    $loc.get = makeFunc(vectorGet, "get", [self$1]), $loc.set = makeFunc(vectorSet, "set", [self$1, { "x": int_$22 }, { "x": int_$22, optional: optional }, { "x": int_$22, optional: optional }]);
 
     $loc.mag = makeFunc(function (self) {
         return self.v.mag();
-    }, "mag", [self]);
+    }, "mag", [self$1]);
 
-    $loc.add = makeFunc(vectorAdd, "add", [self, { "vector": "PVector" }]);
+    $loc.add = makeFunc(vectorAdd, "add", [self$1, { "vector": "PVector" }]);
 
-    $loc.sub = makeFunc(vectorSub, "sub", [self, { "vector": "PVector" }]);
+    $loc.sub = makeFunc(vectorSub, "sub", [self$1, { "vector": "PVector" }]);
 
-    $loc.mult = makeFunc(vectorMult, "mult", [self, { "vector": "PVector" }]);
+    $loc.mult = makeFunc(vectorMult, "mult", [self$1, { "vector": "PVector" }]);
 
-    $loc.div = makeFunc(vectorDiv, "div", [self, { "vector": "PVector" }]);
+    $loc.div = makeFunc(vectorDiv, "div", [self$1, { "vector": "PVector" }]);
 
-    $loc.dist = makeFunc(vectorDist, "dist", [self, { "vector": "PVector" }]);
+    $loc.dist = makeFunc(vectorDist, "dist", [self$1, { "vector": "PVector" }]);
 
-    $loc.dot = makeFunc(vectorDot, "dot", [self, { "x": [int_$22, float_$19] }, { "y": [int_$22, float_$19], optional: optional }, { "z": [int_$22, float_$19], optional: optional }]);
+    $loc.dot = makeFunc(vectorDot, "dot", [self$1, { "x": [int_$22, float_$19] }, { "y": [int_$22, float_$19], optional: optional }, { "z": [int_$22, float_$19], optional: optional }]);
 
-    $loc.cross = makeFunc(vectorCross, "cross", [self, { "vector": "PVector" }]);
+    $loc.cross = makeFunc(vectorCross, "cross", [self$1, { "vector": "PVector" }]);
 
     $loc.normalize = makeFunc(function (self) {
         return self.normalize();
-    }, "normalize", [self]);
+    }, "normalize", [self$1]);
 
-    $loc.limit = makeFunc(vectorLimit, "limit", [self, { "value": [int_$22, float_$19] }]);
+    $loc.limit = makeFunc(vectorLimit, "limit", [self$1, { "value": [int_$22, float_$19] }]);
 
-    $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [self, { "vector": "PVector" }]);
+    $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [self$1, { "vector": "PVector" }]);
 
     $loc.array = makeFunc(function (self) {
         return self.v.array();
-    }, "array", [self]);
+    }, "array", [self$1]);
 }
 
 var vectorBuilder = (function (mod) {

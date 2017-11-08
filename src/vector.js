@@ -1,6 +1,6 @@
 import Sk from "./skulpt.js";
 import { processing, PVector } from "./processing.js";
-import { makeFunc, optional } from "./utils.js";
+import { makeFunc, optional, self } from "./utils.js";
 
 const { int_, float_ } = Sk.builtin;
 const { callsim, buildClass } = Sk.misceval;
