@@ -12,7 +12,7 @@ export default {
 
     noiseDetail: makeFunc(processingProxy, "noiseDetail", [
         { "octave": int_ },
-        { "falloff": [ int_, float_ ] }
+        { "falloff": [ int_, float_ ], optional }
     ]),
 
     noiseSeed: makeFunc(processingProxy, "noiseSeed", [

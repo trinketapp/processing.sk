@@ -1397,7 +1397,7 @@ var int_$17 = _Sk$builtin$19.int_;
 var random = {
     noise: makeFunc(processingProxy, "noise", [{ "x": [int_$17, float_$15] }, { "y": [int_$17, float_$15], optional: optional }, { "z": [int_$17, float_$15], optional: optional }]),
 
-    noiseDetail: makeFunc(processingProxy, "noiseDetail", [{ "octave": int_$17 }, { "falloff": [int_$17, float_$15] }]),
+    noiseDetail: makeFunc(processingProxy, "noiseDetail", [{ "octave": int_$17 }, { "falloff": [int_$17, float_$15], optional: optional }]),
 
     noiseSeed: makeFunc(processingProxy, "noiseSeed", [{ "value": int_$17 }]),
 
