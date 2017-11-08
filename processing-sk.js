@@ -1749,7 +1749,7 @@ function vectorLimit(self, value) {
 }
 
 function vectorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(vectorInit, "__init__", [self, { "x": int_$22 }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
+    $loc.__init__ = makeFunc(vectorInit, "__init__", [self, { "x": int_$22, optional: optional }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);

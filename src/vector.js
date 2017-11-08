@@ -76,7 +76,7 @@ function vectorLimit(self, value) {
 function vectorClass($gbl, $loc) {
     $loc.__init__ = makeFunc(vectorInit, "__init__", [
         self,
-        { "x": int_ },
+        { "x": int_, optional },
         { "y": int_, optional },
         { "z": int_, optional }
     ]);
