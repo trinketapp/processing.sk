@@ -25,6 +25,7 @@ import output from "./output.js";
 import random from "./random.js";
 import { ScreenBuilder } from "./screen.js";
 import shape, { PShapeBuilder } from "./shape.js";
+import stringFunctions from "./string-functions.js";
 import structure from "./structure.js";
 import timeanddate from "./timeanddate.js";
 import transform from "./transform.js";
@@ -110,7 +111,7 @@ export function main() {
             noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels, pixels },
         { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
             mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
-        timeanddate, transform, trigonometry, { PVector }, vertex, web, shape);
+        timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
 
     mod.run = new Sk.builtin.func(function () {
         noLoopAfterAsync = false;

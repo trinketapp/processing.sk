@@ -772,6 +772,12 @@ var _Sk$builtin$11 = Sk.builtin;
 var func$1 = _Sk$builtin$11.func;
 var int_$10 = _Sk$builtin$11.int_;
 var buildClass$1 = Sk.misceval.buildClass;
+var ARROW = remappedConstants.ARROW;
+var CROSS = remappedConstants.CROSS;
+var HAND = remappedConstants.HAND;
+var MOVE = remappedConstants.MOVE;
+var TEXT = remappedConstants.TEXT;
+var WAIT = remappedConstants.WAIT;
 
 
 function environmentClass($gbl, $loc) {
@@ -799,7 +805,7 @@ var EnvironmentBuilder = function EnvironmentBuilder(mod) {
     return buildClass$1(mod, environmentClass, "Environment", []);
 };
 
-var cursor = makeFunc(processingProxy, "cursor", [{ "image": ["PImage", int_$10], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
+var cursor = makeFunc(processingProxy, "cursor", [{ "image": ["PImage", int_$10], allowed: [ARROW, CROSS, HAND, MOVE, TEXT, WAIT], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
 
 var noCursor = makeFunc(processingProxy, "noCursor");
 
@@ -1556,7 +1562,36 @@ var shape = {
     shapeMode: makeFunc(processingProxy, "shapeMode", [{ "img": int_$18, allowed: [CORNER$2, CORNERS$2, CENTER$3] }])
 };
 
-var int_$19 = Sk.builtin.int_;
+var _Sk$builtin$22 = Sk.builtin;
+var int_$19 = _Sk$builtin$22.int_;
+var float_$17 = _Sk$builtin$22.float_;
+var str$10 = _Sk$builtin$22.str;
+var list$5 = _Sk$builtin$22.list;
+
+
+var stringFunctions = {
+    join: makeFunc(processingProxy, "join", [{ "stringArray": list$5 }, { "separator": str$10 }]),
+
+    match: makeFunc(processingProxy, "match", [{ "str": str$10 }, { "regexp": str$10 }]),
+
+    matchAll: makeFunc(processingProxy, "matchAll", [{ "str": str$10 }, { "regexp": str$10 }]),
+
+    nf: makeFunc(processingProxy, "nf", [{ "value": [int_$19, float_$17, list$5] }, { "digits": int_$19 }, { "right": int_$19, optional: optional }]),
+
+    nfc: makeFunc(processingProxy, "nfc", [{ "value": [int_$19, float_$17, list$5] }, { "right": int_$19, optional: optional }]),
+
+    nfp: makeFunc(processingProxy, "nfp", [{ "value": [int_$19, float_$17, list$5] }, { "digits": int_$19 }, { "right": int_$19, optional: optional }]),
+
+    nfs: makeFunc(processingProxy, "nfs", [{ "value": [int_$19, float_$17, list$5] }, { "digits": int_$19 }, { "right": int_$19, optional: optional }]),
+
+    split: makeFunc(processingProxy, "split", [{ "string": str$10 }, { "delimiter": str$10 }]),
+
+    splitTokens: makeFunc(processingProxy, "splitTokens", [{ "string": str$10 }, { "delimiter": str$10, optional: optional }]),
+
+    trim: makeFunc(processingProxy, "trim", [{ "strOrArray": [str$10, list$5] }])
+};
+
+var int_$20 = Sk.builtin.int_;
 var P2D$1 = remappedConstants.P2D;
 var JAVA2D$1 = remappedConstants.JAVA2D;
 var WEBGL$1 = remappedConstants.WEBGL;
@@ -1607,9 +1642,15 @@ var structure = {
     loop: makeFunc(loop, "loop"),
     noLoop: makeFunc(noLoop, "noLoop"),
 
-    size: makeFunc(size, "size", [{ "width": int_$19 }, { "height": int_$19 }, { "renderer": int_$19, allowed: [P2D$1, JAVA2D$1, WEBGL$1, P3D$1, OPENGL$1, PDF$1, DXF$1], optional: optional }]),
+    size: makeFunc(size, "size", [{ "width": int_$20 }, { "height": int_$20 }, { "renderer": int_$20, allowed: [P2D$1, JAVA2D$1, WEBGL$1, P3D$1, OPENGL$1, PDF$1, DXF$1], optional: optional }]),
 
-    exit: makeFunc(processingProxy, "exit")
+    exit: makeFunc(processingProxy, "exit"),
+
+    redraw: makeFunc(processingProxy, "redraw"),
+
+    pushStyle: makeFunc(processingProxy, "pushStyle"),
+
+    popStyle: makeFunc(processingProxy, "popStyle")
 };
 
 var timeanddate = {
@@ -1622,60 +1663,60 @@ var timeanddate = {
     year: makeFunc(processingProxy, "year")
 };
 
-var _Sk$builtin$22 = Sk.builtin;
-var float_$17 = _Sk$builtin$22.float_;
-var int_$20 = _Sk$builtin$22.int_;
+var _Sk$builtin$23 = Sk.builtin;
+var float_$18 = _Sk$builtin$23.float_;
+var int_$21 = _Sk$builtin$23.int_;
 
 
 var transform = {
-    applyMatrix: makeFunc(processingProxy, "applyMatrix", [{ "n00": [int_$20, float_$17] }, { "n01": [int_$20, float_$17] }, { "n02": [int_$20, float_$17] }, { "n03": [int_$20, float_$17] }, { "n04": [int_$20, float_$17] }, { "n05": [int_$20, float_$17] }, { "n06": [int_$20, float_$17] }, { "n07": [int_$20, float_$17] }, { "n08": [int_$20, float_$17] }, { "n09": [int_$20, float_$17] }, { "n10": [int_$20, float_$17] }, { "n11": [int_$20, float_$17] }, { "n12": [int_$20, float_$17] }, { "n13": [int_$20, float_$17] }, { "n14": [int_$20, float_$17] }, { "n15": [int_$20, float_$17] }]),
+    applyMatrix: makeFunc(processingProxy, "applyMatrix", [{ "n00": [int_$21, float_$18] }, { "n01": [int_$21, float_$18] }, { "n02": [int_$21, float_$18] }, { "n03": [int_$21, float_$18] }, { "n04": [int_$21, float_$18] }, { "n05": [int_$21, float_$18] }, { "n06": [int_$21, float_$18] }, { "n07": [int_$21, float_$18] }, { "n08": [int_$21, float_$18] }, { "n09": [int_$21, float_$18] }, { "n10": [int_$21, float_$18] }, { "n11": [int_$21, float_$18] }, { "n12": [int_$21, float_$18] }, { "n13": [int_$21, float_$18] }, { "n14": [int_$21, float_$18] }, { "n15": [int_$21, float_$18] }]),
 
     popMatrix: makeFunc(processingProxy, "popMatrix"),
     printMatrix: makeFunc(processingProxy, "printMatrix"),
     pushMatrix: makeFunc(processingProxy, "pushMatrix"),
     resetMatrix: makeFunc(processingProxy, "resetMatrix"),
 
-    rotate: makeFunc(processingProxy, "rotate", [{ "angle": [int_$20, float_$17] }]),
+    rotate: makeFunc(processingProxy, "rotate", [{ "angle": [int_$21, float_$18] }]),
 
-    rotateX: makeFunc(processingProxy, "rotateX", [{ "angle": [int_$20, float_$17] }]),
+    rotateX: makeFunc(processingProxy, "rotateX", [{ "angle": [int_$21, float_$18] }]),
 
-    rotateY: makeFunc(processingProxy, "rotateY", [{ "angle": [int_$20, float_$17] }]),
+    rotateY: makeFunc(processingProxy, "rotateY", [{ "angle": [int_$21, float_$18] }]),
 
-    rotateZ: makeFunc(processingProxy, "rotateZ", [{ "angle": [int_$20, float_$17] }]),
+    rotateZ: makeFunc(processingProxy, "rotateZ", [{ "angle": [int_$21, float_$18] }]),
 
-    scale: makeFunc(processingProxy, "scale", [{ "size": [int_$20, float_$17] }, { "y": [int_$20, float_$17], optional: optional }, { "z": [int_$20, float_$17], optional: optional }]),
+    scale: makeFunc(processingProxy, "scale", [{ "size": [int_$21, float_$18] }, { "y": [int_$21, float_$18], optional: optional }, { "z": [int_$21, float_$18], optional: optional }]),
 
-    translate: makeFunc(processingProxy, "translate", [{ "x": [int_$20, float_$17] }, { "y": [int_$20, float_$17] }, { "z": [int_$20, float_$17], optional: optional }])
-};
-
-var _Sk$builtin$23 = Sk.builtin;
-var int_$21 = _Sk$builtin$23.int_;
-var float_$18 = _Sk$builtin$23.float_;
-
-
-var trigonometry = {
-    degrees: makeFunc(processingProxy, "degrees", [{ "angle": [int_$21, float_$18] }]),
-
-    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$21, float_$18] }]),
-
-    cos: makeFunc(processingProxy, "cos", [{ "angle": [int_$21, float_$18] }]),
-
-    sin: makeFunc(processingProxy, "sin", [{ "angle": [int_$21, float_$18] }]),
-
-    tan: makeFunc(processingProxy, "tan", [{ "angle": [int_$21, float_$18] }]),
-
-    acos: makeFunc(processingProxy, "acos", [{ "value": [int_$21, float_$18] }]),
-
-    asin: makeFunc(processingProxy, "asin", [{ "value": [int_$21, float_$18] }]),
-
-    atan: makeFunc(processingProxy, "tan", [{ "angle": [int_$21, float_$18] }]),
-
-    atan2: makeFunc(processingProxy, "atan2", [{ "x": [int_$21, float_$18] }, { "y": [int_$21, float_$18] }])
+    translate: makeFunc(processingProxy, "translate", [{ "x": [int_$21, float_$18] }, { "y": [int_$21, float_$18] }, { "z": [int_$21, float_$18], optional: optional }])
 };
 
 var _Sk$builtin$24 = Sk.builtin;
 var int_$22 = _Sk$builtin$24.int_;
 var float_$19 = _Sk$builtin$24.float_;
+
+
+var trigonometry = {
+    degrees: makeFunc(processingProxy, "degrees", [{ "angle": [int_$22, float_$19] }]),
+
+    radians: makeFunc(processingProxy, "radians", [{ "angle": [int_$22, float_$19] }]),
+
+    cos: makeFunc(processingProxy, "cos", [{ "angle": [int_$22, float_$19] }]),
+
+    sin: makeFunc(processingProxy, "sin", [{ "angle": [int_$22, float_$19] }]),
+
+    tan: makeFunc(processingProxy, "tan", [{ "angle": [int_$22, float_$19] }]),
+
+    acos: makeFunc(processingProxy, "acos", [{ "value": [int_$22, float_$19] }]),
+
+    asin: makeFunc(processingProxy, "asin", [{ "value": [int_$22, float_$19] }]),
+
+    atan: makeFunc(processingProxy, "tan", [{ "angle": [int_$22, float_$19] }]),
+
+    atan2: makeFunc(processingProxy, "atan2", [{ "x": [int_$22, float_$19] }, { "y": [int_$22, float_$19] }])
+};
+
+var _Sk$builtin$25 = Sk.builtin;
+var int_$23 = _Sk$builtin$25.int_;
+var float_$20 = _Sk$builtin$25.float_;
 var _Sk$misceval$4 = Sk.misceval;
 var callsim$5 = _Sk$misceval$4.callsim;
 var buildClass$9 = _Sk$misceval$4.buildClass;
@@ -1749,7 +1790,7 @@ function vectorLimit(self, value) {
 }
 
 function vectorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(vectorInit, "__init__", [self$1, { "x": int_$22, optional: optional }, { "y": int_$22, optional: optional }, { "z": int_$22, optional: optional }]);
+    $loc.__init__ = makeFunc(vectorInit, "__init__", [self$1, { "x": int_$23, optional: optional }, { "y": int_$23, optional: optional }, { "z": int_$23, optional: optional }]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
         key = Sk.ffi.remapToJs(key);
@@ -1762,7 +1803,7 @@ function vectorClass($gbl, $loc) {
         }
     });
 
-    $loc.get = makeFunc(vectorGet, "get", [self$1]), $loc.set = makeFunc(vectorSet, "set", [self$1, { "x": int_$22 }, { "x": int_$22, optional: optional }, { "x": int_$22, optional: optional }]);
+    $loc.get = makeFunc(vectorGet, "get", [self$1]), $loc.set = makeFunc(vectorSet, "set", [self$1, { "x": int_$23 }, { "x": int_$23, optional: optional }, { "x": int_$23, optional: optional }]);
 
     $loc.mag = makeFunc(function (self) {
         return self.v.mag();
@@ -1778,7 +1819,7 @@ function vectorClass($gbl, $loc) {
 
     $loc.dist = makeFunc(vectorDist, "dist", [self$1, { "vector": "PVector" }]);
 
-    $loc.dot = makeFunc(vectorDot, "dot", [self$1, { "x": [int_$22, float_$19] }, { "y": [int_$22, float_$19], optional: optional }, { "z": [int_$22, float_$19], optional: optional }]);
+    $loc.dot = makeFunc(vectorDot, "dot", [self$1, { "x": [int_$23, float_$20] }, { "y": [int_$23, float_$20], optional: optional }, { "z": [int_$23, float_$20], optional: optional }]);
 
     $loc.cross = makeFunc(vectorCross, "cross", [self$1, { "vector": "PVector" }]);
 
@@ -1786,7 +1827,7 @@ function vectorClass($gbl, $loc) {
         return self.normalize();
     }, "normalize", [self$1]);
 
-    $loc.limit = makeFunc(vectorLimit, "limit", [self$1, { "value": [int_$22, float_$19] }]);
+    $loc.limit = makeFunc(vectorLimit, "limit", [self$1, { "value": [int_$23, float_$20] }]);
 
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [self$1, { "vector": "PVector" }]);
 
@@ -1799,9 +1840,9 @@ var vectorBuilder = (function (mod) {
     return buildClass$9(mod, vectorClass, "PVector", []);
 });
 
-var _Sk$builtin$25 = Sk.builtin;
-var float_$20 = _Sk$builtin$25.float_;
-var int_$23 = _Sk$builtin$25.int_;
+var _Sk$builtin$26 = Sk.builtin;
+var float_$21 = _Sk$builtin$26.float_;
+var int_$24 = _Sk$builtin$26.int_;
 var IMAGE = remappedConstants.IMAGE;
 var NORMALIZED = remappedConstants.NORMALIZED;
 var POINTS = remappedConstants.POINTS;
@@ -1815,27 +1856,27 @@ var CLOSE = remappedConstants.CLOSE;
 
 
 var vertex = {
-    beginShape: makeFunc(processingProxy, "beginShape", [{ "MODE": int_$23, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
+    beginShape: makeFunc(processingProxy, "beginShape", [{ "MODE": int_$24, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
 
-    endShape: makeFunc(processingProxy, "endShape", [{ "MODE": int_$23, allowed: [CLOSE], optional: optional }]),
+    endShape: makeFunc(processingProxy, "endShape", [{ "MODE": int_$24, allowed: [CLOSE], optional: optional }]),
 
-    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$23, float_$20] }, { "y": [int_$23, float_$20] }, { "z": [int_$23, float_$20], optional: optional }, { "u": [int_$23, float_$20], optional: optional }, { "v": [int_$23, float_$20], optional: optional }]),
+    vertex: makeFunc(processingProxy, "vertex", [{ "x": [int_$24, float_$21] }, { "y": [int_$24, float_$21] }, { "z": [int_$24, float_$21], optional: optional }, { "u": [int_$24, float_$21], optional: optional }, { "v": [int_$24, float_$21], optional: optional }]),
 
-    bezierVertex: makeFunc(processingProxy, "bezierVertex", [{ "cx1": [int_$23, float_$20] }, { "cy1": [int_$23, float_$20] }, { "cz1": [int_$23, float_$20] }, { "cx2": [int_$23, float_$20] }, { "cy2": [int_$23, float_$20] }, { "cz2": [int_$23, float_$20] }, { "x": [int_$23, float_$20], optional: optional }, { "y": [int_$23, float_$20], optional: optional }, { "z": [int_$23, float_$20], optional: optional }]),
+    bezierVertex: makeFunc(processingProxy, "bezierVertex", [{ "cx1": [int_$24, float_$21] }, { "cy1": [int_$24, float_$21] }, { "cz1": [int_$24, float_$21] }, { "cx2": [int_$24, float_$21] }, { "cy2": [int_$24, float_$21] }, { "cz2": [int_$24, float_$21] }, { "x": [int_$24, float_$21], optional: optional }, { "y": [int_$24, float_$21], optional: optional }, { "z": [int_$24, float_$21], optional: optional }]),
 
-    curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$23, float_$20] }, { "y": [int_$23, float_$20] }, { "z": [int_$23, float_$20], optional: optional }]),
+    curveVertex: makeFunc(processingProxy, "curveVertex", [{ "x": [int_$24, float_$21] }, { "y": [int_$24, float_$21] }, { "z": [int_$24, float_$21], optional: optional }]),
 
     texture: makeFunc(processingProxy, "texture", [{ "img": "PImage" }]),
 
-    textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$23, allowed: [IMAGE, NORMALIZED] }])
+    textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$24, allowed: [IMAGE, NORMALIZED] }])
 };
 
-var str$10 = Sk.builtin.str;
+var str$11 = Sk.builtin.str;
 
 
 var web = {
-    link: makeFunc(processingProxy, "link"[({ "url": str$10 }, { "target": str$10, optional: optional })]),
-    status: makeFunc(processingProxy, "status", [{ "text": str$10 }])
+    link: makeFunc(processingProxy, "link"[({ "url": str$11 }, { "target": str$11, optional: optional })]),
+    status: makeFunc(processingProxy, "status", [{ "text": str$11 }])
 };
 
 var _Sk$misceval = Sk.misceval;
@@ -1911,7 +1952,7 @@ function main() {
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: exports.color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: exports.PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels, pixels: pixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
-        mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape);
+        mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
     mod.run = new Sk.builtin.func(function () {
         noLoopAfterAsync = false;

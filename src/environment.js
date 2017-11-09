@@ -1,9 +1,11 @@
 import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional } from "./utils.js";
+import { remappedConstants } from "./constants.js";
 
 const { remapToPy, remapToJs } = Sk.ffi;
 const { func, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
+const { ARROW, CROSS, HAND, MOVE, TEXT, WAIT } = remappedConstants;
 
 
 function environmentClass($gbl, $loc) {
@@ -31,7 +33,7 @@ function environmentClass($gbl, $loc) {
 export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
 
 export const cursor = makeFunc(processingProxy, "cursor", [
-    { "image": [ "PImage", int_ ], optional },
+    { "image": [ "PImage", int_ ], allowed: [ ARROW, CROSS, HAND, MOVE, TEXT, WAIT ], optional },
     { "x": int_, optional },
     { "y": int_, optional }
 ]);

@@ -53,5 +53,11 @@ export default {
         { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ], optional }
     ]),
 
-    exit: makeFunc(processingProxy, "exit")
+    exit: makeFunc(processingProxy, "exit"),
+
+    redraw: makeFunc(processingProxy, "redraw"),
+
+    pushStyle: makeFunc(processingProxy, "pushStyle"),
+
+    popStyle: makeFunc(processingProxy, "popStyle")
 };
