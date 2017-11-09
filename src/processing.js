@@ -60,7 +60,7 @@ export let processing = processingProxy;
 let suspHandler;
 
 export function init(path, suspensionHandler) {
-    suspHandler = suspensionHandler
+    suspHandler = suspensionHandler;
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {

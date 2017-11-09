@@ -1161,7 +1161,6 @@ function pixelProxy($glb, $loc) {
 }
 
 function imageClass($gbl, $loc) {
-    /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$7], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
 
     $loc.__getattr__ = new func$4(function (self, key) {
@@ -1904,7 +1903,10 @@ exports.PFont = void 0;
 
 var processing = processingProxy;
 
-function init(path) {
+var suspHandler = void 0;
+
+function init(path, suspensionHandler) {
+    suspHandler = suspensionHandler;
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
@@ -2009,14 +2011,14 @@ function main() {
 
                     promisses.push(asyncToPromise(function () {
                         return callsimOrSuspend(Sk.globals["draw"]);
-                    }));
+                    }, suspHandler));
                 };
             }
 
             if (Sk.globals["setup"]) {
                 promisses.push(asyncToPromise(function () {
                     return callsimOrSuspend(Sk.globals["setup"]);
-                }));
+                }, suspHandler));
             } else {
                 promisses.push(Promise.resolve());
             }
