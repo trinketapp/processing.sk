@@ -57,7 +57,10 @@ export let PFont;
 
 export let processing = processingProxy;
 
-export function init(path) {
+let suspHandler;
+
+export function init(path, suspensionHandler) {
+    suspHandler = suspensionHandler
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
@@ -166,13 +169,13 @@ export function main() {
                         proc.noLoop();
                     }
 
-                    promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"])));
+                    promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler));
                 };
             }
 
             if (Sk.globals["setup"])
             {
-                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"])));
+                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler));
             } else {
                 promisses.push(Promise.resolve());
             }

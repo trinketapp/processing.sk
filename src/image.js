@@ -134,7 +134,6 @@ function pixelProxy($glb, $loc) {
 }
 
 function imageClass($gbl, $loc) {
-    /* images are loaded async.. so its best to preload them */
     $loc.__init__ = makeFunc(imageInit, "__init__", [
         self,
         { "width": [ int_, str ], optional },
