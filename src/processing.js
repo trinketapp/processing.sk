@@ -180,7 +180,12 @@ export function main() {
                     // async stuff happened.
                     if (noLoopAfterAsync) {
                         proc.noLoop();
-                        Promise.all(promisses).then(finish);
+                        Promise.all(promisses)
+                            .then(finish)
+                            .catch((e) => {
+                                exceptionOccurred(e);
+                                proc.exit();
+                            });
                         return;
                     }
 
@@ -198,7 +203,12 @@ export function main() {
                 };
             } else {
                 processing.noLoop();
-                Promise.all(promisses).then(finish);
+                Promise.all(promisses)
+                    .then(finish)
+                    .catch((e) => {
+                        exceptionOccurred(e);
+                        proc.exit();
+                    });
             }
 
             var callBacks = [
