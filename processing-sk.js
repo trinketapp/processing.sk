@@ -2095,8 +2095,10 @@ function main() {
         mod.p = new window.Processing(canvas, sketchProc);
 
         // ugly hack make it start the loopage!
-        mod.p.noLoop();
-        mod.p.loop();
+        setTimeout(function () {
+            mod.p.noLoop();
+            mod.p.loop();
+        }, 300);
 
         return susp;
     });
