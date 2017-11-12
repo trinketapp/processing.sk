@@ -178,7 +178,12 @@ export function main() {
 
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
-                        bHandler();
+                        try {
+                            bHandler();
+                        } catch (e) {
+                            exceptionOccurred(e);
+                            proc.exit();
+                        }
                     }
 
                     promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler));
