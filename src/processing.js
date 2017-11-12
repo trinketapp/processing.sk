@@ -152,6 +152,12 @@ export function main() {
 
             proc.externals.sketch.onExit = finish;
 
+            if (Sk.globals["setup"]) {
+                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler));
+            } else {
+                promisses.push(Promise.resolve());
+            }
+
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
                     if (promisses.length === 0) {
@@ -190,13 +196,7 @@ export function main() {
                 };
             } else {
                 processing.noLoop();
-            }
-
-            if (Sk.globals["setup"])
-            {
-                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler));
-            } else {
-                promisses.push(Promise.resolve());
+                promisses.then(finish)
             }
 
             var callBacks = [
