@@ -15,7 +15,13 @@ const {
     remapToPy
 } = Sk.ffi;
 
+const { buildClass, callsim } = Sk.misceval;
+
+const { assign, keys } = Object;
+
 const argsToArray = Array.from;
+
+let OptionalContextManager;
 
 function countNonOptionalArgs(args) {
     return args === undefined ? 0 : args.filter(a => !a.optional).length;
@@ -129,3 +135,23 @@ export const processingProxy = new Proxy({}, {
         return processingInstance[name];
     }
 });
+
+function optionalContextManager(loc){
+    return ($glb, $loc) => {
+        assign($loc, loc);
+    };
+}
+
+export function initUtils(mod) {
+    OptionalContextManager = (loc, name) => buildClass(optionalContextManager(loc), mod, "OptionalContextManager_" + name, []);
+}
+
+export function constructOptionalContectManager(loc, name) {
+    let funcs = keys(loc);
+
+    if (!funcs.includes("__call__") || !funcs.includes("__enter__") || !funcs.includes("__exit__")) {
+        throw new Error("The optional context manager needs a __call__, __enter__ and __exit__ function.");
+    }
+
+    return callsim(OptionalContextManager(loc, name));
+}

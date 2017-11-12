@@ -34,7 +34,7 @@ import vectorBuilder from "./vector.js";
 import vertex from "./vertex.js";
 import web from "./web.js";
 import Sk from "./skulpt.js";
-import { processingProxy } from "./utils.js";
+import { processingProxy, initUtils } from "./utils.js";
 
 const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
@@ -112,6 +112,8 @@ export function main() {
     let keyboard = callsim(Keyboard);
     let Screen = ScreenBuilder(mod);
     let screen = callsim(Screen);
+
+    initUtils(mod);
 
     Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
         ccreatingandreading, csetting, { color }, remappedConstants, coordinates, curves,

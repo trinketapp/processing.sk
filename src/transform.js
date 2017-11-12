@@ -1,5 +1,5 @@
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional, constructOptionalContectManager } from "./utils.js";
 
 const { float_, int_ } = Sk.builtin;
 
@@ -25,7 +25,13 @@ export default {
 
     popMatrix: makeFunc(processingProxy, "popMatrix"),
     printMatrix: makeFunc(processingProxy, "printMatrix"),
-    pushMatrix: makeFunc(processingProxy, "pushMatrix"),
+
+    pushMatrix: constructOptionalContectManager({
+        __call__: makeFunc(() => processingProxy.pushMatrix(), "__call__", [ self ]),
+        __enter__: makeFunc(() => processingProxy.pushMatrix(), "__enter__", [ self ]),
+        __exit__: makeFunc(() => processingProxy.popMatrix(), "__exit__", [ self ])
+    }, "pushMatrix"),
+
     resetMatrix: makeFunc(processingProxy, "resetMatrix"),
 
     rotate: makeFunc(processingProxy, "rotate", [

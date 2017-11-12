@@ -1,5 +1,5 @@
 import { processing, isInitialised, requestNoLoop } from "./processing.js";
-import { processingProxy, makeFunc, optional } from "./utils.js";
+import { processingProxy, makeFunc, optional, self, constructOptionalContectManager } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
@@ -57,7 +57,11 @@ export default {
 
     redraw: makeFunc(processingProxy, "redraw"),
 
-    pushStyle: makeFunc(processingProxy, "pushStyle"),
+    pushStyle: constructOptionalContectManager({
+        __call__: makeFunc(() => processingProxy.pushStyle(), "__call__", [ self ]),
+        __enter__: makeFunc(() => processingProxy.pushStyle(), "__enter__", [ self ]),
+        __exit__: makeFunc(() => processingProxy.popStyle(), "__exit__", [ self ])
+    }, "pushMatrix"),
 
     popStyle: makeFunc(processingProxy, "popStyle")
 };
