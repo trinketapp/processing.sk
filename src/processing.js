@@ -196,7 +196,7 @@ export function main() {
                 };
             } else {
                 processing.noLoop();
-                promisses.then(finish)
+                promisses.then(finish);
             }
 
             var callBacks = [
