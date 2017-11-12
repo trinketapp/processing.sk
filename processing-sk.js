@@ -2094,6 +2094,8 @@ function main() {
 
         mod.p = new window.Processing(canvas, sketchProc);
 
+        mod.p.loop();
+
         return susp;
     });
 
