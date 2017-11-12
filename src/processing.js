@@ -58,9 +58,16 @@ export let PFont;
 export let processing = processingProxy;
 
 let suspHandler;
+let bHandler;
 
-export function init(path, suspensionHandler) {
+export function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
+    if (breakHandler !== undefined && typeof breakHandler !== "function") {
+        throw new Error("breakHandler must be a function if anything");
+    } else {
+        bHandler = breakHandler;
+    }
+
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
@@ -167,6 +174,11 @@ export function main() {
                     // async stuff happened.
                     if (noLoopAfterAsync) {
                         proc.noLoop();
+                    }
+
+                    // call the break handler every draw so the processing.sk is stoppable.
+                    if (bHandler) {
+                        bHandler();
                     }
 
                     promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler));
