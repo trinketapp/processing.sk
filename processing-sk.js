@@ -2022,6 +2022,8 @@ function main() {
                     // async stuff happened.
                     if (noLoopAfterAsync) {
                         proc.noLoop();
+                        Promise.all(promisses).then(finish);
+                        return;
                     }
 
                     // call the break handler every draw so the processing.sk is stoppable.
@@ -2040,7 +2042,7 @@ function main() {
                 };
             } else {
                 processing.noLoop();
-                promisses.then(finish);
+                Promise.all(promisses).then(finish);
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
