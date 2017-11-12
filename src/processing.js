@@ -188,6 +188,8 @@ export function main() {
 
                     promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler));
                 };
+            } else {
+                processing.noLoop();
             }
 
             if (Sk.globals["setup"])

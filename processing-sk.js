@@ -2030,6 +2030,8 @@ function main() {
                         return callsimOrSuspend(Sk.globals["draw"]);
                     }, suspHandler));
                 };
+            } else {
+                processing.noLoop();
             }
 
             if (Sk.globals["setup"]) {
