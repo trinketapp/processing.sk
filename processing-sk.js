@@ -2092,12 +2092,9 @@ function main() {
             instance.exit();
         }
 
-        mod.p = new window.Processing(canvas, sketchProc);
-
         // ugly hack make it start the loopage!
         setTimeout(function () {
-            mod.p.noLoop();
-            mod.p.loop();
+            mod.p = new window.Processing(canvas, sketchProc);
         }, 300);
 
         return susp;
