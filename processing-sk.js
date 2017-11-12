@@ -1987,6 +1987,7 @@ function main() {
         function sketchProc(proc) {
             var promisses = [];
             var wait = true;
+
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -2023,7 +2024,7 @@ function main() {
 
                     // if noLoop was called from python only stop looping after all
                     // async stuff happened.
-                    if (noLoopAfterAsync) {
+                    if (noLoopAfterAsync && promisses.length > 1) {
                         proc.noLoop();
                         // Here we wait for the setup function promise and the previous
                         // draw function promise to resolve and throw an error if nessecairy
