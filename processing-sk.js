@@ -1987,6 +1987,10 @@ function main() {
         function sketchProc(proc) {
             var promisses = [];
             var wait = true;
+            function throwAndExit(e) {
+                exceptionOccurred(e);
+                proc.exit();
+            }
 
             exports.processingInstance = proc;
 
@@ -2006,12 +2010,11 @@ function main() {
                         return;
                     }
 
+                    // Here we wait till the setup promise is resolved if we have a draw function
+                    // or we throw an error
                     Promise.all(promisses).then(function () {
                         return wait = false;
-                    }).catch(function (e) {
-                        exceptionOccurred(e);
-                        proc.exit();
-                    });
+                    }).catch(throwAndExit);
 
                     // keep calling draw untill all promisses have been resolved
                     if (wait) {
@@ -2022,10 +2025,9 @@ function main() {
                     // async stuff happened.
                     if (noLoopAfterAsync) {
                         proc.noLoop();
-                        Promise.all(promisses).then(finish).catch(function (e) {
-                            exceptionOccurred(e);
-                            proc.exit();
-                        });
+                        // Here we wait for the setup function promise and the previous
+                        // draw function promise to resolve and throw an error if nessecairy
+                        Promise.all(promisses).then(finish).catch(throwAndExit);
                         return;
                     }
 
@@ -2034,8 +2036,7 @@ function main() {
                         try {
                             bHandler();
                         } catch (e) {
-                            exceptionOccurred(e);
-                            proc.exit();
+                            throwAndExit(e);
                         }
                     }
 
@@ -2045,10 +2046,10 @@ function main() {
                 };
             } else {
                 processing.noLoop();
-                Promise.all(promisses).then(finish).catch(function (e) {
-                    exceptionOccurred(e);
-                    proc.exit();
-                });
+                // If we don't have a draw function we don't have to loop.
+                // procesing doesn't know that but we do that's why we call noLoop here.
+                // we also wait for the setup function to complete and thow any errors
+                Promise.all(promisses).then(finish).catch(throwAndExit);
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
@@ -2062,10 +2063,7 @@ function main() {
                                 // event handlers can't be asynchronous.
                                 Sk.misceval.callsim(Sk.globals[callback]);
                             } catch (e) {
-                                exceptionOccurred(e);
-                                if (exports.processingInstance) {
-                                    exports.processingInstance.exit();
-                                }
+                                throwAndExit(e);
                             }
                         };
                     })();
