@@ -1373,7 +1373,10 @@ var print_ = Sk.misceval.print_;
 
 
 var output = {
-    println: makeFunc(print_, "println", [{ "data": object }]),
+    println: makeFunc(function (o) {
+        print_(o);
+        print_("\n");
+    }, "println", [{ "data": object }]),
 
     save: makeFunc(processingProxy, "save", [{ "filename": str$8 }]),
 

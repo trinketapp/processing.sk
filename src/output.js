@@ -5,7 +5,10 @@ const { object, str, list } = Sk.builtin;
 const { print_ } = Sk.misceval;
 
 export default {
-    println: makeFunc(print_, "println", [
+    println: makeFunc((o) => {
+        print_(o);
+        print_("\n");
+    }, "println", [
         { "data": object }
     ]),
 
