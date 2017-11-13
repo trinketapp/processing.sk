@@ -1,14 +1,22 @@
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, optional, self, constructOptionalContectManager } from "./utils.js";
+import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored } from "./utils.js";
 
-const { float_, int_ } = Sk.builtin;
+const { float_, int_, object } = Sk.builtin;
 
 export default {
-    beginCamera: constructOptionalContectManager({
-        __call__: makeFunc(() => processingProxy.beginCamera(), "__call__", [ self ]),
-        __enter__: makeFunc(() => processingProxy.beginCamera(), "__enter__", [ self ]),
-        __exit__: makeFunc(() => processingProxy.endCamera(), "__exit__", [ self ])
-    }, "pushMatrix"),
+    beginCamera: cachedLazy(constructOptionalContectManager, [{
+        __call__: makeFunc(self => {
+            processingProxy.beginCamera();
+            return self;
+        }, "__call__", [ self ]),
+        __enter__: makeFunc(self => self, "__enter__", [ self ]),
+        __exit__: makeFunc(() => processingProxy.endCamera(), "__exit__", [
+            self,
+            { "exc_type": object, ignored },
+            { "exc_value": object, ignored },
+            { "traceback": object, ignored }
+        ])
+    }, "beginCamera"], "beginCamera"),
 
     endCamera: makeFunc(processingProxy, "endCamera"),
 

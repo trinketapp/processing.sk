@@ -7,7 +7,7 @@ const { int_, float_, str } = Sk.builtin;
 
 export default {
     background: makeFunc(processingProxy, "background", [
-        { "value1": [ int_, float_, "color" ] },
+        { "value1": [ int_, float_, str, "color" ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }
@@ -33,7 +33,7 @@ export default {
     noStroke: makeFunc(processingProxy, "noStroke"),
 
     stroke: makeFunc(processingProxy, "stroke", [
-        { "value1": [ int_, float_, "color" ] },
+        { "value1": [ int_, float_, "color", str ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }

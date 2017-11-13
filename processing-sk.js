@@ -69,6 +69,8 @@ var keys = Object.keys;
 
 var argsToArray = Array.from;
 
+var cache = new Map();
+
 var OptionalContextManager = void 0;
 
 function countNonOptionalArgs(args) {
@@ -207,7 +209,7 @@ function optionalContextManager(loc) {
 
 function initUtils(mod) {
     OptionalContextManager = function OptionalContextManager(loc, name) {
-        return buildClass(optionalContextManager(loc), mod, "OptionalContextManager_" + name, []);
+        return buildClass(mod, optionalContextManager(loc), "OptionalContextManager_" + name, []);
     };
 }
 
@@ -219,6 +221,20 @@ function constructOptionalContectManager(loc, name) {
     }
 
     return callsim$1(OptionalContextManager(loc, name));
+}
+
+function cachedLazy(func, args, id) {
+    return function () {
+        if (cache.has(id)) {
+            return cache.get(id);
+        }
+
+        var res = func.apply(null, args);
+
+        cache.set(id, res);
+
+        return res;
+    };
 }
 
 var _Sk$builtin = Sk.builtin;
@@ -637,20 +653,22 @@ var calculation = {
 var _Sk$builtin$5 = Sk.builtin;
 var float_$4 = _Sk$builtin$5.float_;
 var int_$4 = _Sk$builtin$5.int_;
+var object = _Sk$builtin$5.object;
 
 
 var camera = {
-    beginCamera: constructOptionalContectManager({
-        __call__: makeFunc(function () {
-            return processingProxy.beginCamera();
+    beginCamera: cachedLazy(constructOptionalContectManager, [{
+        __call__: makeFunc(function (self) {
+            processingProxy.beginCamera();
+            return self;
         }, "__call__", [self$1]),
-        __enter__: makeFunc(function () {
-            return processingProxy.beginCamera();
+        __enter__: makeFunc(function (self) {
+            return self;
         }, "__enter__", [self$1]),
         __exit__: makeFunc(function () {
             return processingProxy.endCamera();
-        }, "__exit__", [self$1])
-    }, "pushMatrix"),
+        }, "__exit__", [self$1, { "exc_type": object, ignored: ignored }, { "exc_value": object, ignored: ignored }, { "traceback": object, ignored: ignored }])
+    }, "beginCamera"], "beginCamera"),
 
     endCamera: makeFunc(processingProxy, "endCamera"),
 
@@ -728,7 +746,7 @@ var str$2 = _Sk$builtin$7.str;
 
 
 var csetting = {
-    background: makeFunc(processingProxy, "background", [{ "value1": [int_$6, float_$6, "color"] }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
+    background: makeFunc(processingProxy, "background", [{ "value1": [int_$6, float_$6, str$2, "color"], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
 
     colorMode: makeFunc(processingProxy, "colorMode", [{ "mode": int_$6, allowed: [RGB, HSB] }, { "range1": [int_$6, float_$6], optional: optional }, { "range2": [int_$6, float_$6], optional: optional }, { "range3": [int_$6, float_$6], optional: optional }, { "range4": [int_$6, float_$6], optional: optional }]),
 
@@ -738,7 +756,7 @@ var csetting = {
 
     noStroke: makeFunc(processingProxy, "noStroke"),
 
-    stroke: makeFunc(processingProxy, "stroke", [{ "value1": [int_$6, float_$6, "color"] }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }])
+    stroke: makeFunc(processingProxy, "stroke", [{ "value1": [int_$6, float_$6, "color", str$2], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }])
 };
 
 var _Sk$builtin$8 = Sk.builtin;
@@ -1405,7 +1423,7 @@ var mouseButton = function mouseButton() {
 };
 
 var _Sk$builtin$18 = Sk.builtin;
-var object = _Sk$builtin$18.object;
+var object$1 = _Sk$builtin$18.object;
 var str$8 = _Sk$builtin$18.str;
 var list$3 = _Sk$builtin$18.list;
 var print_ = Sk.misceval.print_;
@@ -1415,7 +1433,7 @@ var output = {
     println: makeFunc(function (o) {
         print_(o);
         print_("\n");
-    }, "println", [{ "data": object }]),
+    }, "println", [{ "data": object$1 }]),
 
     save: makeFunc(processingProxy, "save", [{ "filename": str$8 }]),
 
@@ -1632,7 +1650,9 @@ var stringFunctions = {
     trim: makeFunc(processingProxy, "trim", [{ "strOrArray": [str$10, list$5] }])
 };
 
-var int_$20 = Sk.builtin.int_;
+var _Sk$builtin$23 = Sk.builtin;
+var int_$20 = _Sk$builtin$23.int_;
+var object$2 = _Sk$builtin$23.object;
 var P2D$1 = remappedConstants.P2D;
 var JAVA2D$1 = remappedConstants.JAVA2D;
 var WEBGL$1 = remappedConstants.WEBGL;
@@ -1689,17 +1709,18 @@ var structure = {
 
     redraw: makeFunc(processingProxy, "redraw"),
 
-    pushStyle: constructOptionalContectManager({
-        __call__: makeFunc(function () {
-            return processingProxy.pushStyle();
+    pushStyle: cachedLazy(constructOptionalContectManager, [{
+        __call__: makeFunc(function (self) {
+            processingProxy.pushStyle();
+            return self;
         }, "__call__", [self$1]),
-        __enter__: makeFunc(function () {
-            return processingProxy.pushStyle();
+        __enter__: makeFunc(function (self) {
+            return self;
         }, "__enter__", [self$1]),
         __exit__: makeFunc(function () {
             return processingProxy.popStyle();
-        }, "__exit__", [self$1])
-    }, "pushMatrix"),
+        }, "__exit__", [self$1, { "exc_type": object$2, ignored: ignored }, { "exc_value": object$2, ignored: ignored }, { "traceback": object$2, ignored: ignored }])
+    }, "pushStyle"], "pushStyle"),
 
     popStyle: makeFunc(processingProxy, "popStyle")
 };
@@ -1714,9 +1735,10 @@ var timeanddate = {
     year: makeFunc(processingProxy, "year")
 };
 
-var _Sk$builtin$23 = Sk.builtin;
-var float_$18 = _Sk$builtin$23.float_;
-var int_$21 = _Sk$builtin$23.int_;
+var _Sk$builtin$24 = Sk.builtin;
+var float_$18 = _Sk$builtin$24.float_;
+var int_$21 = _Sk$builtin$24.int_;
+var object$3 = _Sk$builtin$24.object;
 
 
 var transform = {
@@ -1725,17 +1747,18 @@ var transform = {
     popMatrix: makeFunc(processingProxy, "popMatrix"),
     printMatrix: makeFunc(processingProxy, "printMatrix"),
 
-    pushMatrix: constructOptionalContectManager({
-        __call__: makeFunc(function () {
-            return processingProxy.pushMatrix();
-        }, "__call__", [self]),
-        __enter__: makeFunc(function () {
-            return processingProxy.pushMatrix();
-        }, "__enter__", [self]),
+    pushMatrix: cachedLazy(constructOptionalContectManager, [{
+        __call__: makeFunc(function (self) {
+            processingProxy.pushMatrix();
+            return self;
+        }, "__call__", [self$1]),
+        __enter__: makeFunc(function (self) {
+            return self;
+        }, "__enter__", [self$1]),
         __exit__: makeFunc(function () {
             return processingProxy.popMatrix();
-        }, "__exit__", [self])
-    }, "pushMatrix"),
+        }, "__exit__", [self$1, { "exc_type": object$3, ignored: ignored }, { "exc_value": object$3, ignored: ignored }, { "traceback": object$3, ignored: ignored }])
+    }, "pushMatrix"], "pushMatrix"),
 
     resetMatrix: makeFunc(processingProxy, "resetMatrix"),
 
@@ -1752,9 +1775,9 @@ var transform = {
     translate: makeFunc(processingProxy, "translate", [{ "x": [int_$21, float_$18] }, { "y": [int_$21, float_$18] }, { "z": [int_$21, float_$18], optional: optional }])
 };
 
-var _Sk$builtin$24 = Sk.builtin;
-var int_$22 = _Sk$builtin$24.int_;
-var float_$19 = _Sk$builtin$24.float_;
+var _Sk$builtin$25 = Sk.builtin;
+var int_$22 = _Sk$builtin$25.int_;
+var float_$19 = _Sk$builtin$25.float_;
 
 
 var trigonometry = {
@@ -1777,9 +1800,9 @@ var trigonometry = {
     atan2: makeFunc(processingProxy, "atan2", [{ "x": [int_$22, float_$19] }, { "y": [int_$22, float_$19] }])
 };
 
-var _Sk$builtin$25 = Sk.builtin;
-var int_$23 = _Sk$builtin$25.int_;
-var float_$20 = _Sk$builtin$25.float_;
+var _Sk$builtin$26 = Sk.builtin;
+var int_$23 = _Sk$builtin$26.int_;
+var float_$20 = _Sk$builtin$26.float_;
 var _Sk$misceval$5 = Sk.misceval;
 var callsim$6 = _Sk$misceval$5.callsim;
 var buildClass$10 = _Sk$misceval$5.buildClass;
@@ -1903,9 +1926,10 @@ var vectorBuilder = (function (mod) {
     return buildClass$10(mod, vectorClass, "PVector", []);
 });
 
-var _Sk$builtin$26 = Sk.builtin;
-var float_$21 = _Sk$builtin$26.float_;
-var int_$24 = _Sk$builtin$26.int_;
+var _Sk$builtin$27 = Sk.builtin;
+var float_$21 = _Sk$builtin$27.float_;
+var int_$24 = _Sk$builtin$27.int_;
+var object$4 = _Sk$builtin$27.object;
 var IMAGE = remappedConstants.IMAGE;
 var NORMALIZED = remappedConstants.NORMALIZED;
 var POINTS = remappedConstants.POINTS;
@@ -1919,29 +1943,31 @@ var CLOSE = remappedConstants.CLOSE;
 
 
 var vertex = {
-    beginShape: constructOptionalContectManager({
+    beginShape: cachedLazy(constructOptionalContectManager, [{
         __call__: makeFunc(function (self, mode) {
-            return processingProxy.beginShape(mode);
+            processingProxy.beginShape(mode);
+            return self;
         }, "__call__", [self$1, { "MODE": int_$24, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
-        __enter__: makeFunc(function (self, mode) {
-            return processingProxy.beginShape(mode);
-        }, "__enter__", [self$1, { "MODE": int_$24, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
+        __enter__: makeFunc(function (self) {
+            return self;
+        }, "__enter__", [self$1]),
         __exit__: makeFunc(function () {
             return processingProxy.endShape;
-        }, "__exit__", [self$1])
-    }, "beginShape"),
+        }, "__exit__", [self$1, { "exc_type": object$4, ignored: ignored }, { "exc_value": object$4, ignored: ignored }, { "traceback": object$4, ignored: ignored }])
+    }, "beginShape"], "beginShape"),
 
-    beginClosedShape: constructOptionalContectManager({
+    beginClosedShape: cachedLazy(constructOptionalContectManager, [{
         __call__: makeFunc(function (self, mode) {
-            return processingProxy.beginShape(mode);
+            processingProxy.beginShape(mode);
+            return self;
         }, "__call__", [self$1, { "MODE": int_$24, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
-        __enter__: makeFunc(function (self, mode) {
-            return processingProxy.beginShape(mode);
-        }, "__enter__", [self$1, { "MODE": int_$24, allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP], optional: optional }]),
+        __enter__: makeFunc(function (self) {
+            return self;
+        }, "__enter__"[self$1]),
         __exit__: makeFunc(function () {
             return processingProxy.endShape(constants.CLOSE);
-        }, "__exit__", [self$1])
-    }, "beginClosedShape"),
+        }, "__exit__", [self$1, { "exc_type": object$4, ignored: ignored }, { "exc_value": object$4, ignored: ignored }, { "traceback": object$4, ignored: ignored }])
+    }, "beginClosedShape"], "beginClosedShape"),
 
     endShape: makeFunc(processingProxy, "endShape", [{ "MODE": int_$24, allowed: [CLOSE], optional: optional }]),
 

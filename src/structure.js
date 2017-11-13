@@ -1,9 +1,9 @@
 import { processing, isInitialised, requestNoLoop } from "./processing.js";
-import { processingProxy, makeFunc, optional, self, constructOptionalContectManager } from "./utils.js";
+import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
-const { int_ } = Sk.builtin;
+const { int_, object } = Sk.builtin;
 const { P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF } = remappedConstants;
 
 function loop() {
@@ -57,11 +57,19 @@ export default {
 
     redraw: makeFunc(processingProxy, "redraw"),
 
-    pushStyle: constructOptionalContectManager({
-        __call__: makeFunc(() => processingProxy.pushStyle(), "__call__", [ self ]),
-        __enter__: makeFunc(() => processingProxy.pushStyle(), "__enter__", [ self ]),
-        __exit__: makeFunc(() => processingProxy.popStyle(), "__exit__", [ self ])
-    }, "pushMatrix"),
+    pushStyle: cachedLazy(constructOptionalContectManager, [{
+        __call__: makeFunc(self => {
+            processingProxy.pushStyle();
+            return self;
+        }, "__call__", [ self ]),
+        __enter__: makeFunc(self => self, "__enter__", [ self ]),
+        __exit__: makeFunc(() => processingProxy.popStyle(), "__exit__", [
+            self,
+            { "exc_type": object, ignored },
+            { "exc_value": object, ignored },
+            { "traceback": object, ignored }
+        ])
+    }, "pushStyle"], "pushStyle"),
 
     popStyle: makeFunc(processingProxy, "popStyle")
 };

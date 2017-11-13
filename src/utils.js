@@ -21,6 +21,8 @@ const { assign, keys } = Object;
 
 const argsToArray = Array.from;
 
+const cache = new Map();
+
 let OptionalContextManager;
 
 function countNonOptionalArgs(args) {
@@ -143,7 +145,7 @@ function optionalContextManager(loc){
 }
 
 export function initUtils(mod) {
-    OptionalContextManager = (loc, name) => buildClass(optionalContextManager(loc), mod, "OptionalContextManager_" + name, []);
+    OptionalContextManager = (loc, name) => buildClass(mod, optionalContextManager(loc), "OptionalContextManager_" + name, []);
 }
 
 export function constructOptionalContectManager(loc, name) {
@@ -154,4 +156,18 @@ export function constructOptionalContectManager(loc, name) {
     }
 
     return callsim(OptionalContextManager(loc, name));
+}
+
+export function cachedLazy(func, args, id) {
+    return () => {
+        if (cache.has(id)) {
+            return cache.get(id);
+        }
+
+        let res = func.apply(null, args);
+
+        cache.set(id, res);
+
+        return res;
+    };
 }
