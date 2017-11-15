@@ -2,13 +2,13 @@
   "name": "processing.sk",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "authors": [
     "Albert-Jan Nijburg",
     "trinket.io"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "http://github.com/trinketapp/processing.sk",
   "ignore": [
     "**/.*",
     "node_modules",
