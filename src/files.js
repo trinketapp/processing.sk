@@ -11,7 +11,6 @@ export default {
         { "filename": str }
     ]),
     createInput: notImplemented,
-    open: notImplemented,
     selectFolder: notImplemented,
     selectInput: notImplemented
 };
