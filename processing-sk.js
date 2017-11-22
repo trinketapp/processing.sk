@@ -890,7 +890,6 @@ var files = {
     loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$4 }]),
     loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$4 }]),
     createInput: notImplemented,
-    open: notImplemented,
     selectFolder: notImplemented,
     selectInput: notImplemented
 };
@@ -1810,7 +1809,7 @@ var remapToPy$9 = Sk.ffi.remapToPy;
 
 
 function vectorInit(self, x, y, z) {
-    self.v = processing.PVector(x, y, z);
+    self.v = new processing.PVector(x, y, z);
 }
 
 function vectorSet(self, x, y, z) {
@@ -1920,6 +1919,10 @@ function vectorClass($gbl, $loc) {
     $loc.array = makeFunc(function (self) {
         return self.v.array();
     }, "array", [self$1]);
+
+    $loc.__repr__ = makeFunc(function (self) {
+        return self.v.toString();
+    }, "repr", [self$1]);
 }
 
 var vectorBuilder = (function (mod) {

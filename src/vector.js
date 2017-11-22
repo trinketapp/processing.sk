@@ -8,7 +8,7 @@ const { remapToPy } = Sk.ffi;
 
 
 function vectorInit(self, x, y, z) {
-    self.v = processing.PVector(x, y, z);
+    self.v = new processing.PVector(x, y, z);
 }
 
 function vectorSet(self, x, y, z) {
@@ -153,6 +153,8 @@ function vectorClass($gbl, $loc) {
     ]);
 
     $loc.array = makeFunc(self => self.v.array(), "array", [ self ]);
+
+    $loc.__repr__ = makeFunc(self => self.v.toString(), "repr", [ self ]);
 }
 
 export default mod => buildClass(mod, vectorClass, "PVector", []);
