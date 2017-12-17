@@ -771,11 +771,11 @@ function colorInit(self, val1, val2, val3, alpha) {
 }
 
 function colorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(colorInit, "__init__", [self$1, { "gray": [int_$7, float_$7, str$3], "converter": strToColor }, { "aplha": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "hex": [int_$7, float_$7], optional: optional }]);
+    $loc.__init__ = makeFunc(colorInit, "__init__", [self$1, { "gray": [int_$7, float_$7, str$3], "converter": strToColor }, { "aplha": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "alpha": [int_$7, float_$7], optional: optional }]);
 }
 
 var colorBuilder = (function (mod) {
-    return buildClass$1(mod, colorClass, "color", []);
+    return buildClass$1(mod, colorClass, "color", [int_$7]);
 });
 
 var _Sk$builtin$9 = Sk.builtin;
