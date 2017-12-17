@@ -9,7 +9,7 @@ import colorBuilder from "./color.js";
 import { remappedConstants } from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
-import { EnvironmentBuilder, cursor, noCursor, height, width, frameCount, frameRate, focused } from "./environment.js";
+import { EnvironmentBuilder, cursor, noCursor, height, width, frameCount, focused, FrameRateBuilder } from "./environment.js";
 import files from "./files.js";
 import fontattribues from "./font-attributes.js";
 import fontmetrics from "./font-metrics.js";
@@ -105,7 +105,10 @@ export function main() {
     PFont = PFontBuilder(mod);
 
     let Environment = EnvironmentBuilder(mod);
+    let FrameRate = FrameRateBuilder(mod);
+    let frameRate = callsim(FrameRate);
     let environment = callsim(Environment);
+
     let Mouse = MouseBuilder(mod);
     let mouse = callsim(Mouse);
     let Keyboard = KeyboardBuilder(mod);
