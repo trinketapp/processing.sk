@@ -862,6 +862,21 @@ var EnvironmentBuilder = function EnvironmentBuilder(mod) {
     return buildClass$2(mod, environmentClass, "Environment", []);
 };
 
+function frameRateClass($gbl, $loc) {
+    $loc.__init__ = makeFunc(function (self) {
+        self.v = processingProxy.__frameRate;
+    }, "__init__", [self$1]);
+
+    $loc.__call__ = makeFunc(function (self, rate) {
+        processingProxy.frameRate(rate);
+        self.v = rate;
+    }, "__call__", [self$1, { "rate": int_$10 }]);
+}
+
+var FrameRateBuilder = function FrameRateBuilder(mod) {
+    return buildClass$2(mod, frameRateClass, "FrameRate", [int_$10]);
+};
+
 var cursor = makeFunc(processingProxy, "cursor", [{ "image": ["PImage", int_$10], allowed: [ARROW, CROSS, HAND, MOVE, TEXT, WAIT], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
 
 var noCursor = makeFunc(processingProxy, "noCursor");
@@ -874,9 +889,6 @@ var width = function width() {
 };
 var frameCount = function frameCount() {
     return remapToPy$2(processingProxy.frameCount);
-};
-var frameRate = function frameRate() {
-    return remapToPy$2(processingProxy.frameRate);
 };
 
 var focused = function focused() {
