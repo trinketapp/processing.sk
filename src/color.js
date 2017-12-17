@@ -14,8 +14,8 @@ function colorClass($gbl, $loc) {
         { "gray": [ int_, float_, str, ], "converter": strToColor },
         { "aplha": [ int_, float_ ], optional },
         { "value3": [ int_, float_ ], optional },
-        { "hex": [ int_, float_ ], optional }
+        { "alpha": [ int_, float_ ], optional }
     ]);
 }
 
-export default mod => buildClass(mod, colorClass, "color", []);
+export default mod => buildClass(mod, colorClass, "color", [ int_ ]);
