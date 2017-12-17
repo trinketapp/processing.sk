@@ -2066,7 +2066,10 @@ function main() {
     exports.PFont = PFontBuilder(mod);
 
     var Environment = EnvironmentBuilder(mod);
+    var FrameRate = FrameRateBuilder(mod);
+    var frameRate = callsim(FrameRate);
     var environment = callsim(Environment);
+
     var Mouse = MouseBuilder(mod);
     var mouse = callsim(Mouse);
     var Keyboard = KeyboardBuilder(mod);
