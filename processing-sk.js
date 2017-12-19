@@ -704,25 +704,12 @@ var int_$5 = _Sk$builtin$6.int_;
 var float_$5 = _Sk$builtin$6.float_;
 var lng = _Sk$builtin$6.lng;
 var str$2 = _Sk$builtin$6.str;
-var callsim$2 = Sk.misceval.callsim;
 
-
-function blendColor(c1, c2, mode) {
-    var c = callsim$2(exports.color, new int_$5(0), new int_$5(0), new int_$5(0));
-    c.v = processingProxy.blendColor(c1, c2, mode);
-    return c;
-}
-
-function lerpColor(c1, c2, mode) {
-    var c = callsim$2(exports.color, new int_$5(0), new int_$5(0), new int_$5(0));
-    c.v = processingProxy.lerpColor(c1, c2, mode);
-    return c;
-}
 
 var ccreatingandreading = {
     alpha: makeFunc(processingProxy, "alpha", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    blendColor: makeFunc(blendColor, "blendColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "mode": int_$5, allowed: [BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE, EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN] }]),
+    blendColor: makeFunc(processingProxy, "blendColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "mode": int_$5, allowed: [BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE, EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN] }]),
 
     blue: makeFunc(processingProxy, "blue", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
@@ -732,7 +719,7 @@ var ccreatingandreading = {
 
     hue: makeFunc(processingProxy, "hue", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    lerpColor: makeFunc(lerpColor, "lerpColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "amt": [int_$5, float_$5] }]),
+    lerpColor: makeFunc(processingProxy, "lerpColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "amt": [int_$5, float_$5] }]),
 
     red: makeFunc(processingProxy, "red", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
@@ -769,7 +756,7 @@ var str$4 = _Sk$builtin$8.str;
 var lng$2 = _Sk$builtin$8.lng;
 
 
-var colorBuilder = makeFunc(processingProxy, "color", [{ "value1": [int_$7, float_$7, str$4, lng$2], "converter": strToColor }, { "value2": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "alpha": [int_$7, float_$7], optional: optional }]);
+var color = makeFunc(processingProxy, "color", [{ "value1": [int_$7, float_$7, str$4, lng$2], "converter": strToColor }, { "value2": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "alpha": [int_$7, float_$7], optional: optional }]);
 
 var _Sk$builtin$9 = Sk.builtin;
 var int_$8 = _Sk$builtin$9.int_;
@@ -940,13 +927,13 @@ var bool = _Sk$builtin$13.bool;
 var int_$12 = _Sk$builtin$13.int_;
 var _Sk$misceval$2 = Sk.misceval;
 var buildClass$2 = _Sk$misceval$2.buildClass;
-var callsim$3 = _Sk$misceval$2.callsim;
+var callsim$2 = _Sk$misceval$2.callsim;
 var loadname = _Sk$misceval$2.loadname;
 
 
 function createFontFunction(name, size, smooth, charset) {
     var font = processingProxy.createFont(name, size, smooth, charset);
-    var pfont = callsim$3(exports.PFont);
+    var pfont = callsim$2(exports.PFont);
     pfont.v = font;
     return pfont;
 }
@@ -962,7 +949,7 @@ function fontClass($gbl, $loc) {
     var list_func = new func$2(function () {
         return new list$1(processingProxy.PFont.list());
     });
-    $loc.list = callsim$3(staticmethod, list_func);
+    $loc.list = callsim$2(staticmethod, list_func);
 }
 
 var PFontBuilder = function PFontBuilder(mod) {
@@ -989,7 +976,7 @@ var int_$13 = _Sk$builtin$14.int_;
 var func$3 = _Sk$builtin$14.func;
 var _Sk$misceval$3 = Sk.misceval;
 var buildClass$3 = _Sk$misceval$3.buildClass;
-var callsim$4 = _Sk$misceval$3.callsim;
+var callsim$3 = _Sk$misceval$3.callsim;
 var _Sk$ffi$2 = Sk.ffi;
 var remapToPy$3 = _Sk$ffi$2.remapToPy;
 var remapToJs$2 = _Sk$ffi$2.remapToJs;
@@ -1046,7 +1033,7 @@ var PGraphicsBuilder = function PGraphicsBuilder(mod) {
 };
 
 var createGraphics = new func$3(function (width, height, renderer) {
-    return callsim$4(exports.PGraphics, width, height, renderer);
+    return callsim$3(exports.PGraphics, width, height, renderer);
 });
 
 var hint = new func$3(function (item) {
@@ -1065,7 +1052,7 @@ var IOError = _Sk$builtin$15.IOError;
 var sattr = Sk.abstr.sattr;
 var _Sk$misceval$4 = Sk.misceval;
 var buildClass$4 = _Sk$misceval$4.buildClass;
-var callsim$5 = _Sk$misceval$4.callsim;
+var callsim$4 = _Sk$misceval$4.callsim;
 var Suspension = _Sk$misceval$4.Suspension;
 var _Sk$ffi$3 = Sk.ffi;
 var remapToJs$3 = _Sk$ffi$3.remapToJs;
@@ -1126,7 +1113,7 @@ function imageLoadImage(img) {
         promise: Promise.race([new Promise(function (resolve) {
             return setTimeout(resolve, 3000);
         }), new Promise(function (resolve) {
-            var image = callsim$5(exports.PImage);
+            var image = callsim$4(exports.PImage);
             var i = processingProxy.loadImage(imageUrl, {}, function () {
                 image.v = i;
                 resolve(image);
@@ -1151,7 +1138,7 @@ function imageRequestImage(filename, extension) {
 
 function imageInit(self, arg1, arg2, arg3) {
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
-    sattr(self, "pixels", callsim$5(PixelProxy, self));
+    sattr(self, "pixels", callsim$4(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -1162,14 +1149,14 @@ function imageGet(self, x, y, width, height) {
         return self.v.get.apply(self.v, args);
     }
 
-    var image = callsim$5(exports.PImage);
+    var image = callsim$4(exports.PImage);
     image.v = self.v.get.apply(self.v, args);
-    sattr(image, "pixels", callsim$5(PixelProxy, image));
+    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }
 
-function imageSet(self, x, y, color$$1) {
-    self.v.set(x, y, color$$1);
+function imageSet(self, x, y, color) {
+    self.v.set(x, y, color);
 }
 
 function imageCopy(self, srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight) {
@@ -1213,8 +1200,8 @@ function pixelProxy($glb, $loc) {
         return self.image.pixels[index];
     }, "__getitem__", [self$1, { "index": int_$14 }]);
 
-    $loc.__setitem__ = makeFunc(function (self, index, color$$1) {
-        return self.image.pixels[index] = color$$1;
+    $loc.__setitem__ = makeFunc(function (self, index, color) {
+        return self.image.pixels[index] = color;
     }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
 
     $loc.__len__ = makeFunc(function (self) {
@@ -1264,7 +1251,7 @@ var PImageBuilder = function PImageBuilder(mod) {
 var createImage = makeFunc(function (width, height, format) {
     var image = Sk.misceval.callsim(exports.PImage);
     image.v = processingProxy.createImage(width, height, format);
-    sattr(image, "pixels", callsim$5(PixelProxy, image));
+    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }, "createFunc", [{ "width": int_$14 }, { "height": int_$14 }, { "format": int_$14, allowed: [RGB$1, ARGB, ALPHA] }]);
 
@@ -1295,7 +1282,7 @@ var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$14 }, { "y": int_$14 }
 var updatePixels = makeFunc(processingProxy, "updatePixels");
 
 function pixels() {
-    var pp = callsim$5(PixelProxy);
+    var pp = callsim$4(PixelProxy);
     pp.image = {
         pixels: processingProxy.pixels
     };
@@ -1811,7 +1798,7 @@ var _Sk$builtin$26 = Sk.builtin;
 var int_$23 = _Sk$builtin$26.int_;
 var float_$20 = _Sk$builtin$26.float_;
 var _Sk$misceval$5 = Sk.misceval;
-var callsim$6 = _Sk$misceval$5.callsim;
+var callsim$5 = _Sk$misceval$5.callsim;
 var buildClass$9 = _Sk$misceval$5.buildClass;
 var remapToPy$9 = Sk.ffi.remapToPy;
 
@@ -1825,55 +1812,55 @@ function vectorSet(self, x, y, z) {
 }
 
 function vectorGet(self) {
-    var vector = callsim$6(exports.PVector);
+    var vector = callsim$5(exports.PVector);
     vector.v = self.v.get();
     return vector;
 }
 
 function vectorAdd(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.add(vec);
     return new_vec;
 }
 
 function vectorSub(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.sub(vec);
     return new_vec;
 }
 
 function vectorMult(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.mult(vec);
     return new_vec;
 }
 
 function vectorDiv(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.div(vec);
     return new_vec;
 }
 
 function vectorDot(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.dot(vec);
     return new_vec;
 }
 
 function vectorCross(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.cross(vec);
     return new_vec;
 }
 
 function vectorDist(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.dist(vec);
     return new_vec;
 }
 
 function vectorAngleBetween(self, vec) {
-    var new_vec = callsim$6(exports.PVector);
+    var new_vec = callsim$5(exports.PVector);
     new_vec.v = self.v.angleBetween(vec);
     return new_vec;
 }
@@ -2017,7 +2004,6 @@ function isInitialised() {
     return processing == null;
 }
 
-exports.color = void 0;
 exports.PImage = void 0;
 exports.PShape = void 0;
 exports.PGraphics = void 0;
@@ -2066,7 +2052,6 @@ function main() {
     //
     //  //////////////////////////////////////////////////////////////////////
 
-    exports.color = colorBuilder(mod);
     exports.PImage = PImageBuilder(mod);
     exports.PShape = PShapeBuilder(mod);
     exports.PGraphics = PGraphicsBuilder(mod);
@@ -2087,7 +2072,7 @@ function main() {
 
     initUtils(mod);
 
-    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: exports.color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: exports.PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
+    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera, ccreatingandreading, csetting, { color: color }, remappedConstants, coordinates, curves, { Environment: Environment, environment: environment, cursor: cursor, noCursor: noCursor, height: height, width: width, frameCount: frameCount, frameRate: frameRate, focused: focused }, files, fontattribues, fontmetrics, { PFont: exports.PFont, createFont: createFont, loadFont: loadFont, text: text, textFont: textFont }, { PGraphics: exports.PGraphics, createGraphics: createGraphics, hint: hint }, { PImage: exports.PImage }, { image: image, createImage: createImage, imageMode: imageMode, loadImage: loadImage,
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels, pixels: pixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
