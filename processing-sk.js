@@ -702,6 +702,8 @@ var BURN = remappedConstants.BURN;
 var _Sk$builtin$6 = Sk.builtin;
 var int_$5 = _Sk$builtin$6.int_;
 var float_$5 = _Sk$builtin$6.float_;
+var lng = _Sk$builtin$6.lng;
+var str$2 = _Sk$builtin$6.str;
 var callsim$2 = Sk.misceval.callsim;
 
 
@@ -718,23 +720,23 @@ function lerpColor(c1, c2, mode) {
 }
 
 var ccreatingandreading = {
-    alpha: makeFunc(processingProxy, "alpha", [{ "color": "color" }]),
+    alpha: makeFunc(processingProxy, "alpha", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    blendColor: makeFunc(blendColor, "blendColor", [{ "c1": "color" }, { "c2": "color" }, { "mode": int_$5, allowed: [BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE, EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN] }]),
+    blendColor: makeFunc(blendColor, "blendColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "mode": int_$5, allowed: [BLEND, ADD, SUBTRACT, DARKEST, LIGHTEST, DIFFERENCE, EXLUSION, MULTIPLY, SCREEN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, DODGE, BURN] }]),
 
-    blue: makeFunc(processingProxy, "blue", [{ "color": "color" }]),
+    blue: makeFunc(processingProxy, "blue", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    brightness: makeFunc(processingProxy, "brightness", [{ "color": "color" }]),
+    brightness: makeFunc(processingProxy, "brightness", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    green: makeFunc(processingProxy, "green", [{ "color": "color" }]),
+    green: makeFunc(processingProxy, "green", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    hue: makeFunc(processingProxy, "hue", [{ "color": "color" }]),
+    hue: makeFunc(processingProxy, "hue", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    lerpColor: makeFunc(lerpColor, "lerpColor", [{ "c1": "color" }, { "c2": "color" }, { "amt": [int_$5, float_$5] }]),
+    lerpColor: makeFunc(lerpColor, "lerpColor", [{ "c1": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "c2": [int_$5, lng, float_$5, str$2], converter: strToColor }, { "amt": [int_$5, float_$5] }]),
 
-    red: makeFunc(processingProxy, "red", [{ "color": "color" }]),
+    red: makeFunc(processingProxy, "red", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }]),
 
-    saturation: makeFunc(processingProxy, "saturation", [{ "color": "color" }])
+    saturation: makeFunc(processingProxy, "saturation", [{ "color": [int_$5, lng, float_$5, str$2], converter: strToColor }])
 };
 
 var RGB = remappedConstants.RGB;
@@ -742,41 +744,32 @@ var HSB = remappedConstants.HSB;
 var _Sk$builtin$7 = Sk.builtin;
 var int_$6 = _Sk$builtin$7.int_;
 var float_$6 = _Sk$builtin$7.float_;
-var str$2 = _Sk$builtin$7.str;
+var str$3 = _Sk$builtin$7.str;
+var lng$1 = _Sk$builtin$7.lng;
 
 
 var csetting = {
-    background: makeFunc(processingProxy, "background", [{ "value1": [int_$6, float_$6, str$2, "color"], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
+    background: makeFunc(processingProxy, "background", [{ "value1": [int_$6, lng$1, float_$6, str$3], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
 
     colorMode: makeFunc(processingProxy, "colorMode", [{ "mode": int_$6, allowed: [RGB, HSB] }, { "range1": [int_$6, float_$6], optional: optional }, { "range2": [int_$6, float_$6], optional: optional }, { "range3": [int_$6, float_$6], optional: optional }, { "range4": [int_$6, float_$6], optional: optional }]),
 
-    fill: makeFunc(processingProxy, "fill", [{ "value1": [int_$6, float_$6, "color", str$2], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
+    fill: makeFunc(processingProxy, "fill", [{ "value1": [int_$6, lng$1, float_$6, str$3], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }]),
 
     noFill: makeFunc(processingProxy, "noFill"),
 
     noStroke: makeFunc(processingProxy, "noStroke"),
 
-    stroke: makeFunc(processingProxy, "stroke", [{ "value1": [int_$6, float_$6, "color", str$2], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }])
+    stroke: makeFunc(processingProxy, "stroke", [{ "value1": [int_$6, lng$1, float_$6, str$3], converter: strToColor }, { "value2": [int_$6, float_$6], optional: optional }, { "value2": [int_$6, float_$6], optional: optional }, { "alpha": [int_$6, float_$6], optional: optional }])
 };
 
 var _Sk$builtin$8 = Sk.builtin;
 var float_$7 = _Sk$builtin$8.float_;
 var int_$7 = _Sk$builtin$8.int_;
-var str$3 = _Sk$builtin$8.str;
-var buildClass$1 = Sk.misceval.buildClass;
+var str$4 = _Sk$builtin$8.str;
+var lng$2 = _Sk$builtin$8.lng;
 
 
-function colorInit(self, val1, val2, val3, alpha) {
-    self.v = processingProxy.color(val1, val2, val3, alpha);
-}
-
-function colorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(colorInit, "__init__", [self$1, { "gray": [int_$7, float_$7, str$3], "converter": strToColor }, { "aplha": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "alpha": [int_$7, float_$7], optional: optional }]);
-}
-
-var colorBuilder = (function (mod) {
-    return buildClass$1(mod, colorClass, "color", [int_$7]);
-});
+var colorBuilder = makeFunc(processingProxy, "color", [{ "value1": [int_$7, float_$7, str$4, lng$2], "converter": strToColor }, { "value2": [int_$7, float_$7], optional: optional }, { "value3": [int_$7, float_$7], optional: optional }, { "alpha": [int_$7, float_$7], optional: optional }]);
 
 var _Sk$builtin$9 = Sk.builtin;
 var int_$8 = _Sk$builtin$9.int_;
@@ -828,7 +821,7 @@ var remapToJs$1 = _Sk$ffi$1.remapToJs;
 var _Sk$builtin$11 = Sk.builtin;
 var func$1 = _Sk$builtin$11.func;
 var int_$10 = _Sk$builtin$11.int_;
-var buildClass$2 = Sk.misceval.buildClass;
+var buildClass$1 = Sk.misceval.buildClass;
 var ARROW = remappedConstants.ARROW;
 var CROSS = remappedConstants.CROSS;
 var HAND = remappedConstants.HAND;
@@ -859,7 +852,7 @@ function environmentClass($gbl, $loc) {
 }
 
 var EnvironmentBuilder = function EnvironmentBuilder(mod) {
-    return buildClass$2(mod, environmentClass, "Environment", []);
+    return buildClass$1(mod, environmentClass, "Environment", []);
 };
 
 function frameRateClass($gbl, $loc) {
@@ -874,7 +867,7 @@ function frameRateClass($gbl, $loc) {
 }
 
 var FrameRateBuilder = function FrameRateBuilder(mod) {
-    return buildClass$2(mod, frameRateClass, "FrameRate", [int_$10]);
+    return buildClass$1(mod, frameRateClass, "FrameRate", [int_$10]);
 };
 
 var cursor = makeFunc(processingProxy, "cursor", [{ "image": ["PImage", int_$10], allowed: [ARROW, CROSS, HAND, MOVE, TEXT, WAIT], optional: optional }, { "x": int_$10, optional: optional }, { "y": int_$10, optional: optional }]);
@@ -895,12 +888,12 @@ var focused = function focused() {
     return remapToPy$2(processingProxy.focused);
 };
 
-var str$4 = Sk.builtin.str;
+var str$5 = Sk.builtin.str;
 
 
 var files = {
-    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$4 }]),
-    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$4 }]),
+    loadBytes: makeFunc(processingProxy, "loadBytes", [{ "filename": str$5 }]),
+    loadStrings: makeFunc(processingProxy, "loadStrings"[{ "filename": str$5 }]),
     createInput: notImplemented,
     selectFolder: notImplemented,
     selectInput: notImplemented
@@ -918,7 +911,7 @@ var SHAPE = remappedConstants.SHAPE;
 var _Sk$builtin$12 = Sk.builtin;
 var int_$11 = _Sk$builtin$12.int_;
 var float_$10 = _Sk$builtin$12.float_;
-var str$5 = _Sk$builtin$12.str;
+var str$6 = _Sk$builtin$12.str;
 
 
 var fontattribues = {
@@ -930,7 +923,7 @@ var fontattribues = {
 
     textSize: makeFunc(processingProxy, "textSize", [{ "size": [int_$11, float_$10] }]),
 
-    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$5 }])
+    textWidth: makeFunc(processingProxy, "textWidth", [{ "width": str$6 }])
 };
 
 var fontmetrics = {
@@ -942,11 +935,11 @@ var _Sk$builtin$13 = Sk.builtin;
 var func$2 = _Sk$builtin$13.func;
 var float_$11 = _Sk$builtin$13.float_;
 var list$1 = _Sk$builtin$13.list;
-var str$6 = _Sk$builtin$13.str;
+var str$7 = _Sk$builtin$13.str;
 var bool = _Sk$builtin$13.bool;
 var int_$12 = _Sk$builtin$13.int_;
 var _Sk$misceval$2 = Sk.misceval;
-var buildClass$3 = _Sk$misceval$2.buildClass;
+var buildClass$2 = _Sk$misceval$2.buildClass;
 var callsim$3 = _Sk$misceval$2.callsim;
 var loadname = _Sk$misceval$2.loadname;
 
@@ -963,7 +956,7 @@ function fontClass($gbl, $loc) {
         if (input) {
             self.v = new processingProxy.PFont(input);
         }
-    }, "__init__", [self$1, { "input ": str$6, optional: optional }]);
+    }, "__init__", [self$1, { "input ": str$7, optional: optional }]);
 
     var staticmethod = loadname("staticmethod", $gbl);
     var list_func = new func$2(function () {
@@ -973,14 +966,14 @@ function fontClass($gbl, $loc) {
 }
 
 var PFontBuilder = function PFontBuilder(mod) {
-    return buildClass$3(mod, fontClass, "PFont", []);
+    return buildClass$2(mod, fontClass, "PFont", []);
 };
 
-var createFont = makeFunc(createFontFunction, "createFont", [{ "name": str$6 }, { "size": [int_$12, float_$11] }, { "smooth": bool, optional: optional }, { "charset": str$6, optional: optional }]);
+var createFont = makeFunc(createFontFunction, "createFont", [{ "name": str$7 }, { "size": [int_$12, float_$11] }, { "smooth": bool, optional: optional }, { "charset": str$7, optional: optional }]);
 
-var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$6 }]);
+var loadFont = makeFunc(processingProxy, "loadFont", [{ "fontname": str$7 }]);
 
-var text = makeFunc(processingProxy, "text", [{ "data": [str$6, int_$12, float_$11] }, { "x": [int_$12, float_$11] }, { "y": [int_$12, float_$11] }, { "z": [int_$12, float_$11], optional: optional }, { "height": [int_$12, float_$11], optional: optional }, { "z": [int_$12, float_$11], optional: optional }]);
+var text = makeFunc(processingProxy, "text", [{ "data": [str$7, int_$12, float_$11] }, { "x": [int_$12, float_$11] }, { "y": [int_$12, float_$11] }, { "z": [int_$12, float_$11], optional: optional }, { "height": [int_$12, float_$11], optional: optional }, { "z": [int_$12, float_$11], optional: optional }]);
 
 var textFont = makeFunc(processingProxy, "textFont", [{ "font": "PFont" }, { "size": [int_$12, float_$11], optional: optional }]);
 
@@ -995,7 +988,7 @@ var _Sk$builtin$14 = Sk.builtin;
 var int_$13 = _Sk$builtin$14.int_;
 var func$3 = _Sk$builtin$14.func;
 var _Sk$misceval$3 = Sk.misceval;
-var buildClass$4 = _Sk$misceval$3.buildClass;
+var buildClass$3 = _Sk$misceval$3.buildClass;
 var callsim$4 = _Sk$misceval$3.callsim;
 var _Sk$ffi$2 = Sk.ffi;
 var remapToPy$3 = _Sk$ffi$2.remapToPy;
@@ -1049,7 +1042,7 @@ function graphicsClass($gbl, $loc) {
 }
 
 var PGraphicsBuilder = function PGraphicsBuilder(mod) {
-    return buildClass$4(mod, graphicsClass, "PGraphics", []);
+    return buildClass$3(mod, graphicsClass, "PGraphics", []);
 };
 
 var createGraphics = new func$3(function (width, height, renderer) {
@@ -1065,12 +1058,13 @@ var _Sk$builtin$15 = Sk.builtin;
 var func$4 = _Sk$builtin$15.func;
 var int_$14 = _Sk$builtin$15.int_;
 var list$2 = _Sk$builtin$15.list;
-var str$7 = _Sk$builtin$15.str;
+var str$8 = _Sk$builtin$15.str;
 var float_$12 = _Sk$builtin$15.float_;
+var lng$3 = _Sk$builtin$15.lng;
 var IOError = _Sk$builtin$15.IOError;
 var sattr = Sk.abstr.sattr;
 var _Sk$misceval$4 = Sk.misceval;
-var buildClass$5 = _Sk$misceval$4.buildClass;
+var buildClass$4 = _Sk$misceval$4.buildClass;
 var callsim$5 = _Sk$misceval$4.callsim;
 var Suspension = _Sk$misceval$4.Suspension;
 var _Sk$ffi$3 = Sk.ffi;
@@ -1221,7 +1215,7 @@ function pixelProxy($glb, $loc) {
 
     $loc.__setitem__ = makeFunc(function (self, index, color$$1) {
         return self.image.pixels[index] = color$$1;
-    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": "color" }]);
+    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
 
     $loc.__len__ = makeFunc(function (self) {
         return self.image.width * self.image.height;
@@ -1229,7 +1223,7 @@ function pixelProxy($glb, $loc) {
 }
 
 function imageClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$7], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
+    $loc.__init__ = makeFunc(imageInit, "__init__", [self$1, { "width": [int_$14, str$8], optional: optional }, { "height": int_$14, optional: optional }, { "format": int_$14, allowed: [1, 2, 4], optional: optional }]);
 
     $loc.__getattr__ = new func$4(function (self, key) {
         key = remapToJs$3(key);
@@ -1243,7 +1237,7 @@ function imageClass($gbl, $loc) {
 
     $loc.get = makeFunc(imageGet, "get", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
 
-    $loc.set = makeFunc(imageSet, "set", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "color": "color" }]);
+    $loc.set = makeFunc(imageSet, "set", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
 
     $loc.copy = makeFunc(imageCopy, "copy", [self$1, { "srcImg": [int_$14, "PImage"] }, { "sx": int_$14 }, { "sy": int_$14 }, { "swidth": int_$14 }, { "sheight": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14, optional: optional }]);
 
@@ -1253,7 +1247,7 @@ function imageClass($gbl, $loc) {
 
     $loc.filter = makeFunc(imageFilter, "filter", [self$1, { "MODE": int_$14, allowed: [THRESHOLD, GRAY, INVERT, POSTERIZE, BLUR, OPAQUE, ERODE, DILATE] }, { "srcImg": "PImage", optional: optional }]);
 
-    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$7 }]);
+    $loc.save = makeFunc(imageSave, "save", [self$1, { "filename": str$8 }]);
 
     $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$14 }, { "high": int_$14 }]);
 
@@ -1263,8 +1257,8 @@ function imageClass($gbl, $loc) {
 }
 
 var PImageBuilder = function PImageBuilder(mod) {
-    PixelProxy = buildClass$5(mod, pixelProxy, "ImageProxy", []);
-    return buildClass$5(mod, imageClass, "PImage", []);
+    PixelProxy = buildClass$4(mod, pixelProxy, "ImageProxy", []);
+    return buildClass$4(mod, imageClass, "PImage", []);
 };
 
 var createImage = makeFunc(function (width, height, format) {
@@ -1278,13 +1272,13 @@ var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"]
 
 var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$14, allowed: [CORNER$1, CORNERS$1, CENTER$2] }]);
 
-var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$7 }]);
+var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$8 }]);
 
 var noTint = makeFunc(processingProxy, "noTint");
 
-var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$7 }, { "extension": str$7, optional: optional }]);
+var requestImage = makeFunc(imageRequestImage, "requestImage", [{ "filename": str$8 }, { "extension": str$8, optional: optional }]);
 
-var tint = makeFunc(processingProxy, "tint", [{ "value1": ["color", int_$14, float_$12] }, { "value2": [int_$14, float_$12], optional: optional }, { "value3": [int_$14, float_$12], optional: optional }, { "alpha": [int_$14, float_$12], optional: optional }]);
+var tint = makeFunc(processingProxy, "tint", [{ "value1": [int_$14, lng$3, float_$12, str$8], converter: strToColor }, { "value2": [int_$14, float_$12], optional: optional }, { "value3": [int_$14, float_$12], optional: optional }, { "alpha": [int_$14, float_$12], optional: optional }]);
 
 var blend = makeFunc(processingProxy, "blend", [{ "srcImg": [int_$14, "PImage"] }, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14 }, { "height": int_$14 }, { "dx": int_$14 }, { "dy": int_$14 }, { "dwidth": int_$14 }, { "dheight": int_$14 }, { "MODE": int_$14, optional: optional, allowed: [BLEND$1, ADD$1, SUBTRACT$1, LIGHTEST$1, DARKEST$1, DIFFERENCE$1, EXCLUSION, MULTIPLY$1, SCREEN$2, OVERLAY$1, HARD, LIGHT, SOFT_LIGHT$1, DODGE$1, BURN$1] }]);
 
@@ -1296,7 +1290,7 @@ var get$1 = makeFunc(processingProxy, "get", [{ "x": int_$14, optional: optional
 
 var loadPixels = makeFunc(processingProxy, "loadPixels");
 
-var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$14 }, { "y": int_$14 }, { "image": ["color", "PImage"] }]);
+var set$1 = makeFunc(processingProxy, "set", [{ "x": int_$14 }, { "y": int_$14 }, { "image": ["PImage", int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
 
 var updatePixels = makeFunc(processingProxy, "updatePixels");
 
@@ -1312,7 +1306,7 @@ var _Sk$ffi$4 = Sk.ffi;
 var remapToPy$5 = _Sk$ffi$4.remapToPy;
 var remapToJs$4 = _Sk$ffi$4.remapToJs;
 var func$5 = Sk.builtin.func;
-var buildClass$6 = Sk.misceval.buildClass;
+var buildClass$5 = Sk.misceval.buildClass;
 
 
 function keyboardClass($gbl, $loc) {
@@ -1329,7 +1323,7 @@ function keyboardClass($gbl, $loc) {
 }
 
 var KeyboardBuilder = function KeyboardBuilder(mod) {
-    return buildClass$6(mod, keyboardClass, "Keyboard", []);
+    return buildClass$5(mod, keyboardClass, "Keyboard", []);
 };
 
 var key = function key() {
@@ -1370,23 +1364,25 @@ var lights = {
 var _Sk$builtin$17 = Sk.builtin;
 var int_$16 = _Sk$builtin$17.int_;
 var float_$14 = _Sk$builtin$17.float_;
+var str$9 = _Sk$builtin$17.str;
+var lng$4 = _Sk$builtin$17.lng;
 
 
 var materialproperties = {
-    ambient: makeFunc(processingProxy, "ambient", [{ "gray": [int_$16, float_$14, "color"] }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }]),
+    ambient: makeFunc(processingProxy, "ambient", [{ "gray": [int_$16, lng$4, float_$14, str$9], converter: strToColor }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }]),
 
-    emissive: makeFunc(processingProxy, "emissive", [{ "gray": [int_$16, float_$14, "color"] }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }]),
+    emissive: makeFunc(processingProxy, "emissive", [{ "gray": [int_$16, lng$4, float_$14, str$9], converter: strToColor }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }]),
 
     shininess: makeFunc(processingProxy, "shininess", [{ "shine": [int_$16, float_$14] }]),
 
-    specular: makeFunc(processingProxy, "specular", [{ "gray": [int_$16, float_$14, "color"] }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }])
+    specular: makeFunc(processingProxy, "specular", [{ "gray": [int_$16, lng$4, float_$14, str$9], converter: strToColor }, { "v1": [int_$16, float_$14], optional: optional }, { "v2": [int_$16, float_$14], optional: optional }, { "v3": [int_$16, float_$14], optional: optional }])
 };
 
 var _Sk$ffi$5 = Sk.ffi;
 var remapToPy$6 = _Sk$ffi$5.remapToPy;
 var remapToJs$5 = _Sk$ffi$5.remapToJs;
 var func$6 = Sk.builtin.func;
-var buildClass$7 = Sk.misceval.buildClass;
+var buildClass$6 = Sk.misceval.buildClass;
 
 
 function mouseClass($gbl, $loc) {
@@ -1411,7 +1407,7 @@ function mouseClass($gbl, $loc) {
 }
 
 var MouseBuilder = function MouseBuilder(mod) {
-    return buildClass$7(mod, mouseClass, "Mouse", []);
+    return buildClass$6(mod, mouseClass, "Mouse", []);
 };
 
 var mouseX = function mouseX() {
@@ -1435,7 +1431,7 @@ var mouseButton = function mouseButton() {
 
 var _Sk$builtin$18 = Sk.builtin;
 var object$1 = _Sk$builtin$18.object;
-var str$8 = _Sk$builtin$18.str;
+var str$10 = _Sk$builtin$18.str;
 var list$3 = _Sk$builtin$18.list;
 var print_ = Sk.misceval.print_;
 
@@ -1446,11 +1442,11 @@ var output = {
         print_("\n");
     }, "println", [{ "data": object$1 }]),
 
-    save: makeFunc(processingProxy, "save", [{ "filename": str$8 }]),
+    save: makeFunc(processingProxy, "save", [{ "filename": str$10 }]),
 
-    saveFrame: makeFunc(processingProxy, "saveFrame", [{ "filename": str$8 }, { "ext": str$8, allowed: ["tif", "tga", "jpg", "png"] }]),
+    saveFrame: makeFunc(processingProxy, "saveFrame", [{ "filename": str$10 }, { "ext": str$10, allowed: ["tif", "tga", "jpg", "png"] }]),
 
-    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$8 }, { "strings": list$3 }]),
+    saveStrings: makeFunc(processingProxy, "saveStrings", [{ "filename": str$10 }, { "strings": list$3 }]),
 
     PrintWriter: notImplemented,
     beginRaw: notImplemented,
@@ -1487,7 +1483,7 @@ var random = {
 var _Sk$ffi$6 = Sk.ffi;
 var remapToJs$6 = _Sk$ffi$6.remapToJs;
 var remapToPy$7 = _Sk$ffi$6.remapToPy;
-var buildClass$8 = Sk.misceval.buildClass;
+var buildClass$7 = Sk.misceval.buildClass;
 var _Sk$builtin$20 = Sk.builtin;
 var list$4 = _Sk$builtin$20.list;
 var func$7 = _Sk$builtin$20.func;
@@ -1515,21 +1511,21 @@ function screenClass($gbl, $loc) {
 }
 
 var ScreenBuilder = function ScreenBuilder(mod) {
-    return buildClass$8(mod, screenClass, "Screen", []);
+    return buildClass$7(mod, screenClass, "Screen", []);
 };
 
 var CORNER$2 = remappedConstants.CORNER;
 var CORNERS$2 = remappedConstants.CORNERS;
 var CENTER$3 = remappedConstants.CENTER;
 var _Sk$builtin$21 = Sk.builtin;
-var str$9 = _Sk$builtin$21.str;
+var str$11 = _Sk$builtin$21.str;
 var int_$18 = _Sk$builtin$21.int_;
 var float_$16 = _Sk$builtin$21.float_;
 var bool$1 = _Sk$builtin$21.bool;
 var _Sk$ffi$7 = Sk.ffi;
 var remapToJs$7 = _Sk$ffi$7.remapToJs;
 var remapToPy$8 = _Sk$ffi$7.remapToPy;
-var buildClass$9 = Sk.misceval.buildClass;
+var buildClass$8 = Sk.misceval.buildClass;
 
 
 function shapeIsVisible(self) {
@@ -1621,11 +1617,11 @@ function shapeClass($gbl, $loc) {
 }
 
 var PShapeBuilder = function PShapeBuilder(mod) {
-    return buildClass$9(mod, shapeClass, "PShape", []);
+    return buildClass$8(mod, shapeClass, "PShape", []);
 };
 
 var shape = {
-    loadShape: makeFunc(processingProxy, "loadShape", [{ "filename": str$9 }]),
+    loadShape: makeFunc(processingProxy, "loadShape", [{ "filename": str$11 }]),
 
     shape: makeFunc(processingProxy, "shape", [{ "sh": "PShape" }, { "x": [int_$18, float_$16] }, { "y": [int_$18, float_$16] }, { "width": [int_$18, float_$16], optional: optional }, { "height": [int_$18, float_$16], optional: optional }]),
 
@@ -1635,16 +1631,16 @@ var shape = {
 var _Sk$builtin$22 = Sk.builtin;
 var int_$19 = _Sk$builtin$22.int_;
 var float_$17 = _Sk$builtin$22.float_;
-var str$10 = _Sk$builtin$22.str;
+var str$12 = _Sk$builtin$22.str;
 var list$5 = _Sk$builtin$22.list;
 
 
 var stringFunctions = {
-    join: makeFunc(processingProxy, "join", [{ "stringArray": list$5 }, { "separator": str$10 }]),
+    join: makeFunc(processingProxy, "join", [{ "stringArray": list$5 }, { "separator": str$12 }]),
 
-    match: makeFunc(processingProxy, "match", [{ "str": str$10 }, { "regexp": str$10 }]),
+    match: makeFunc(processingProxy, "match", [{ "str": str$12 }, { "regexp": str$12 }]),
 
-    matchAll: makeFunc(processingProxy, "matchAll", [{ "str": str$10 }, { "regexp": str$10 }]),
+    matchAll: makeFunc(processingProxy, "matchAll", [{ "str": str$12 }, { "regexp": str$12 }]),
 
     nf: makeFunc(processingProxy, "nf", [{ "value": [int_$19, float_$17, list$5] }, { "digits": int_$19 }, { "right": int_$19, optional: optional }]),
 
@@ -1654,11 +1650,11 @@ var stringFunctions = {
 
     nfs: makeFunc(processingProxy, "nfs", [{ "value": [int_$19, float_$17, list$5] }, { "digits": int_$19 }, { "right": int_$19, optional: optional }]),
 
-    split: makeFunc(processingProxy, "split", [{ "string": str$10 }, { "delimiter": str$10 }]),
+    split: makeFunc(processingProxy, "split", [{ "string": str$12 }, { "delimiter": str$12 }]),
 
-    splitTokens: makeFunc(processingProxy, "splitTokens", [{ "string": str$10 }, { "delimiter": str$10, optional: optional }]),
+    splitTokens: makeFunc(processingProxy, "splitTokens", [{ "string": str$12 }, { "delimiter": str$12, optional: optional }]),
 
-    trim: makeFunc(processingProxy, "trim", [{ "strOrArray": [str$10, list$5] }])
+    trim: makeFunc(processingProxy, "trim", [{ "strOrArray": [str$12, list$5] }])
 };
 
 var _Sk$builtin$23 = Sk.builtin;
@@ -1816,7 +1812,7 @@ var int_$23 = _Sk$builtin$26.int_;
 var float_$20 = _Sk$builtin$26.float_;
 var _Sk$misceval$5 = Sk.misceval;
 var callsim$6 = _Sk$misceval$5.callsim;
-var buildClass$10 = _Sk$misceval$5.buildClass;
+var buildClass$9 = _Sk$misceval$5.buildClass;
 var remapToPy$9 = Sk.ffi.remapToPy;
 
 
@@ -1938,7 +1934,7 @@ function vectorClass($gbl, $loc) {
 }
 
 var vectorBuilder = (function (mod) {
-    return buildClass$10(mod, vectorClass, "PVector", []);
+    return buildClass$9(mod, vectorClass, "PVector", []);
 });
 
 var _Sk$builtin$27 = Sk.builtin;
@@ -1997,12 +1993,12 @@ var vertex = {
     textureMode: makeFunc(processingProxy, "textureMode", [{ "img": int_$24, allowed: [IMAGE, NORMALIZED] }])
 };
 
-var str$11 = Sk.builtin.str;
+var str$13 = Sk.builtin.str;
 
 
 var web = {
-    link: makeFunc(processingProxy, "link"[({ "url": str$11 }, { "target": str$11, optional: optional })]),
-    status: makeFunc(processingProxy, "status", [{ "text": str$11 }])
+    link: makeFunc(processingProxy, "link"[({ "url": str$13 }, { "target": str$13, optional: optional })]),
+    status: makeFunc(processingProxy, "status", [{ "text": str$13 }])
 };
 
 var _Sk$misceval = Sk.misceval;

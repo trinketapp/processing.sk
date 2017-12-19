@@ -1,9 +1,9 @@
 import { PImage } from "./processing.js";
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, optional, self } from "./utils.js";
+import { processingProxy, makeFunc, optional, self, strToColor } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
-const { func, int_, list, str, float_, IOError } = Sk.builtin;
+const { func, int_, list, str, float_, lng, IOError } = Sk.builtin;
 const { sattr } = Sk.abstr;
 const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
@@ -128,7 +128,7 @@ function pixelProxy($glb, $loc) {
 
     $loc.__setitem__ = makeFunc(function(self, index, color) {
         return self.image.pixels[index] = color;
-    }, "__setitem__", [ self, { "index": int_ }, { "color": "color" }]);
+    }, "__setitem__", [ self, { "index": int_ }, { "color": [ int_, lng, float_, str ], converter: strToColor }]);
 
     $loc.__len__ = makeFunc(self => self.image.width * self.image.height, "__len__", [ self ]);
 }
@@ -163,7 +163,7 @@ function imageClass($gbl, $loc) {
         self,
         { "x": int_ },
         { "y": int_ },
-        { "color": "color" }
+        { "color": [ int_, lng, float_, str ], converter: strToColor }
     ]);
 
     $loc.copy = makeFunc(imageCopy, "copy", [
@@ -269,7 +269,7 @@ export const requestImage = makeFunc(imageRequestImage, "requestImage", [
 ]);
 
 export const tint = makeFunc(processingProxy, "tint", [
-    { "value1": [ "color", int_, float_ ] },
+    { "value1": [ int_, lng, float_, str ], converter: strToColor},
     { "value2": [ int_, float_ ], optional },
     { "value3": [ int_, float_ ], optional },
     { "alpha": [ int_, float_ ], optional }
@@ -318,7 +318,7 @@ export const loadPixels = makeFunc(processingProxy, "loadPixels");
 export const set = makeFunc(processingProxy, "set", [
     { "x": int_ },
     { "y": int_ },
-    { "image": [ "color", "PImage" ] },
+    { "image": [ "PImage", int_, lng, float_, str ], converter: strToColor  },
 ]);
 
 export const updatePixels = makeFunc(processingProxy, "updatePixels");
