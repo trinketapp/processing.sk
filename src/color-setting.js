@@ -3,11 +3,11 @@ import { processingProxy, makeFunc, optional, strToColor } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
 const { RGB, HSB } = remappedConstants;
-const { int_, float_, str } = Sk.builtin;
+const { int_, float_, str, lng } = Sk.builtin;
 
 export default {
     background: makeFunc(processingProxy, "background", [
-        { "value1": [ int_, float_, str, "color" ], converter: strToColor },
+        { "value1": [ int_, lng, float_, str ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }
@@ -22,7 +22,7 @@ export default {
     ]),
 
     fill: makeFunc(processingProxy, "fill", [
-        { "value1": [ int_, float_, "color", str ], converter: strToColor },
+        { "value1": [ int_, lng, float_, str ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }
@@ -33,7 +33,7 @@ export default {
     noStroke: makeFunc(processingProxy, "noStroke"),
 
     stroke: makeFunc(processingProxy, "stroke", [
-        { "value1": [ int_, float_, "color", str ], converter: strToColor },
+        { "value1": [ int_, lng, float_, str ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }

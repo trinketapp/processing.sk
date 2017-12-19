@@ -5,7 +5,7 @@ import calculation from "./calculation.js";
 import camera from "./camera.js";
 import ccreatingandreading from "./color-creatingandreading.js";
 import csetting from "./color-setting.js";
-import colorBuilder from "./color.js";
+import color from "./color.js";
 import { remappedConstants } from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
@@ -48,7 +48,6 @@ export function isInitialised() {
     return processing == null;
 }
 
-export let color;
 export let PImage;
 export let PShape;
 export let PGraphics;
@@ -97,7 +96,6 @@ export function main() {
     //
     //  //////////////////////////////////////////////////////////////////////
 
-    color = colorBuilder(mod);
     PImage = PImageBuilder(mod);
     PShape = PShapeBuilder(mod);
     PGraphics = PGraphicsBuilder(mod);

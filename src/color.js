@@ -1,21 +1,11 @@
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, optional, self, strToColor } from "./utils.js";
+import { processingProxy, makeFunc, optional, strToColor } from "./utils.js";
 
-const { float_, int_, str } = Sk.builtin;
-const { buildClass } = Sk.misceval;
+const { float_, int_, str, lng } = Sk.builtin;
 
-function colorInit(self, val1, val2, val3, alpha) {
-    self.v = processingProxy.color(val1, val2, val3, alpha);
-}
-
-function colorClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(colorInit, "__init__", [
-        self,
-        { "gray": [ int_, float_, str, ], "converter": strToColor },
-        { "aplha": [ int_, float_ ], optional },
-        { "value3": [ int_, float_ ], optional },
-        { "alpha": [ int_, float_ ], optional }
-    ]);
-}
-
-export default mod => buildClass(mod, colorClass, "color", [ int_ ]);
+export default makeFunc(processingProxy, "color", [
+    { "value1": [ int_, float_, str, lng ], "converter": strToColor },
+    { "value2": [ int_, float_ ], optional },
+    { "value3": [ int_, float_ ], optional },
+    { "alpha": [ int_, float_ ], optional }
+]);
