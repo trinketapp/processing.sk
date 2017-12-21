@@ -270,7 +270,7 @@ export const requestImage = makeFunc(imageRequestImage, "requestImage", [
 ]);
 
 export const tint = makeFunc(processingProxy, "tint", [
-    { "value1": [ int_, lng, float_, str ], converter: strToColor},
+    { "value1": [ int_, lng, float_, str ], converter: strToColor },
     { "value2": [ int_, float_ ], optional },
     { "value3": [ int_, float_ ], optional },
     { "alpha": [ int_, float_ ], optional }
