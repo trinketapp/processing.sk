@@ -2098,8 +2098,8 @@ function main() {
         };
 
         function sketchProc(proc) {
-            var promisses = [];
-            var wait = true;
+            var promise = Promise.resolve();
+            var awaiting = false;
 
             function throwAndExit(e) {
                 exceptionOccurred(e);
@@ -2111,37 +2111,20 @@ function main() {
             proc.externals.sketch.onExit = finish;
 
             if (Sk.globals["setup"]) {
-                promisses.push(asyncToPromise(function () {
+                promise = asyncToPromise(function () {
                     return callsimOrSuspend(Sk.globals["setup"]);
-                }, suspHandler));
-            } else {
-                promisses.push(Promise.resolve());
+                }, suspHandler);
             }
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
-                    if (promisses.length === 0) {
-                        return;
-                    }
-
-                    // Here we wait till the setup promise is resolved if we have a draw function
-                    // or we throw an error
-                    Promise.all(promisses).then(function () {
-                        return wait = false;
-                    }).catch(throwAndExit);
-
-                    // keep calling draw untill all promisses have been resolved
-                    if (wait) {
-                        return;
-                    }
-
                     // if noLoop was called from python only stop looping after all
                     // async stuff happened.
-                    if (noLoopAfterAsync && promisses.length > 1) {
+                    if (noLoopAfterAsync) {
                         proc.noLoop();
                         // Here we wait for the setup function promise and the previous
                         // draw function promise to resolve and throw an error if nessecairy
-                        Promise.all(promisses).then(finish).catch(throwAndExit);
+                        promise.then(finish).catch(throwAndExit);
                         return;
                     }
 
@@ -2154,16 +2137,22 @@ function main() {
                         }
                     }
 
-                    promisses.push(asyncToPromise(function () {
-                        return callsimOrSuspend(Sk.globals["draw"]);
-                    }, suspHandler));
+                    if (!awaiting) {
+                        awaiting = true;
+                        promise.then(function () {
+                            awaiting = false;
+                            promise = asyncToPromise(function () {
+                                return callsimOrSuspend(Sk.globals["draw"]);
+                            }, suspHandler);
+                        });
+                    }
                 };
             } else {
                 processing.noLoop();
                 // If we don't have a draw function we don't have to loop.
                 // procesing doesn't know that but we do that's why we call noLoop here.
                 // we also wait for the setup function to complete and thow any errors
-                Promise.all(promisses).then(finish).catch(throwAndExit);
+                promise.then(finish).catch(throwAndExit);
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
