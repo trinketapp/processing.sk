@@ -1,6 +1,6 @@
 import { PImage } from "./processing.js";
 import Sk from "./skulpt.js";
-import { processingProxy, makeFunc, optional, self, strToColor } from "./utils.js";
+import { processingProxy, makeFunc, optional, ignored, self, strToColor } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
 const { func, int_, list, str, float_, lng, IOError } = Sk.builtin;
@@ -258,7 +258,8 @@ export const imageMode = makeFunc(processingProxy, "imageMode", [
 ]);
 
 export const loadImage = makeFunc(imageLoadImage, "loadImage", [
-    { "image": str }
+    { "image": str },
+    { "extension": str, optional, ignored }
 ]);
 
 export const noTint = makeFunc(processingProxy, "noTint");
