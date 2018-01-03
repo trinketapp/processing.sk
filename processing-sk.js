@@ -1669,7 +1669,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    requestNoLoop();
+    processingProxy.noLoop();
 }
 
 function size(width, height, renderer) {
@@ -1996,8 +1996,6 @@ var callsimOrSuspend = _Sk$misceval.callsimOrSuspend;
 
 var mod = {};
 
-var noLoopAfterAsync = false;
-
 exports.processingInstance = {};
 
 function isInitialised() {
@@ -2030,10 +2028,6 @@ function init(path, suspensionHandler, breakHandler) {
             path: path + "/__init__.js"
         }
     });
-}
-
-function requestNoLoop() {
-    noLoopAfterAsync = true;
 }
 
 function main() {
@@ -2077,7 +2071,6 @@ function main() {
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
     mod.run = new Sk.builtin.func(function () {
-        noLoopAfterAsync = false;
         var susp = new Sk.misceval.Suspension();
         var exceptionOccurred = null;
         var finish = null;
@@ -2098,9 +2091,6 @@ function main() {
         };
 
         function sketchProc(proc) {
-            var promise = Promise.resolve();
-            var awaiting = false;
-
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -2111,23 +2101,15 @@ function main() {
             proc.externals.sketch.onExit = finish;
 
             if (Sk.globals["setup"]) {
-                promise = asyncToPromise(function () {
-                    return callsimOrSuspend(Sk.globals["setup"]);
-                }, suspHandler);
+                proc.setup = function () {
+                    return asyncToPromise(function () {
+                        return callsimOrSuspend(Sk.globals["setup"]);
+                    }, suspHandler);
+                };
             }
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
-                    // if noLoop was called from python only stop looping after all
-                    // async stuff happened.
-                    if (noLoopAfterAsync) {
-                        proc.noLoop();
-                        // Here we wait for the setup function promise and the previous
-                        // draw function promise to resolve and throw an error if nessecairy
-                        promise.then(finish).catch(throwAndExit);
-                        return;
-                    }
-
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
                         try {
@@ -2137,22 +2119,10 @@ function main() {
                         }
                     }
 
-                    if (!awaiting) {
-                        awaiting = true;
-                        promise.then(function () {
-                            awaiting = false;
-                            promise = asyncToPromise(function () {
-                                return callsimOrSuspend(Sk.globals["draw"]);
-                            }, suspHandler);
-                        });
-                    }
+                    return asyncToPromise(function () {
+                        return callsimOrSuspend(Sk.globals["draw"]);
+                    }, suspHandler);
                 };
-            } else {
-                processing.noLoop();
-                // If we don't have a draw function we don't have to loop.
-                // procesing doesn't know that but we do that's why we call noLoop here.
-                // we also wait for the setup function to complete and thow any errors
-                promise.then(finish).catch(throwAndExit);
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
@@ -2208,7 +2178,6 @@ function main() {
 exports.isInitialised = isInitialised;
 exports.processing = processing;
 exports.init = init;
-exports.requestNoLoop = requestNoLoop;
 exports.main = main;
 
 Object.defineProperty(exports, '__esModule', { value: true });

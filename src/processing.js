@@ -40,8 +40,6 @@ const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
 const mod = {};
 
-let noLoopAfterAsync = false;
-
 export let processingInstance = {};
 
 export function isInitialised() {
@@ -74,10 +72,6 @@ export function init(path, suspensionHandler, breakHandler) {
             path: `${path}/__init__.js`,
         },
     });
-}
-
-export function requestNoLoop() {
-    noLoopAfterAsync = true;
 }
 
 export function main() {
@@ -127,7 +121,6 @@ export function main() {
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
 
     mod.run = new Sk.builtin.func(function () {
-        noLoopAfterAsync = false;
         let susp = new Sk.misceval.Suspension();
         let exceptionOccurred = null;
         let finish = null;
@@ -148,9 +141,6 @@ export function main() {
         };
 
         function sketchProc(proc) {
-            let promise = Promise.resolve();
-            let awaiting = false;
-
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -161,22 +151,13 @@ export function main() {
             proc.externals.sketch.onExit = finish;
 
             if (Sk.globals["setup"]) {
-                promise = asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler);
+                proc.setup = function () {
+                    return asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler);
+                };
             }
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
-                    // if noLoop was called from python only stop looping after all
-                    // async stuff happened.
-                    if (noLoopAfterAsync) {
-                        proc.noLoop();
-                        // Here we wait for the setup function promise and the previous
-                        // draw function promise to resolve and throw an error if nessecairy
-                        promise.then(finish)
-                            .catch(throwAndExit);
-                        return;
-                    }
-
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
                         try {
@@ -186,21 +167,8 @@ export function main() {
                         }
                     }
 
-                    if (!awaiting) {
-                        awaiting = true;
-                        promise.then(() => {
-                            awaiting = false;
-                            promise = asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler);
-                        });
-                    }
+                    return asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler);
                 };
-            } else {
-                processing.noLoop();
-                // If we don't have a draw function we don't have to loop.
-                // procesing doesn't know that but we do that's why we call noLoop here.
-                // we also wait for the setup function to complete and thow any errors
-                promise.then(finish)
-                    .catch(throwAndExit);
             }
 
             var callBacks = [
