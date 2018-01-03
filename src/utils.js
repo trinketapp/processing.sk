@@ -81,6 +81,10 @@ export function makeFunc(thingToWrap, name, args_template) {
 
         let args = argsToArray(arguments).filter(a => a !== undefined);
 
+        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
+
+        pyCheckTypes(name, join((l, r) => [l,r], args, largs_template));
+
         let js_args =
             args.filter((a, i) => largs_template[i].ignored === undefined || ! largs_template[i].ignored)
                 .map((a, i) => {
@@ -96,10 +100,6 @@ export function makeFunc(thingToWrap, name, args_template) {
 
                     return remapToJs(a);
                 });
-
-        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
-
-        pyCheckTypes(name, join((l, r) => [l,r], args, largs_template));
 
         let result = functionToWrap.apply(null, js_args);
 
