@@ -140,6 +140,12 @@ function makeFunc(thingToWrap, name, args_template) {
             return a !== undefined;
         });
 
+        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
+
+        pyCheckTypes(name, join(function (l, r) {
+            return [l, r];
+        }, args, largs_template));
+
         var js_args = args.filter(function (a, i) {
             return largs_template[i].ignored === undefined || !largs_template[i].ignored;
         }).map(function (a, i) {
@@ -155,12 +161,6 @@ function makeFunc(thingToWrap, name, args_template) {
 
             return remapToJs(a);
         });
-
-        pyCheckArgs(name, args, countNonOptionalArgs(largs_template), largs_template.length, false);
-
-        pyCheckTypes(name, join(function (l, r) {
-            return [l, r];
-        }, args, largs_template));
 
         var result = functionToWrap.apply(null, js_args);
 
@@ -1259,7 +1259,7 @@ var image = makeFunc(processingProxy, "image", [{ "img": ["PImage", "PGraphics"]
 
 var imageMode = makeFunc(processingProxy, "imageMode", [{ "mode": int_$14, allowed: [CORNER$1, CORNERS$1, CENTER$2] }]);
 
-var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$8 }]);
+var loadImage = makeFunc(imageLoadImage, "loadImage", [{ "image": str$8 }, { "extension": str$8, optional: optional, ignored: ignored }]);
 
 var noTint = makeFunc(processingProxy, "noTint");
 
