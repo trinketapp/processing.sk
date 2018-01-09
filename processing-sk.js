@@ -2098,7 +2098,13 @@ function main() {
 
             exports.processingInstance = proc;
 
-            proc.externals.sketch.onExit = finish;
+            proc.externals.sketch.onExit = function (e) {
+                if (e) {
+                    exceptionOccurred(e);
+                } else {
+                    finish();
+                }
+            };
 
             if (Sk.globals["setup"]) {
                 proc.setup = function () {
