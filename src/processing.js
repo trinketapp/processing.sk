@@ -57,6 +57,9 @@ export let processing = processingProxy;
 let suspHandler;
 let bHandler;
 
+let seenCanvas = null;
+let doubleBuffered = false;
+
 export function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -72,6 +75,13 @@ export function init(path, suspensionHandler, breakHandler) {
             path: `${path}/__init__.js`,
         },
     });
+}
+
+export function resizeDoubleBufferCanvas(width, height) {
+    if (doubleBuffered) {
+        seenCanvas.width = width;
+        seenCanvas.height = height;
+    }
 }
 
 export function main() {
@@ -120,10 +130,18 @@ export function main() {
             mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
 
+    mod.enableDoubleBuffer = new Sk.builtin.func(function() {
+        doubleBuffered = true;
+        return Sk.builtin.none.none$;
+    });
+
     mod.run = new Sk.builtin.func(function () {
         let susp = new Sk.misceval.Suspension();
         let exceptionOccurred = null;
         let finish = null;
+        let canvas = null;
+        let seenCanvasContext = null;
+        let parentNode = null;
 
         susp.resume = function() {
             if (susp.data["error"]) {
@@ -173,7 +191,13 @@ export function main() {
                         }
                     }
 
-                    return asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler);
+                    return asyncToPromise(
+                        () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
+                    ).then(() => {
+                        if (doubleBuffered) {
+                            requestAnimationFrame(() => seenCanvasContext.drawImage(canvas, 0, 0));
+                        }
+                    });
                 };
             }
 
@@ -199,22 +223,32 @@ export function main() {
             }
         }
 
-        var canvas = document.getElementById(Sk.canvas);
+        let canvasContainer = document.getElementById(Sk.canvas);
 
-        if (canvas.tagName !== "CANVAS") {
-            var mydiv = canvas;
-            canvas = document.createElement("canvas");
-            while (mydiv.firstChild) {
-                mydiv.removeChild(mydiv.firstChild);
-            }
-
-            mydiv.appendChild(canvas);
+        // this shouldn't be the case but added for backwards compat
+        // may have strange results when this hits.
+        if (canvasContainer.tagName === "CANVAS") {
+            parentNode = canvasContainer.parentNode;
+            parentNode.removeChild(canvasContainer);
+            canvasContainer = parentNode;
         }
 
-        canvas.style.display = "block";
+        canvas = document.createElement("canvas");
+        canvas.id = Sk.canvas + "-psk";
+        while (canvasContainer.firstChild) {
+            canvasContainer.removeChild(canvasContainer.firstChild);
+        }
+
+        if (doubleBuffered) {
+            seenCanvas = document.createElement("canvas");
+            seenCanvasContext = seenCanvas.getContext("2d");
+            canvasContainer.appendChild(seenCanvas);
+        } else {
+            canvasContainer.appendChild(canvas);
+        }
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
-        let instance = window.Processing.getInstanceById(Sk.canvas);
+        let instance = window.Processing.getInstanceById(Sk.canvas + "-psk");
         if (instance) {
             instance.exit();
         }

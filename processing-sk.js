@@ -1689,7 +1689,7 @@ function size(width, height, renderer) {
             return res;
         };
     }
-
+    resizeDoubleBufferCanvas(width, height);
     processing.size(width, height, renderer);
 }
 
@@ -2013,6 +2013,9 @@ var processing = processingProxy;
 var suspHandler = void 0;
 var bHandler = void 0;
 
+var seenCanvas = null;
+var doubleBuffered = false;
+
 function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -2028,6 +2031,13 @@ function init(path, suspensionHandler, breakHandler) {
             path: path + "/__init__.js"
         }
     });
+}
+
+function resizeDoubleBufferCanvas(width$$1, height$$1) {
+    if (doubleBuffered) {
+        seenCanvas.width = width$$1;
+        seenCanvas.height = height$$1;
+    }
 }
 
 function main() {
@@ -2070,10 +2080,18 @@ function main() {
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels, pixels: pixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
+    mod.enableDoubleBuffer = new Sk.builtin.func(function () {
+        doubleBuffered = true;
+        return Sk.builtin.none.none$;
+    });
+
     mod.run = new Sk.builtin.func(function () {
         var susp = new Sk.misceval.Suspension();
         var exceptionOccurred = null;
         var finish = null;
+        var canvas = null;
+        var seenCanvasContext = null;
+        var parentNode = null;
 
         susp.resume = function () {
             if (susp.data["error"]) {
@@ -2127,7 +2145,13 @@ function main() {
 
                     return asyncToPromise(function () {
                         return callsimOrSuspend(Sk.globals["draw"]);
-                    }, suspHandler);
+                    }, suspHandler).then(function () {
+                        if (doubleBuffered) {
+                            requestAnimationFrame(function () {
+                                return seenCanvasContext.drawImage(canvas, 0, 0);
+                            });
+                        }
+                    });
                 };
             }
 
@@ -2150,22 +2174,32 @@ function main() {
             }
         }
 
-        var canvas = document.getElementById(Sk.canvas);
+        var canvasContainer = document.getElementById(Sk.canvas);
 
-        if (canvas.tagName !== "CANVAS") {
-            var mydiv = canvas;
-            canvas = document.createElement("canvas");
-            while (mydiv.firstChild) {
-                mydiv.removeChild(mydiv.firstChild);
-            }
-
-            mydiv.appendChild(canvas);
+        // this shouldn't be the case but added for backwards compat
+        // may have strange results when this hits.
+        if (canvasContainer.tagName === "CANVAS") {
+            parentNode = canvasContainer.parentNode;
+            parentNode.removeChild(canvasContainer);
+            canvasContainer = parentNode;
         }
 
-        canvas.style.display = "block";
+        canvas = document.createElement("canvas");
+        canvas.id = Sk.canvas + "-psk";
+        while (canvasContainer.firstChild) {
+            canvasContainer.removeChild(canvasContainer.firstChild);
+        }
+
+        if (doubleBuffered) {
+            seenCanvas = document.createElement("canvas");
+            seenCanvasContext = seenCanvas.getContext("2d");
+            canvasContainer.appendChild(seenCanvas);
+        } else {
+            canvasContainer.appendChild(canvas);
+        }
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
-        var instance = window.Processing.getInstanceById(Sk.canvas);
+        var instance = window.Processing.getInstanceById(Sk.canvas + "-psk");
         if (instance) {
             instance.exit();
         }
@@ -2184,6 +2218,7 @@ function main() {
 exports.isInitialised = isInitialised;
 exports.processing = processing;
 exports.init = init;
+exports.resizeDoubleBufferCanvas = resizeDoubleBufferCanvas;
 exports.main = main;
 
 Object.defineProperty(exports, '__esModule', { value: true });

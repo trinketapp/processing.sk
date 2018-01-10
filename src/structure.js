@@ -1,4 +1,4 @@
-import { processing, isInitialised } from "./processing.js";
+import { processing, isInitialised, resizeDoubleBufferCanvas } from "./processing.js";
 import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
@@ -39,7 +39,7 @@ function size(width, height, renderer) {
             return res;
         };
     }
-
+    resizeDoubleBufferCanvas(width, height);
     processing.size(width, height, renderer);
 }
 
