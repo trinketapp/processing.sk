@@ -243,6 +243,16 @@ export function main() {
             seenCanvas = document.createElement("canvas");
             seenCanvasContext = seenCanvas.getContext("2d");
             canvasContainer.appendChild(seenCanvas);
+            let eventsToProxy = [
+                "keydown", "keypress", "keyup", "mouseenter", "mouseover", "mousemove",
+                "mousedown", "mouseup", "auxclick", "click", "dblclick", "contextmenu",
+                "wheel", "mouseleave", "mouseout", "select", "pointerlockchange", "pointerlockerror"
+            ];
+
+            eventsToProxy.forEach(e =>
+                seenCanvas.addEventListener(e,
+                    (event) =>
+                        canvas.dispatchEvent(new event.constructor(event.type, event))));
         } else {
             canvasContainer.appendChild(canvas);
         }

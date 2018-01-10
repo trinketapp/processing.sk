@@ -2194,6 +2194,13 @@ function main() {
             seenCanvas = document.createElement("canvas");
             seenCanvasContext = seenCanvas.getContext("2d");
             canvasContainer.appendChild(seenCanvas);
+            var eventsToProxy = ["keydown", "keypress", "keyup", "mouseenter", "mouseover", "mousemove", "mousedown", "mouseup", "auxclick", "click", "dblclick", "contextmenu", "wheel", "mouseleave", "mouseout", "select", "pointerlockchange", "pointerlockerror"];
+
+            eventsToProxy.forEach(function (e) {
+                return seenCanvas.addEventListener(e, function (event) {
+                    return canvas.dispatchEvent(new event.constructor(event.type, event));
+                });
+            });
         } else {
             canvasContainer.appendChild(canvas);
         }
