@@ -2013,51 +2013,7 @@ var suspHandler = void 0;
 var bHandler = void 0;
 
 var seenCanvas = null;
-var doubleBuffered = false;
-
-// function calculateOffset(curElement) {
-//     var element = curElement,
-//         offsetX = 0,
-//         offsetY = 0;
-
-//     // Find element offset
-//     if (element.offsetParent) {
-//         do {
-//             offsetX += element.offsetLeft;
-//             offsetY += element.offsetTop;
-//         } while (!!(element = element.offsetParent)); // eslint-disable-line no-extra-boolean-cast
-//     }
-
-//     // Find Scroll offset
-//     element = curElement;
-//     do {
-//         offsetX -= element.scrollLeft || 0;
-//         offsetY -= element.scrollTop || 0;
-//     } while (!!(element = element.parentNode)); // eslint-disable-line no-extra-boolean-cast
-
-//     // Get padding and border style widths for mouse offsets
-//     var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop;
-//     if (document.defaultView && document.defaultView.getComputedStyle) {
-//         stylePaddingLeft = parseInt(document.defaultView.getComputedStyle(curElement, null).paddingLeft, 10)      || 0;
-//         stylePaddingTop  = parseInt(document.defaultView.getComputedStyle(curElement, null).paddingTop, 10)       || 0;
-//         styleBorderLeft  = parseInt(document.defaultView.getComputedStyle(curElement, null).borderLeftWidth, 10)  || 0;
-//         styleBorderTop   = parseInt(document.defaultView.getComputedStyle(curElement, null).borderTopWidth, 10)   || 0;
-//     }
-
-//     // Add padding and border style widths to offset
-//     offsetX += stylePaddingLeft;
-//     offsetY += stylePaddingTop;
-
-//     offsetX += styleBorderLeft;
-//     offsetY += styleBorderTop;
-
-//     // Take into account any scrolling done
-//     offsetX += window.pageXOffset;
-//     offsetY += window.pageYOffset;
-
-//     return { "X": offsetX, "Y": offsetY };
-// }
-
+var doubleBuffered = true;
 
 function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
@@ -2116,8 +2072,8 @@ function main() {
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels, pixels: pixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
-    mod.enableDoubleBuffer = new Sk.builtin.func(function () {
-        doubleBuffered = true;
+    mod.disableDoubleBuffer = new Sk.builtin.func(function () {
+        doubleBuffered = false;
         return Sk.builtin.none.none$;
     });
 
