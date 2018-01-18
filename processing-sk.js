@@ -1689,7 +1689,6 @@ function size(width, height, renderer) {
             return res;
         };
     }
-    resizeDoubleBufferCanvas(width, height);
     processing.size(width, height, renderer);
 }
 
@@ -2016,6 +2015,50 @@ var bHandler = void 0;
 var seenCanvas = null;
 var doubleBuffered = false;
 
+// function calculateOffset(curElement) {
+//     var element = curElement,
+//         offsetX = 0,
+//         offsetY = 0;
+
+//     // Find element offset
+//     if (element.offsetParent) {
+//         do {
+//             offsetX += element.offsetLeft;
+//             offsetY += element.offsetTop;
+//         } while (!!(element = element.offsetParent)); // eslint-disable-line no-extra-boolean-cast
+//     }
+
+//     // Find Scroll offset
+//     element = curElement;
+//     do {
+//         offsetX -= element.scrollLeft || 0;
+//         offsetY -= element.scrollTop || 0;
+//     } while (!!(element = element.parentNode)); // eslint-disable-line no-extra-boolean-cast
+
+//     // Get padding and border style widths for mouse offsets
+//     var stylePaddingLeft, stylePaddingTop, styleBorderLeft, styleBorderTop;
+//     if (document.defaultView && document.defaultView.getComputedStyle) {
+//         stylePaddingLeft = parseInt(document.defaultView.getComputedStyle(curElement, null).paddingLeft, 10)      || 0;
+//         stylePaddingTop  = parseInt(document.defaultView.getComputedStyle(curElement, null).paddingTop, 10)       || 0;
+//         styleBorderLeft  = parseInt(document.defaultView.getComputedStyle(curElement, null).borderLeftWidth, 10)  || 0;
+//         styleBorderTop   = parseInt(document.defaultView.getComputedStyle(curElement, null).borderTopWidth, 10)   || 0;
+//     }
+
+//     // Add padding and border style widths to offset
+//     offsetX += stylePaddingLeft;
+//     offsetY += stylePaddingTop;
+
+//     offsetX += styleBorderLeft;
+//     offsetY += styleBorderTop;
+
+//     // Take into account any scrolling done
+//     offsetX += window.pageXOffset;
+//     offsetY += window.pageYOffset;
+
+//     return { "X": offsetX, "Y": offsetY };
+// }
+
+
 function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -2031,13 +2074,6 @@ function init(path, suspensionHandler, breakHandler) {
             path: path + "/__init__.js"
         }
     });
-}
-
-function resizeDoubleBufferCanvas(width$$1, height$$1) {
-    if (doubleBuffered) {
-        seenCanvas.width = width$$1;
-        seenCanvas.height = height$$1;
-    }
 }
 
 function main() {
@@ -2090,7 +2126,6 @@ function main() {
         var exceptionOccurred = null;
         var finish = null;
         var canvas = null;
-        var seenCanvasContext = null;
         var parentNode = null;
 
         susp.resume = function () {
@@ -2145,13 +2180,7 @@ function main() {
 
                     return asyncToPromise(function () {
                         return callsimOrSuspend(Sk.globals["draw"]);
-                    }, suspHandler).then(function () {
-                        if (doubleBuffered) {
-                            requestAnimationFrame(function () {
-                                return seenCanvasContext.drawImage(canvas, 0, 0);
-                            });
-                        }
-                    });
+                    }, suspHandler);
                 };
             }
 
@@ -2186,21 +2215,15 @@ function main() {
 
         canvas = document.createElement("canvas");
         canvas.id = Sk.canvas + "-psk";
+
         while (canvasContainer.firstChild) {
             canvasContainer.removeChild(canvasContainer.firstChild);
         }
 
         if (doubleBuffered) {
+            canvas.style = "display:none";
             seenCanvas = document.createElement("canvas");
-            seenCanvasContext = seenCanvas.getContext("2d");
             canvasContainer.appendChild(seenCanvas);
-            var eventsToProxy = ["keydown", "keypress", "keyup", "mouseenter", "mouseover", "mousemove", "mousedown", "mouseup", "auxclick", "click", "dblclick", "contextmenu", "wheel", "mouseleave", "mouseout", "select", "pointerlockchange", "pointerlockerror"];
-
-            eventsToProxy.forEach(function (e) {
-                return seenCanvas.addEventListener(e, function (event) {
-                    return canvas.dispatchEvent(new event.constructor(event.type, event));
-                });
-            });
         } else {
             canvasContainer.appendChild(canvas);
         }
@@ -2213,7 +2236,7 @@ function main() {
 
         // ugly hack make it start the loopage!
         setTimeout(function () {
-            mod.p = new window.Processing(canvas, sketchProc);
+            mod.p = new window.Processing(canvas, sketchProc, null, seenCanvas);
         }, 300);
 
         return susp;
@@ -2225,7 +2248,6 @@ function main() {
 exports.isInitialised = isInitialised;
 exports.processing = processing;
 exports.init = init;
-exports.resizeDoubleBufferCanvas = resizeDoubleBufferCanvas;
 exports.main = main;
 
 Object.defineProperty(exports, '__esModule', { value: true });

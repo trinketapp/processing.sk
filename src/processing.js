@@ -58,7 +58,7 @@ let suspHandler;
 let bHandler;
 
 let seenCanvas = null;
-let doubleBuffered = false;
+let doubleBuffered = true;
 
 export function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
@@ -75,13 +75,6 @@ export function init(path, suspensionHandler, breakHandler) {
             path: `${path}/__init__.js`,
         },
     });
-}
-
-export function resizeDoubleBufferCanvas(width, height) {
-    if (doubleBuffered) {
-        seenCanvas.width = width;
-        seenCanvas.height = height;
-    }
 }
 
 export function main() {
@@ -130,8 +123,8 @@ export function main() {
             mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
 
-    mod.enableDoubleBuffer = new Sk.builtin.func(function() {
-        doubleBuffered = true;
+    mod.disableDoubleBuffer = new Sk.builtin.func(function() {
+        doubleBuffered = false;
         return Sk.builtin.none.none$;
     });
 
@@ -140,7 +133,6 @@ export function main() {
         let exceptionOccurred = null;
         let finish = null;
         let canvas = null;
-        let seenCanvasContext = null;
         let parentNode = null;
 
         susp.resume = function() {
@@ -193,11 +185,7 @@ export function main() {
 
                     return asyncToPromise(
                         () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
-                    ).then(() => {
-                        if (doubleBuffered) {
-                            requestAnimationFrame(() => seenCanvasContext.drawImage(canvas, 0, 0));
-                        }
-                    });
+                    );
                 };
             }
 
@@ -235,24 +223,15 @@ export function main() {
 
         canvas = document.createElement("canvas");
         canvas.id = Sk.canvas + "-psk";
+
         while (canvasContainer.firstChild) {
             canvasContainer.removeChild(canvasContainer.firstChild);
         }
 
         if (doubleBuffered) {
+            canvas.style = "display:none";
             seenCanvas = document.createElement("canvas");
-            seenCanvasContext = seenCanvas.getContext("2d");
             canvasContainer.appendChild(seenCanvas);
-            let eventsToProxy = [
-                "keydown", "keypress", "keyup", "mouseenter", "mouseover", "mousemove",
-                "mousedown", "mouseup", "auxclick", "click", "dblclick", "contextmenu",
-                "wheel", "mouseleave", "mouseout", "select", "pointerlockchange", "pointerlockerror"
-            ];
-
-            eventsToProxy.forEach(e =>
-                seenCanvas.addEventListener(e,
-                    (event) =>
-                        canvas.dispatchEvent(new event.constructor(event.type, event))));
         } else {
             canvasContainer.appendChild(canvas);
         }
@@ -266,7 +245,7 @@ export function main() {
 
         // ugly hack make it start the loopage!
         setTimeout(() => {
-            mod.p = new window.Processing(canvas, sketchProc);
+            mod.p = new window.Processing(canvas, sketchProc, null, seenCanvas);
         }, 300);
 
         return susp;
