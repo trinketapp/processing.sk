@@ -1197,11 +1197,11 @@ function pixelProxy($glb, $loc) {
     }, "__init__", [self$1, { "image": "PImage", optional: optional }]);
 
     $loc.__getitem__ = makeFunc(function (self, index) {
-        return self.image.pixels[index];
+        return self.image.pixels.getPixel(index);
     }, "__getitem__", [self$1, { "index": int_$14 }]);
 
     $loc.__setitem__ = makeFunc(function (self, index, color) {
-        return self.image.pixels[index] = color;
+        return self.image.pixels.setPixel(index, color);
     }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
 
     $loc.__len__ = makeFunc(function (self) {
