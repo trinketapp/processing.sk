@@ -4,7 +4,6 @@ import { processingProxy, makeFunc, optional, ignored, self, strToColor } from "
 import { remappedConstants } from "./constants.js";
 
 const { func, int_, list, str, float_, lng, IOError, list_iter_ } = Sk.builtin;
-const { sattr } = Sk.abstr;
 const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
@@ -63,7 +62,6 @@ function imageRequestImage(filename, extension) {
 
 function imageInit(self, arg1, arg2, arg3) {
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
-    sattr(self, "pixels", callsim(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -74,7 +72,6 @@ function imageGet(self, x, y, width, height) {
 
     var image = callsim(PImage);
     image.v = self.v.get.apply(self.v, args);
-    sattr(image, "pixels", callsim(PixelProxy, image));
     return image;
 }
 
@@ -157,6 +154,9 @@ function imageClass($gbl, $loc) {
         if (key === "height") {
             return remapToPy(self.v.height);
         }
+        if (key === "pixels") {
+            return callsim(PixelProxy, self);
+        }
     });
 
     $loc.get = makeFunc(imageGet, "get", [
@@ -224,7 +224,7 @@ function imageClass($gbl, $loc) {
         { "high": int_ }
     ]);
 
-    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
+    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels", [ self ]);
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
         self,
@@ -245,7 +245,6 @@ export default PImageBuilder;
 export const createImage = makeFunc(function (width, height, format) {
     let image = Sk.misceval.callsim(PImage);
     image.v = processingProxy.createImage(width, height, format);
-    sattr(image, "pixels", callsim(PixelProxy, image));
     return image;
 }, "createFunc", [
     { "width": int_ },

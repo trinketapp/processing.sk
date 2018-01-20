@@ -1050,7 +1050,6 @@ var float_$12 = _Sk$builtin$15.float_;
 var lng$3 = _Sk$builtin$15.lng;
 var IOError = _Sk$builtin$15.IOError;
 var list_iter_ = _Sk$builtin$15.list_iter_;
-var sattr = Sk.abstr.sattr;
 var _Sk$misceval$4 = Sk.misceval;
 var buildClass$4 = _Sk$misceval$4.buildClass;
 var callsim$4 = _Sk$misceval$4.callsim;
@@ -1139,7 +1138,6 @@ function imageRequestImage(filename, extension) {
 
 function imageInit(self, arg1, arg2, arg3) {
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
-    sattr(self, "pixels", callsim$4(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -1152,7 +1150,6 @@ function imageGet(self, x, y, width, height) {
 
     var image = callsim$4(exports.PImage);
     image.v = self.v.get.apply(self.v, args);
-    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }
 
@@ -1231,6 +1228,9 @@ function imageClass($gbl, $loc) {
         if (key === "height") {
             return remapToPy$4(self.v.height);
         }
+        if (key === "pixels") {
+            return callsim$4(PixelProxy, self);
+        }
     });
 
     $loc.get = makeFunc(imageGet, "get", [self$1, { "x": int_$14 }, { "y": int_$14 }, { "width": int_$14, optional: optional }, { "height": int_$14, optional: optional }]);
@@ -1249,7 +1249,7 @@ function imageClass($gbl, $loc) {
 
     $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$14 }, { "high": int_$14 }]);
 
-    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
+    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels", [self$1]);
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [self$1, { "x": int_$14, optional: optional }, { "y": int_$14, optional: optional }, { "w": int_$14, optional: optional }, { "h": int_$14, optional: optional }]);
 }
@@ -1262,7 +1262,6 @@ var PImageBuilder = function PImageBuilder(mod) {
 var createImage = makeFunc(function (width, height, format) {
     var image = Sk.misceval.callsim(exports.PImage);
     image.v = processingProxy.createImage(width, height, format);
-    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }, "createFunc", [{ "width": int_$14 }, { "height": int_$14 }, { "format": int_$14, allowed: [RGB$1, ARGB, ALPHA] }]);
 
