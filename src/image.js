@@ -3,7 +3,7 @@ import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, ignored, self, strToColor } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
-const { func, int_, list, str, float_, lng, IOError } = Sk.builtin;
+const { func, int_, list, str, float_, lng, IOError, list_iter_ } = Sk.builtin;
 const { sattr } = Sk.abstr;
 const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
@@ -122,13 +122,21 @@ function pixelProxy($glb, $loc) {
         { "image": "PImage", optional }
     ]);
 
-    $loc.__getitem__ = makeFunc(function(self, index) {
-        return self.image.pixels.getPixel(index);
-    }, "__getitem__", [ self, { "index": int_ }]);
+    $loc.__getitem__ = makeFunc(
+        (self, index) => self.image.pixels.getPixel(index),
+        "__getitem__", [ self, { "index": int_ }]);
 
-    $loc.__setitem__ = makeFunc(function(self, index, color) {
-        return self.image.pixels.setPixel(index, color);
-    }, "__setitem__", [ self, { "index": int_ }, { "color": [ int_, lng, float_, str ], converter: strToColor }]);
+    $loc.__setitem__ = makeFunc(
+        (self, index, color) => self.image.pixels.setPixel(index, color),
+        "__setitem__", [ self, { "index": int_ }, { "color": [ int_, lng, float_, str ],
+            converter: strToColor }]);
+
+    $loc.__iter__ = new Sk.builtin.func(function (self) {
+        Sk.builtin.pyCheckArgs("__iter__", arguments, 0, 0, true, false);
+        return new list_iter_(new list(self.image.pixels.toArray()));
+    });
+
+    $loc.__repr__ = makeFunc(self => `array('i', [${self.image.pixels.toArray().join(", ")}])`, "__repr__", [ self ]);
 
     $loc.__len__ = makeFunc(self => self.image.width * self.image.height, "__len__", [ self ]);
 }

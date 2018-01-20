@@ -1049,6 +1049,7 @@ var str$8 = _Sk$builtin$15.str;
 var float_$12 = _Sk$builtin$15.float_;
 var lng$3 = _Sk$builtin$15.lng;
 var IOError = _Sk$builtin$15.IOError;
+var list_iter_ = _Sk$builtin$15.list_iter_;
 var sattr = Sk.abstr.sattr;
 var _Sk$misceval$4 = Sk.misceval;
 var buildClass$4 = _Sk$misceval$4.buildClass;
@@ -1202,7 +1203,17 @@ function pixelProxy($glb, $loc) {
 
     $loc.__setitem__ = makeFunc(function (self, index, color) {
         return self.image.pixels.setPixel(index, color);
-    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
+    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8],
+        converter: strToColor }]);
+
+    $loc.__iter__ = new Sk.builtin.func(function (self) {
+        Sk.builtin.pyCheckArgs("__iter__", arguments, 0, 0, true, false);
+        return new list_iter_(new list$2(self.image.pixels.toArray()));
+    });
+
+    $loc.__repr__ = makeFunc(function (self) {
+        return "array('i', [" + self.image.pixels.toArray().join(", ") + "])";
+    }, "__repr__", [self$1]);
 
     $loc.__len__ = makeFunc(function (self) {
         return self.image.width * self.image.height;
