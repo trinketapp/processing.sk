@@ -1,4 +1,4 @@
-import { processing, isInitialised, requestNoLoop } from "./processing.js";
+import { processing, isInitialised } from "./processing.js";
 import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
@@ -19,7 +19,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    requestNoLoop();
+    processingProxy.noLoop();
 }
 
 function size(width, height, renderer) {
@@ -39,7 +39,6 @@ function size(width, height, renderer) {
             return res;
         };
     }
-
     processing.size(width, height, renderer);
 }
 

@@ -40,8 +40,6 @@ const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
 const mod = {};
 
-let noLoopAfterAsync = false;
-
 export let processingInstance = {};
 
 export function isInitialised() {
@@ -59,6 +57,9 @@ export let processing = processingProxy;
 let suspHandler;
 let bHandler;
 
+let seenCanvas = null;
+let doubleBuffered = true;
+
 export function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -74,10 +75,6 @@ export function init(path, suspensionHandler, breakHandler) {
             path: `${path}/__init__.js`,
         },
     });
-}
-
-export function requestNoLoop() {
-    noLoopAfterAsync = true;
 }
 
 export function main() {
@@ -126,11 +123,17 @@ export function main() {
             mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
         timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
 
+    mod.disableDoubleBuffer = new Sk.builtin.func(function() {
+        doubleBuffered = false;
+        return Sk.builtin.none.none$;
+    });
+
     mod.run = new Sk.builtin.func(function () {
-        noLoopAfterAsync = false;
         let susp = new Sk.misceval.Suspension();
         let exceptionOccurred = null;
         let finish = null;
+        let canvas = null;
+        let parentNode = null;
 
         susp.resume = function() {
             if (susp.data["error"]) {
@@ -148,9 +151,6 @@ export function main() {
         };
 
         function sketchProc(proc) {
-            let promisses = [];
-            let wait = true;
-
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -158,43 +158,28 @@ export function main() {
 
             processingInstance = proc;
 
-            proc.externals.sketch.onExit = finish;
+            proc.externals.sketch.onExit = e => {
+                if (e) {
+                    exceptionOccurred(e);
+                } else {
+                    finish();
+                }
+            };
+
+            proc.externals.sketch.onSetup = e => {
+                if (e) {
+                    exceptionOccurred(e);
+                }
+            };
 
             if (Sk.globals["setup"]) {
-                promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler));
-            } else {
-                promisses.push(Promise.resolve());
+                proc.setup = function () {
+                    return asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler);
+                };
             }
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
-                    if (promisses.length === 0) {
-                        return;
-                    }
-
-                    // Here we wait till the setup promise is resolved if we have a draw function
-                    // or we throw an error
-                    Promise.all(promisses)
-                        .then(() => wait = false)
-                        .catch(throwAndExit);
-
-                    // keep calling draw untill all promisses have been resolved
-                    if (wait) {
-                        return;
-                    }
-
-                    // if noLoop was called from python only stop looping after all
-                    // async stuff happened.
-                    if (noLoopAfterAsync && promisses.length > 1) {
-                        proc.noLoop();
-                        // Here we wait for the setup function promise and the previous
-                        // draw function promise to resolve and throw an error if nessecairy
-                        Promise.all(promisses)
-                            .then(finish)
-                            .catch(throwAndExit);
-                        return;
-                    }
-
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
                         try {
@@ -204,16 +189,10 @@ export function main() {
                         }
                     }
 
-                    promisses.push(asyncToPromise(() => callsimOrSuspend(Sk.globals["draw"]), suspHandler));
+                    return asyncToPromise(
+                        () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
+                    );
                 };
-            } else {
-                processing.noLoop();
-                // If we don't have a draw function we don't have to loop.
-                // procesing doesn't know that but we do that's why we call noLoop here.
-                // we also wait for the setup function to complete and thow any errors
-                Promise.all(promisses)
-                    .then(finish)
-                    .catch(throwAndExit);
             }
 
             var callBacks = [
@@ -238,22 +217,33 @@ export function main() {
             }
         }
 
-        var canvas = document.getElementById(Sk.canvas);
+        let canvasContainer = document.getElementById(Sk.canvas);
 
-        if (canvas.tagName !== "CANVAS") {
-            var mydiv = canvas;
-            canvas = document.createElement("canvas");
-            while (mydiv.firstChild) {
-                mydiv.removeChild(mydiv.firstChild);
-            }
-
-            mydiv.appendChild(canvas);
+        // this shouldn't be the case but added for backwards compat
+        // may have strange results when this hits.
+        if (canvasContainer.tagName === "CANVAS") {
+            parentNode = canvasContainer.parentNode;
+            parentNode.removeChild(canvasContainer);
+            canvasContainer = parentNode;
         }
 
-        canvas.style.display = "block";
+        canvas = document.createElement("canvas");
+        canvas.id = Sk.canvas + "-psk";
+
+        while (canvasContainer.firstChild) {
+            canvasContainer.removeChild(canvasContainer.firstChild);
+        }
+
+        if (doubleBuffered) {
+            canvas.style = "display:none";
+            seenCanvas = document.createElement("canvas");
+            canvasContainer.appendChild(seenCanvas);
+        } else {
+            canvasContainer.appendChild(canvas);
+        }
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
-        let instance = window.Processing.getInstanceById(Sk.canvas);
+        let instance = window.Processing.getInstanceById(Sk.canvas + "-psk");
         if (instance) {
             instance.exit();
         }
@@ -261,7 +251,7 @@ export function main() {
 
         // ugly hack make it start the loopage!
         setTimeout(() => {
-            mod.p = new window.Processing(canvas, sketchProc);
+            mod.p = new window.Processing(canvas, sketchProc, null, seenCanvas);
         }, 300);
 
         return susp;

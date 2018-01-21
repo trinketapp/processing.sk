@@ -1049,7 +1049,7 @@ var str$8 = _Sk$builtin$15.str;
 var float_$12 = _Sk$builtin$15.float_;
 var lng$3 = _Sk$builtin$15.lng;
 var IOError = _Sk$builtin$15.IOError;
-var sattr = Sk.abstr.sattr;
+var list_iter_ = _Sk$builtin$15.list_iter_;
 var _Sk$misceval$4 = Sk.misceval;
 var buildClass$4 = _Sk$misceval$4.buildClass;
 var callsim$4 = _Sk$misceval$4.callsim;
@@ -1138,7 +1138,6 @@ function imageRequestImage(filename, extension) {
 
 function imageInit(self, arg1, arg2, arg3) {
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
-    sattr(self, "pixels", callsim$4(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -1151,7 +1150,6 @@ function imageGet(self, x, y, width, height) {
 
     var image = callsim$4(exports.PImage);
     image.v = self.v.get.apply(self.v, args);
-    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }
 
@@ -1197,12 +1195,22 @@ function pixelProxy($glb, $loc) {
     }, "__init__", [self$1, { "image": "PImage", optional: optional }]);
 
     $loc.__getitem__ = makeFunc(function (self, index) {
-        return self.image.pixels[index];
+        return self.image.pixels.getPixel(index);
     }, "__getitem__", [self$1, { "index": int_$14 }]);
 
     $loc.__setitem__ = makeFunc(function (self, index, color) {
-        return self.image.pixels[index] = color;
-    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8], converter: strToColor }]);
+        return self.image.pixels.setPixel(index, color);
+    }, "__setitem__", [self$1, { "index": int_$14 }, { "color": [int_$14, lng$3, float_$12, str$8],
+        converter: strToColor }]);
+
+    $loc.__iter__ = new Sk.builtin.func(function (self) {
+        Sk.builtin.pyCheckArgs("__iter__", arguments, 0, 0, true, false);
+        return new list_iter_(new list$2(self.image.pixels.toArray()));
+    });
+
+    $loc.__repr__ = makeFunc(function (self) {
+        return "array('i', [" + self.image.pixels.toArray().join(", ") + "])";
+    }, "__repr__", [self$1]);
 
     $loc.__len__ = makeFunc(function (self) {
         return self.image.width * self.image.height;
@@ -1219,6 +1227,9 @@ function imageClass($gbl, $loc) {
         }
         if (key === "height") {
             return remapToPy$4(self.v.height);
+        }
+        if (key === "pixels") {
+            return callsim$4(PixelProxy, self);
         }
     });
 
@@ -1238,7 +1249,7 @@ function imageClass($gbl, $loc) {
 
     $loc.resize = makeFunc(imageResize, "resize", [self$1, { "wide": int_$14 }, { "high": int_$14 }]);
 
-    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
+    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels", [self$1]);
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [self$1, { "x": int_$14, optional: optional }, { "y": int_$14, optional: optional }, { "w": int_$14, optional: optional }, { "h": int_$14, optional: optional }]);
 }
@@ -1251,7 +1262,6 @@ var PImageBuilder = function PImageBuilder(mod) {
 var createImage = makeFunc(function (width, height, format) {
     var image = Sk.misceval.callsim(exports.PImage);
     image.v = processingProxy.createImage(width, height, format);
-    sattr(image, "pixels", callsim$4(PixelProxy, image));
     return image;
 }, "createFunc", [{ "width": int_$14 }, { "height": int_$14 }, { "format": int_$14, allowed: [RGB$1, ARGB, ALPHA] }]);
 
@@ -1669,7 +1679,7 @@ function noLoop() {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
-    requestNoLoop();
+    processingProxy.noLoop();
 }
 
 function size(width, height, renderer) {
@@ -1689,7 +1699,6 @@ function size(width, height, renderer) {
             return res;
         };
     }
-
     processing.size(width, height, renderer);
 }
 
@@ -1996,8 +2005,6 @@ var callsimOrSuspend = _Sk$misceval.callsimOrSuspend;
 
 var mod = {};
 
-var noLoopAfterAsync = false;
-
 exports.processingInstance = {};
 
 function isInitialised() {
@@ -2015,6 +2022,9 @@ var processing = processingProxy;
 var suspHandler = void 0;
 var bHandler = void 0;
 
+var seenCanvas = null;
+var doubleBuffered = true;
+
 function init(path, suspensionHandler, breakHandler) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -2030,10 +2040,6 @@ function init(path, suspensionHandler, breakHandler) {
             path: path + "/__init__.js"
         }
     });
-}
-
-function requestNoLoop() {
-    noLoopAfterAsync = true;
 }
 
 function main() {
@@ -2076,11 +2082,17 @@ function main() {
         noTint: noTint, requestImage: requestImage, tint: tint, blend: blend, copy: copy, filter: filter, get: get$1, loadPixels: loadPixels, set: set$1, updatePixels: updatePixels, pixels: pixels }, { keyboard: keyboard, Keyboard: Keyboard, keyCode: keyCode, key: key, keyPressed: keyPressed }, lights, materialproperties, { Mouse: Mouse, mouse: mouse,
         mouseX: mouseX, mouseY: mouseY, pmouseX: pmouseX, pmouseY: pmouseY, mousePressed: mousePressed, mouseButton: mouseButton }, output, random, { Screen: Screen, screen: screen }, { PShape: exports.PShape }, structure, timeanddate, transform, trigonometry, { PVector: exports.PVector }, vertex, web, shape, stringFunctions);
 
+    mod.disableDoubleBuffer = new Sk.builtin.func(function () {
+        doubleBuffered = false;
+        return Sk.builtin.none.none$;
+    });
+
     mod.run = new Sk.builtin.func(function () {
-        noLoopAfterAsync = false;
         var susp = new Sk.misceval.Suspension();
         var exceptionOccurred = null;
         var finish = null;
+        var canvas = null;
+        var parentNode = null;
 
         susp.resume = function () {
             if (susp.data["error"]) {
@@ -2098,9 +2110,6 @@ function main() {
         };
 
         function sketchProc(proc) {
-            var promisses = [];
-            var wait = true;
-
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -2108,43 +2117,30 @@ function main() {
 
             exports.processingInstance = proc;
 
-            proc.externals.sketch.onExit = finish;
+            proc.externals.sketch.onExit = function (e) {
+                if (e) {
+                    exceptionOccurred(e);
+                } else {
+                    finish();
+                }
+            };
+
+            proc.externals.sketch.onSetup = function (e) {
+                if (e) {
+                    exceptionOccurred(e);
+                }
+            };
 
             if (Sk.globals["setup"]) {
-                promisses.push(asyncToPromise(function () {
-                    return callsimOrSuspend(Sk.globals["setup"]);
-                }, suspHandler));
-            } else {
-                promisses.push(Promise.resolve());
+                proc.setup = function () {
+                    return asyncToPromise(function () {
+                        return callsimOrSuspend(Sk.globals["setup"]);
+                    }, suspHandler);
+                };
             }
 
             if (Sk.globals["draw"]) {
                 proc.draw = function () {
-                    if (promisses.length === 0) {
-                        return;
-                    }
-
-                    // Here we wait till the setup promise is resolved if we have a draw function
-                    // or we throw an error
-                    Promise.all(promisses).then(function () {
-                        return wait = false;
-                    }).catch(throwAndExit);
-
-                    // keep calling draw untill all promisses have been resolved
-                    if (wait) {
-                        return;
-                    }
-
-                    // if noLoop was called from python only stop looping after all
-                    // async stuff happened.
-                    if (noLoopAfterAsync && promisses.length > 1) {
-                        proc.noLoop();
-                        // Here we wait for the setup function promise and the previous
-                        // draw function promise to resolve and throw an error if nessecairy
-                        Promise.all(promisses).then(finish).catch(throwAndExit);
-                        return;
-                    }
-
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
                         try {
@@ -2154,16 +2150,10 @@ function main() {
                         }
                     }
 
-                    promisses.push(asyncToPromise(function () {
+                    return asyncToPromise(function () {
                         return callsimOrSuspend(Sk.globals["draw"]);
-                    }, suspHandler));
+                    }, suspHandler);
                 };
-            } else {
-                processing.noLoop();
-                // If we don't have a draw function we don't have to loop.
-                // procesing doesn't know that but we do that's why we call noLoop here.
-                // we also wait for the setup function to complete and thow any errors
-                Promise.all(promisses).then(finish).catch(throwAndExit);
             }
 
             var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
@@ -2185,29 +2175,40 @@ function main() {
             }
         }
 
-        var canvas = document.getElementById(Sk.canvas);
+        var canvasContainer = document.getElementById(Sk.canvas);
 
-        if (canvas.tagName !== "CANVAS") {
-            var mydiv = canvas;
-            canvas = document.createElement("canvas");
-            while (mydiv.firstChild) {
-                mydiv.removeChild(mydiv.firstChild);
-            }
-
-            mydiv.appendChild(canvas);
+        // this shouldn't be the case but added for backwards compat
+        // may have strange results when this hits.
+        if (canvasContainer.tagName === "CANVAS") {
+            parentNode = canvasContainer.parentNode;
+            parentNode.removeChild(canvasContainer);
+            canvasContainer = parentNode;
         }
 
-        canvas.style.display = "block";
+        canvas = document.createElement("canvas");
+        canvas.id = Sk.canvas + "-psk";
+
+        while (canvasContainer.firstChild) {
+            canvasContainer.removeChild(canvasContainer.firstChild);
+        }
+
+        if (doubleBuffered) {
+            canvas.style = "display:none";
+            seenCanvas = document.createElement("canvas");
+            canvasContainer.appendChild(seenCanvas);
+        } else {
+            canvasContainer.appendChild(canvas);
+        }
 
         // if a Processing instance already exists it's likely still running, stop it by exiting
-        var instance = window.Processing.getInstanceById(Sk.canvas);
+        var instance = window.Processing.getInstanceById(Sk.canvas + "-psk");
         if (instance) {
             instance.exit();
         }
 
         // ugly hack make it start the loopage!
         setTimeout(function () {
-            mod.p = new window.Processing(canvas, sketchProc);
+            mod.p = new window.Processing(canvas, sketchProc, null, seenCanvas);
         }, 300);
 
         return susp;
@@ -2219,7 +2220,6 @@ function main() {
 exports.isInitialised = isInitialised;
 exports.processing = processing;
 exports.init = init;
-exports.requestNoLoop = requestNoLoop;
 exports.main = main;
 
 Object.defineProperty(exports, '__esModule', { value: true });

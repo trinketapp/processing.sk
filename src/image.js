@@ -3,8 +3,7 @@ import Sk from "./skulpt.js";
 import { processingProxy, makeFunc, optional, ignored, self, strToColor } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 
-const { func, int_, list, str, float_, lng, IOError } = Sk.builtin;
-const { sattr } = Sk.abstr;
+const { func, int_, list, str, float_, lng, IOError, list_iter_ } = Sk.builtin;
 const { buildClass, callsim, Suspension } = Sk.misceval;
 const { remapToJs, remapToPy } = Sk.ffi;
 const { BLEND, ADD, SUBTRACT, LIGHTEST, DARKEST, DIFFERENCE, EXCLUSION,
@@ -63,7 +62,6 @@ function imageRequestImage(filename, extension) {
 
 function imageInit(self, arg1, arg2, arg3) {
     self.v = new processingProxy.PImage(arg1, arg2, arg3);
-    sattr(self, "pixels", callsim(PixelProxy, self));
 }
 
 function imageGet(self, x, y, width, height) {
@@ -74,7 +72,6 @@ function imageGet(self, x, y, width, height) {
 
     var image = callsim(PImage);
     image.v = self.v.get.apply(self.v, args);
-    sattr(image, "pixels", callsim(PixelProxy, image));
     return image;
 }
 
@@ -122,13 +119,21 @@ function pixelProxy($glb, $loc) {
         { "image": "PImage", optional }
     ]);
 
-    $loc.__getitem__ = makeFunc(function(self, index) {
-        return self.image.pixels[index];
-    }, "__getitem__", [ self, { "index": int_ }]);
+    $loc.__getitem__ = makeFunc(
+        (self, index) => self.image.pixels.getPixel(index),
+        "__getitem__", [ self, { "index": int_ }]);
 
-    $loc.__setitem__ = makeFunc(function(self, index, color) {
-        return self.image.pixels[index] = color;
-    }, "__setitem__", [ self, { "index": int_ }, { "color": [ int_, lng, float_, str ], converter: strToColor }]);
+    $loc.__setitem__ = makeFunc(
+        (self, index, color) => self.image.pixels.setPixel(index, color),
+        "__setitem__", [ self, { "index": int_ }, { "color": [ int_, lng, float_, str ],
+            converter: strToColor }]);
+
+    $loc.__iter__ = new Sk.builtin.func(function (self) {
+        Sk.builtin.pyCheckArgs("__iter__", arguments, 0, 0, true, false);
+        return new list_iter_(new list(self.image.pixels.toArray()));
+    });
+
+    $loc.__repr__ = makeFunc(self => `array('i', [${self.image.pixels.toArray().join(", ")}])`, "__repr__", [ self ]);
 
     $loc.__len__ = makeFunc(self => self.image.width * self.image.height, "__len__", [ self ]);
 }
@@ -148,6 +153,9 @@ function imageClass($gbl, $loc) {
         }
         if (key === "height") {
             return remapToPy(self.v.height);
+        }
+        if (key === "pixels") {
+            return callsim(PixelProxy, self);
         }
     });
 
@@ -216,7 +224,7 @@ function imageClass($gbl, $loc) {
         { "high": int_ }
     ]);
 
-    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels");
+    $loc.loadPixels = makeFunc(imageLoadPixels, "loadPixels", [ self ]);
 
     $loc.updatePixels = makeFunc(imageUpdatePixels, "updatePixels", [
         self,
@@ -237,7 +245,6 @@ export default PImageBuilder;
 export const createImage = makeFunc(function (width, height, format) {
     let image = Sk.misceval.callsim(PImage);
     image.v = processingProxy.createImage(width, height, format);
-    sattr(image, "pixels", callsim(PixelProxy, image));
     return image;
 }, "createFunc", [
     { "width": int_ },
