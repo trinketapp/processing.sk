@@ -2125,6 +2125,12 @@ function main() {
                 }
             };
 
+            proc.externals.sketch.onSetup = function (e) {
+                if (e) {
+                    exceptionOccurred(e);
+                }
+            };
+
             if (Sk.globals["setup"]) {
                 proc.setup = function () {
                     return asyncToPromise(function () {

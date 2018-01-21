@@ -158,11 +158,17 @@ export function main() {
 
             processingInstance = proc;
 
-            proc.externals.sketch.onExit = (e) => {
+            proc.externals.sketch.onExit = e => {
                 if (e) {
                     exceptionOccurred(e);
                 } else {
                     finish();
+                }
+            };
+
+            proc.externals.sketch.onSetup = e => {
+                if (e) {
+                    exceptionOccurred(e);
                 }
             };
 
