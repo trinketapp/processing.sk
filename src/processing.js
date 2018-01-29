@@ -72,7 +72,7 @@ export function init(path, suspensionHandler, breakHandler, eventPredicate) {
     Sk.externalLibraries = Sk.externalLibraries || {};
 
     Object.assign(Sk.externalLibraries, {
-        processing: {
+        "./processing/__init__.js": {
             path: `${path}/__init__.js`,
         },
     });
