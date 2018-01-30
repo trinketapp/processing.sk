@@ -155,7 +155,7 @@ export function main() {
             })
         };
 
-        let sketchProc = new Processing.Sketch(function sketchProcFunc(proc) {
+        let sketchProc = new window.Processing.Sketch(function sketchProcFunc(proc) {
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
