@@ -2,7 +2,7 @@
   "name": "processing.sk",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "authors": [
     "Albert-Jan Nijburg",
     "trinket.io"
