@@ -59,8 +59,9 @@ let bHandler;
 
 let seenCanvas = null;
 let doubleBuffered = true;
+let eventPred = () => true;
 
-export function init(path, suspensionHandler, breakHandler) {
+export function init(path, suspensionHandler, breakHandler, eventPredicate) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
         throw new Error("breakHandler must be a function if anything");
@@ -75,6 +76,10 @@ export function init(path, suspensionHandler, breakHandler) {
             path: `${path}/__init__.js`,
         },
     });
+
+    if (typeof eventPredicate === "function") {
+        eventPred = eventPredicate;
+    }
 }
 
 export function main() {
@@ -150,27 +155,13 @@ export function main() {
             })
         };
 
-        function sketchProc(proc) {
+        let sketchProc = new window.Processing.Sketch(function sketchProcFunc(proc) {
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
             }
 
             processingInstance = proc;
-
-            proc.externals.sketch.onExit = e => {
-                if (e) {
-                    exceptionOccurred(e);
-                } else {
-                    finish();
-                }
-            };
-
-            proc.externals.sketch.onSetup = e => {
-                if (e) {
-                    exceptionOccurred(e);
-                }
-            };
 
             if (Sk.globals["setup"]) {
                 proc.setup = function () {
@@ -215,7 +206,23 @@ export function main() {
                     })();
                 }
             }
-        }
+        });
+
+        sketchProc.options.globalKeyEvents = true;
+        sketchProc.options.eventPredicate = eventPred;
+        sketchProc.onExit = e => {
+            if (e) {
+                exceptionOccurred(e);
+            } else {
+                finish();
+            }
+        };
+
+        sketchProc.onSetup = e => {
+            if (e) {
+                exceptionOccurred(e);
+            }
+        };
 
         let canvasContainer = document.getElementById(Sk.canvas);
 
@@ -247,7 +254,6 @@ export function main() {
         if (instance) {
             instance.exit();
         }
-
 
         // ugly hack make it start the loopage!
         setTimeout(() => {

@@ -2024,8 +2024,11 @@ var bHandler = void 0;
 
 var seenCanvas = null;
 var doubleBuffered = true;
+var eventPred = function eventPred() {
+    return true;
+};
 
-function init(path, suspensionHandler, breakHandler) {
+function init(path, suspensionHandler, breakHandler, eventPredicate) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
         throw new Error("breakHandler must be a function if anything");
@@ -2040,6 +2043,10 @@ function init(path, suspensionHandler, breakHandler) {
             path: path + "/__init__.js"
         }
     });
+
+    if (typeof eventPredicate === "function") {
+        eventPred = eventPredicate;
+    }
 }
 
 function main() {
@@ -2109,27 +2116,13 @@ function main() {
             })
         };
 
-        function sketchProc(proc) {
+        var sketchProc = new window.Processing.Sketch(function sketchProcFunc(proc) {
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
             }
 
             exports.processingInstance = proc;
-
-            proc.externals.sketch.onExit = function (e) {
-                if (e) {
-                    exceptionOccurred(e);
-                } else {
-                    finish();
-                }
-            };
-
-            proc.externals.sketch.onSetup = function (e) {
-                if (e) {
-                    exceptionOccurred(e);
-                }
-            };
 
             if (Sk.globals["setup"]) {
                 proc.setup = function () {
@@ -2173,7 +2166,23 @@ function main() {
                     })();
                 }
             }
-        }
+        });
+
+        sketchProc.options.globalKeyEvents = true;
+        sketchProc.options.eventPredicate = eventPred;
+        sketchProc.onExit = function (e) {
+            if (e) {
+                exceptionOccurred(e);
+            } else {
+                finish();
+            }
+        };
+
+        sketchProc.onSetup = function (e) {
+            if (e) {
+                exceptionOccurred(e);
+            }
+        };
 
         var canvasContainer = document.getElementById(Sk.canvas);
 
