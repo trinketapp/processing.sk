@@ -255,6 +255,8 @@ export function main() {
             instance.exit();
         }
 
+        sketchProc.options.focusElement = canvasContainer;
+
         // ugly hack make it start the loopage!
         setTimeout(() => {
             mod.p = new window.Processing(canvas, sketchProc, null, seenCanvas);
