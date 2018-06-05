@@ -1299,6 +1299,7 @@ function pixels() {
     return pp;
 }
 
+var CODED = constants.CODED;
 var _Sk$ffi$4 = Sk.ffi;
 var remapToPy$5 = _Sk$ffi$4.remapToPy;
 var remapToJs$4 = _Sk$ffi$4.remapToJs;
@@ -1307,14 +1308,14 @@ var buildClass$5 = Sk.misceval.buildClass;
 
 
 function keyboardClass($gbl, $loc) {
-    $loc.__getattr__ = new func$5(function (self, key) {
-        key = remapToJs$4(key);
-        if (key === "key") {
-            return remapToPy$5(processingProxy.key.toString());
-        } else if (key === "keyCode") {
-            return remapToPy$5(processingProxy.keyCode);
-        } else if (key === "keyPressed") {
-            return remapToPy$5(processingProxy.__keyPressed);
+    $loc.__getattr__ = new func$5(function (self, attr) {
+        var l_attr = remapToJs$4(attr);
+        if (l_attr === "key") {
+            return key();
+        } else if (l_attr === "keyCode") {
+            return keyCode();
+        } else if (l_attr === "keyPressed") {
+            return keyPressed();
         }
     });
 }
@@ -1324,8 +1325,13 @@ var KeyboardBuilder = function KeyboardBuilder(mod) {
 };
 
 var key = function key() {
+    if (processingProxy.key.code === CODED) {
+        return remapToPy$5(processingProxy.key.code);
+    }
+
     return remapToPy$5(processingProxy.key.toString());
 };
+
 var keyCode = function keyCode() {
     return remapToPy$5(processingProxy.keyCode);
 };
