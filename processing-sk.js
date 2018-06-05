@@ -1299,6 +1299,7 @@ function pixels() {
     return pp;
 }
 
+var CODED = constants.CODED;
 var _Sk$ffi$4 = Sk.ffi;
 var remapToPy$5 = _Sk$ffi$4.remapToPy;
 var remapToJs$4 = _Sk$ffi$4.remapToJs;
@@ -1307,14 +1308,14 @@ var buildClass$5 = Sk.misceval.buildClass;
 
 
 function keyboardClass($gbl, $loc) {
-    $loc.__getattr__ = new func$5(function (self, key) {
-        key = remapToJs$4(key);
-        if (key === "key") {
-            return remapToPy$5(processingProxy.key.toString());
-        } else if (key === "keyCode") {
-            return remapToPy$5(processingProxy.keyCode);
-        } else if (key === "keyPressed") {
-            return remapToPy$5(processingProxy.__keyPressed);
+    $loc.__getattr__ = new func$5(function (self, attr) {
+        var l_attr = remapToJs$4(attr);
+        if (l_attr === "key") {
+            return key();
+        } else if (l_attr === "keyCode") {
+            return keyCode();
+        } else if (l_attr === "keyPressed") {
+            return keyPressed();
         }
     });
 }
@@ -1324,8 +1325,13 @@ var KeyboardBuilder = function KeyboardBuilder(mod) {
 };
 
 var key = function key() {
+    if (processingProxy.key.code === CODED) {
+        return remapToPy$5(processingProxy.key.code);
+    }
+
     return remapToPy$5(processingProxy.key.toString());
 };
+
 var keyCode = function keyCode() {
     return remapToPy$5(processingProxy.keyCode);
 };
@@ -2154,14 +2160,27 @@ function main() {
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
                     (function () {
+                        // don't access a modified closure
                         var callback = callBacks[cb];
+                        // store the python callback
+                        var skulptCallback = Sk.globals[callback];
+
+                        // replace the function with the processing variable if it's keyPressed or mousePressed
+                        // because they can both be callbacks and variables.
+                        if (callback == "keyPressed") {
+                            Sk.globals[callback] = keyPressed;
+                        }
+
+                        if (callback == "mousePressed") {
+                            Sk.globals[callback] = mousePressed;
+                        }
+
                         proc[callback] = function () {
-                            try {
-                                // event handlers can't be asynchronous.
-                                Sk.misceval.callsim(Sk.globals[callback]);
-                            } catch (e) {
-                                throwAndExit(e);
-                            }
+                            return asyncToPromise(function () {
+                                return Sk.misceval.callsimOrSuspend(skulptCallback);
+                            }, suspHandler).catch(function (r) {
+                                return throwAndExit(r);
+                            });
                         };
                     })();
                 }
@@ -2214,6 +2233,8 @@ function main() {
         if (instance) {
             instance.exit();
         }
+
+        sketchProc.options.focusElement = canvasContainer;
 
         // ugly hack make it start the loopage!
         setTimeout(function () {

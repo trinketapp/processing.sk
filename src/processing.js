@@ -194,15 +194,24 @@ export function main() {
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
                     (() => {
+                        // don't access a modified closure
                         let callback = callBacks[cb];
-                        proc[callback] = () =>  {
-                            try {
-                                // event handlers can't be asynchronous.
-                                Sk.misceval.callsim(Sk.globals[callback]);
-                            } catch(e) {
-                                throwAndExit(e);
-                            }
-                        };
+                        // store the python callback
+                        let skulptCallback = Sk.globals[callback];
+                        
+                        // replace the function with the processing variable if it's keyPressed or mousePressed
+                        // because they can both be callbacks and variables.
+                        if (callback == "keyPressed") {
+                            Sk.globals[callback] = keyPressed;
+                        }
+
+                        if (callback == "mousePressed") {
+                            Sk.globals[callback] = mousePressed;
+                        }
+
+                        proc[callback] = () => asyncToPromise(
+                            () => Sk.misceval.callsimOrSuspend(skulptCallback), suspHandler
+                        ).catch(r => throwAndExit(r));
                     })();
                 }
             }
@@ -254,6 +263,8 @@ export function main() {
         if (instance) {
             instance.exit();
         }
+
+        sketchProc.options.focusElement = canvasContainer;
 
         // ugly hack make it start the loopage!
         setTimeout(() => {

@@ -2,7 +2,7 @@
   "name": "processing.sk",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "authors": [
     "Albert-Jan Nijburg",
     "trinket.io"
@@ -18,6 +18,6 @@
   ],
   "dependencies": {
     "skulpt": "^0.11.0",
-    "Processing.js": "git@github.com:trinketapp/processing-js.git#1.6.11"
+    "Processing.js": "git@github.com:trinketapp/processing-js.git#1.6.12"
   }
 }
