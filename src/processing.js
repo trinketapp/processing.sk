@@ -195,14 +195,9 @@ export function main() {
                 if (Sk.globals[callBacks[cb]]) {
                     (() => {
                         let callback = callBacks[cb];
-                        proc[callback] = () =>  {
-                            try {
-                                // event handlers can't be asynchronous.
-                                Sk.misceval.callsim(Sk.globals[callback]);
-                            } catch(e) {
-                                throwAndExit(e);
-                            }
-                        };
+                        proc[callback] = () => asyncToPromise(
+                            () => Sk.misceval.callsimOrSuspend(Sk.globals[callback]), suspHandler
+                        ).catch(r => throwAndExit(r));
                     })();
                 }
             }

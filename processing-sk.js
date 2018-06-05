@@ -2156,12 +2156,11 @@ function main() {
                     (function () {
                         var callback = callBacks[cb];
                         proc[callback] = function () {
-                            try {
-                                // event handlers can't be asynchronous.
-                                Sk.misceval.callsim(Sk.globals[callback]);
-                            } catch (e) {
-                                throwAndExit(e);
-                            }
+                            return asyncToPromise(function () {
+                                return Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
+                            }, suspHandler).catch(function (r) {
+                                return throwAndExit(r);
+                            });
                         };
                     })();
                 }
