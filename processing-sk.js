@@ -2154,10 +2154,24 @@ function main() {
             for (var cb in callBacks) {
                 if (Sk.globals[callBacks[cb]]) {
                     (function () {
+                        // don't access a modified closure
                         var callback = callBacks[cb];
+                        // store the python callback
+                        var skulptCallback = Sk.globals[callback];
+
+                        // replace the function with the processing variable if it's keyPressed or mousePressed
+                        // because they can both be callbacks and variables.
+                        if (callback == "keyPressed") {
+                            Sk.globals[callback] = keyPressed;
+                        }
+
+                        if (callback == "mousePressed") {
+                            Sk.globals[callback] = mousePressed;
+                        }
+
                         proc[callback] = function () {
                             return asyncToPromise(function () {
-                                return Sk.misceval.callsimOrSuspend(Sk.globals[callback]);
+                                return Sk.misceval.callsimOrSuspend(skulptCallback);
                             }, suspHandler).catch(function (r) {
                                 return throwAndExit(r);
                             });
