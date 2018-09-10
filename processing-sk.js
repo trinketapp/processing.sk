@@ -85,6 +85,7 @@
       keys = Object.keys;
   var argsToArray = Array.from;
   var cache = new Map();
+  var __isinitialised__ = "__isinitialised__";
   var OptionalContextManager;
 
   function countNonOptionalArgs(args) {
@@ -136,13 +137,13 @@
     var largs_template = args_template || [];
 
     var jsfunc = function wrappedFunc() {
-      if (!isInitialised()) {
-        throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
-      }
-
       var functionToWrap = null;
 
-      if (typeof thingToWrap != "function") {
+      if (typeof thingToWrap !== "function") {
+        if (!thingToWrap[__isinitialised__]) {
+          throw new Error("cannot call \"".concat(name, "\" outside \"draw\", \"setup\" or event handlers"));
+        }
+
         if (thingToWrap[name]) {
           functionToWrap = thingToWrap[name];
         }
@@ -206,6 +207,14 @@
   var __name__ = new str("processing");
   var processingProxy = new Proxy({}, {
     get: function get(target, name) {
+      if (name === __isinitialised__) {
+        return exports.processingInstance !== null;
+      }
+
+      if (name === "__frameRate" && exports.processingInstance === null) {
+        return undefined;
+      }
+
       return exports.processingInstance[name];
     }
   });
@@ -2511,7 +2520,7 @@
       DXF$1 = remappedConstants.DXF;
 
   function loop() {
-    if (isInitialised()) {
+    if (processingProxy[__isinitialised__]) {
       throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
@@ -2519,7 +2528,7 @@
   }
 
   function noLoop() {
-    if (isInitialised()) {
+    if (processingProxy[__isinitialised__]) {
       throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
@@ -3020,10 +3029,7 @@
       asyncToPromise = _Sk$misceval$5.asyncToPromise,
       callsimOrSuspend = _Sk$misceval$5.callsimOrSuspend;
   var mod = {};
-  exports.processingInstance = {};
-  function isInitialised() {
-    return exports.processingInstance == null;
-  }
+  exports.processingInstance = null;
   var processing = processingProxy;
   var suspHandler;
   var bHandler;
@@ -3296,7 +3302,6 @@
     return mod;
   }
 
-  exports.isInitialised = isInitialised;
   exports.processing = processing;
   exports.init = init;
   exports.main = main;
