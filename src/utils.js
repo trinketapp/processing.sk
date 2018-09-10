@@ -23,7 +23,7 @@ const argsToArray = Array.from;
 
 const cache = new Map();
 
-const __isinitialised__ = "__isinitialised__";
+export const __isinitialised__ = "__isinitialised__";
 
 let OptionalContextManager;
 
