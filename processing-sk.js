@@ -3040,7 +3040,8 @@
     return true;
   };
 
-  function init(path, suspensionHandler, breakHandler, eventPredicate) {
+  var firstFrameFunc = null;
+  function init(path, suspensionHandler, breakHandler, eventPredicate, firstFrameCallback) {
     suspHandler = suspensionHandler;
 
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
@@ -3059,6 +3060,10 @@
 
     if (typeof eventPredicate === "function") {
       eventPred = eventPredicate;
+    }
+
+    if (typeof firstFrameCallback === "function") {
+      firstFrameFunc = firstFrameCallback;
     }
   }
   function main() {
@@ -3165,6 +3170,7 @@
       var finish = null;
       var canvas = null;
       var parentNode = null;
+      var firstFrame = firstFrameFunc !== null;
 
       susp.resume = function () {
         if (susp.data["error"]) {
@@ -3197,22 +3203,36 @@
           };
         }
 
-        if (Sk.globals["draw"]) {
-          proc.draw = function () {
-            // call the break handler every draw so the processing.sk is stoppable.
-            if (bHandler) {
-              try {
-                bHandler();
-              } catch (e) {
-                throwAndExit(e);
-              }
+        proc.draw = function () {
+          // call the break handler every draw so the processing.sk is stoppable.
+          if (bHandler) {
+            try {
+              bHandler();
+            } catch (e) {
+              throwAndExit(e);
             }
+          }
 
+          if (Sk.globals["draw"]) {
             return asyncToPromise(function () {
               return callsimOrSuspend(Sk.globals["draw"]);
-            }, suspHandler);
-          };
-        }
+            }, suspHandler).then(function (res) {
+              if (firstFrame) {
+                firstFrameFunc();
+                firstFrame = false;
+              }
+
+              return res;
+            });
+          } else {
+            if (firstFrame) {
+              firstFrameFunc();
+              firstFrame = false;
+            }
+
+            proc.exit();
+          }
+        };
 
         var callBacks = ["mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut", "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"];
 
