@@ -141,7 +141,7 @@ export const __name__ = new str("processing");
 export const processingProxy = new Proxy({}, {
     get(target, name) {
         if (name === __isinitialised__) {
-            return processingInstance === null;
+            return processingInstance !== null;
         }
 
         if (name === "__frameRate" && processingInstance === null) {
