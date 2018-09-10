@@ -57,7 +57,9 @@ let seenCanvas = null;
 let doubleBuffered = true;
 let eventPred = () => true;
 
-export function init(path, suspensionHandler, breakHandler, eventPredicate) {
+let firstFrameFunc = null;
+
+export function init(path, suspensionHandler, breakHandler, eventPredicate, firstFrameCallback) {
     suspHandler = suspensionHandler;
     if (breakHandler !== undefined && typeof breakHandler !== "function") {
         throw new Error("breakHandler must be a function if anything");
@@ -75,6 +77,10 @@ export function init(path, suspensionHandler, breakHandler, eventPredicate) {
 
     if (typeof eventPredicate === "function") {
         eventPred = eventPredicate;
+    }
+
+    if (typeof firstFrameCallback === "function") {
+        firstFrameFunc = firstFrameCallback;
     }
 }
 
@@ -135,6 +141,7 @@ export function main() {
         let finish = null;
         let canvas = null;
         let parentNode = null;
+        let firstFrame = firstFrameFunc !== null;
 
         susp.resume = function() {
             if (susp.data["error"]) {
@@ -165,22 +172,35 @@ export function main() {
                 };
             }
 
-            if (Sk.globals["draw"]) {
-                proc.draw = function () {
-                    // call the break handler every draw so the processing.sk is stoppable.
-                    if (bHandler) {
-                        try {
-                            bHandler();
-                        } catch (e) {
-                            throwAndExit(e);
-                        }
+            proc.draw = function () {
+                // call the break handler every draw so the processing.sk is stoppable.
+                if (bHandler) {
+                    try {
+                        bHandler();
+                    } catch (e) {
+                        throwAndExit(e);
                     }
+                }
 
+                if (Sk.globals["draw"]) {
                     return asyncToPromise(
                         () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
-                    );
-                };
-            }
+                    ).then(res => {
+                        if (firstFrame) {
+                            firstFrameFunc();
+                            firstFrame = false;
+                        }
+
+                        return res;
+                    });
+                } else {
+                    if (firstFrame) {
+                        firstFrameFunc();
+                        firstFrame = false;
+                    }
+                    proc.exit();
+                }
+            };
 
             var callBacks = [
                 "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
