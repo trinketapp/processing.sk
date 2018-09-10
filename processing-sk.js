@@ -211,6 +211,10 @@
         return exports.processingInstance === null;
       }
 
+      if (name === "__frameRate" && exports.processingInstance === null) {
+        return undefined;
+      }
+
       return exports.processingInstance[name];
     }
   });
