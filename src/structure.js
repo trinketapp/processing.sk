@@ -1,5 +1,5 @@
-import { processing, isInitialised } from "./processing.js";
-import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored } from "./utils.js";
+import { processing } from "./processing.js";
+import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored, __isinitialised__ } from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
@@ -7,7 +7,7 @@ const { int_, object } = Sk.builtin;
 const { P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF } = remappedConstants;
 
 function loop() {
-    if (isInitialised()) {
+    if (processingProxy[__isinitialised__]) {
         throw new Sk.builtin.Exception("loop() should be called after run()");
     }
 
@@ -15,7 +15,7 @@ function loop() {
 }
 
 function noLoop() {
-    if (isInitialised()) {
+    if (processingProxy[__isinitialised__]) {
         throw new Sk.builtin.Exception("noLoop() should be called after run()");
     }
 
