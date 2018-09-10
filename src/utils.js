@@ -144,6 +144,10 @@ export const processingProxy = new Proxy({}, {
             return processingInstance === null;
         }
 
+        if (name === "__frameRate" && processingInstance === null) {
+            return undefined;
+        }
+
         return processingInstance[name];
     }
 });
