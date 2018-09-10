@@ -1,5 +1,5 @@
 import Sk from "./skulpt.js";
-import { processingInstance } from "./processing.js";
+import { isInitialised } from "./processing.js";
 
 const {
     str,
@@ -65,6 +65,10 @@ export function makeFunc(thingToWrap, name, args_template) {
     let largs_template = args_template || [];
 
     let jsfunc = function wrappedFunc() {
+        if (!isInitialised()) {
+            throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
+        }
+
         let functionToWrap = null;
 
         if (typeof thingToWrap != "function") {
