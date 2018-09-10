@@ -145,7 +145,7 @@ export function main() {
         let finish = null;
         let canvas = null;
         let parentNode = null;
-        let firstFrame = firstFrameFunc !== null;
+        let firstFrame = firstFrameFunc !== null ? 0 : 2;
 
         susp.resume = function() {
             if (susp.data["error"]) {
@@ -178,6 +178,13 @@ export function main() {
 
             proc.draw = function () {
                 // call the break handler every draw so the processing.sk is stoppable.
+                if (firstFrame < 2) {
+                    fristFrame++;
+                    if (firstFrame === 2) {
+                        firstFrameFunc();
+                    }
+                }
+
                 if (bHandler) {
                     try {
                         bHandler();
@@ -189,20 +196,10 @@ export function main() {
                 if (Sk.globals["draw"]) {
                     return asyncToPromise(
                         () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
-                    ).then(res => {
-                        if (firstFrame) {
-                            firstFrameFunc();
-                            firstFrame = false;
-                        }
-
-                        return res;
-                    });
+                    )
                 } else {
-                    if (firstFrame) {
-                        firstFrameFunc();
-                        firstFrame = false;
-                    }
                     proc.exit();
+                    return Promise.resolve();
                 }
             };
 
