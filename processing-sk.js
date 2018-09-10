@@ -136,23 +136,11 @@
     var largs_template = args_template || [];
 
     var jsfunc = function wrappedFunc() {
-<<<<<<< HEAD
-        if (!isInitialised()) {
-            throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
-        }
+      if (!isInitialised()) {
+        throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
+      }
 
-        var functionToWrap = null;
-
-        if (typeof thingToWrap != "function") {
-            if (thingToWrap[name]) {
-                functionToWrap = thingToWrap[name];
-            }
-        } else {
-            functionToWrap = thingToWrap;
-        }
-=======
       var functionToWrap = null;
->>>>>>> fix/background-image
 
       if (typeof thingToWrap != "function") {
         if (thingToWrap[name]) {
@@ -3027,22 +3015,6 @@
     }])
   };
 
-<<<<<<< HEAD
-function isInitialised() {
-    return exports.processingInstance == null;
-}
-
-exports.PImage = void 0;
-exports.PShape = void 0;
-exports.PGraphics = void 0;
-exports.PVector = void 0;
-exports.PFont = void 0;
-
-var processing = processingProxy;
-
-var suspHandler = void 0;
-var bHandler = void 0;
-=======
   var _Sk$misceval$5 = Sk.misceval,
       callsim$5 = _Sk$misceval$5.callsim,
       asyncToPromise = _Sk$misceval$5.asyncToPromise,
@@ -3050,14 +3022,13 @@ var bHandler = void 0;
   var mod = {};
   exports.processingInstance = {};
   function isInitialised() {
-    return processing == null;
+    return exports.processingInstance == null;
   }
   var processing = processingProxy;
   var suspHandler;
   var bHandler;
   var seenCanvas = null;
   var doubleBuffered = true;
->>>>>>> fix/background-image
 
   var eventPred = function eventPred() {
     return true;
