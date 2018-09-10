@@ -43,7 +43,7 @@ const mod = {};
 export let processingInstance = {};
 
 export function isInitialised() {
-    return processing == null;
+    return processingInstance == null;
 }
 
 export let PImage;
