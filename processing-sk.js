@@ -122,6 +122,10 @@ function makeFunc(thingToWrap, name, args_template) {
     var largs_template = args_template || [];
 
     var jsfunc = function wrappedFunc() {
+        if (!isInitialised()) {
+            throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
+        }
+
         var functionToWrap = null;
 
         if (typeof thingToWrap != "function") {
@@ -2014,7 +2018,7 @@ var mod = {};
 exports.processingInstance = {};
 
 function isInitialised() {
-    return processing == null;
+    return exports.processingInstance == null;
 }
 
 exports.PImage = void 0;

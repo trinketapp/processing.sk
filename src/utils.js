@@ -1,5 +1,5 @@
 import Sk from "./skulpt.js";
-import { isInitialised } from "./processing.js";
+import { processingInstance, isInitialised } from "./processing.js";
 
 const {
     str,
