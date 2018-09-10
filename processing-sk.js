@@ -208,7 +208,7 @@
   var processingProxy = new Proxy({}, {
     get: function get(target, name) {
       if (name === __isinitialised__) {
-        return exports.processingInstance === null;
+        return exports.processingInstance !== null;
       }
 
       if (name === "__frameRate" && exports.processingInstance === null) {
