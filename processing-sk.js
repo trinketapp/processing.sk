@@ -137,12 +137,12 @@
 
     var jsfunc = function wrappedFunc() {
       if (!isInitialised()) {
-        throw new Error("cannot call processing functions outside `draw`, `setup` and event handlers");
+        throw new Error("cannot call \"".concat(name, "\" outside \"draw\", \"setup\" or event handlers"));
       }
 
       var functionToWrap = null;
 
-      if (typeof thingToWrap != "function") {
+      if (typeof thingToWrap !== "function") {
         if (thingToWrap[name]) {
           functionToWrap = thingToWrap[name];
         }
