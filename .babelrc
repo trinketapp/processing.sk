@@ -1,13 +1,14 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
-        "modules": false
+        "modules": false,
+        "targets": "> 0.05%"
       }
     ]
   ],
   "plugins": [
-    "external-helpers"
+    "@babel/plugin-transform-object-assign"
   ]
 }
