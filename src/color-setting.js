@@ -7,7 +7,7 @@ const { int_, float_, str, lng } = Sk.builtin;
 
 export default {
     background: makeFunc(processingProxy, "background", [
-        { "value1": [ int_, lng, float_, str ], converter: strToColor },
+        { "value1": [ int_, lng, float_, str, "PImage" ], converter: strToColor },
         { "value2": [ int_, float_ ], optional },
         { "value2": [ int_, float_ ], optional },
         { "alpha": [ int_, float_ ], optional }

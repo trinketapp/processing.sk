@@ -3,24 +3,26 @@
   "version": "0.0.6",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
+  "browserslist": "> 0.2%, ie=10",
   "scripts": {
     "build": "eslint src/** && rollup -c rollup.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postbuild": "uglifyjs -c -m -o processing-sk-min.js processing-sk.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trinketapp/processing.sk.git"
+  },
   "author": "Albert-Jan Nijburg",
   "license": "MIT",
-  "dependencies": {
-    "proxy-polyfill": "^0.1.7"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-latest": "^6.24.1",
-    "babelrc-rollup": "^3.0.0",
-    "eslint": "^4.6.1",
-    "rollup": "^0.45.2",
-    "rollup-plugin-babel": "^2.7.1",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "eslint": "^5.5.0",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
     "uglify-js": "^3.1.9"
   }
 }
