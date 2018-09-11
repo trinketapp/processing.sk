@@ -23,6 +23,8 @@ const argsToArray = Array.from;
 
 const cache = new Map();
 
+export const __isinitialised__ = "__isinitialised__";
+
 let OptionalContextManager;
 
 function countNonOptionalArgs(args) {
@@ -67,7 +69,11 @@ export function makeFunc(thingToWrap, name, args_template) {
     let jsfunc = function wrappedFunc() {
         let functionToWrap = null;
 
-        if (typeof thingToWrap != "function") {
+        if (typeof thingToWrap !== "function") {
+            if (!thingToWrap[__isinitialised__]) {
+                throw new Error(`cannot call "${name}" outside "draw", "setup" or event handlers`);
+            }
+  
             if (thingToWrap[name]) {
                 functionToWrap = thingToWrap[name];
             }
@@ -134,6 +140,14 @@ export const __name__ = new str("processing");
 
 export const processingProxy = new Proxy({}, {
     get(target, name) {
+        if (name === __isinitialised__) {
+            return processingInstance !== null;
+        }
+
+        if (name === "__frameRate" && processingInstance === null) {
+            return undefined;
+        }
+
         return processingInstance[name];
     }
 });

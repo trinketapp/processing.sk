@@ -40,11 +40,7 @@ const { callsim, asyncToPromise, callsimOrSuspend } = Sk.misceval;
 
 const mod = {};
 
-export let processingInstance = {};
-
-export function isInitialised() {
-    return processing == null;
-}
+export let processingInstance = null;
 
 export let PImage;
 export let PShape;
