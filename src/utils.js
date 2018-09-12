@@ -1,5 +1,8 @@
 import Sk from "./skulpt.js";
 import { processingInstance } from "./processing.js";
+import ProxyPolyfill from "./proxy";
+
+const ProxyImpl = typeof Proxy === "undefined" ? ProxyPolyfill : Proxy;
 
 const {
     str,
@@ -138,7 +141,7 @@ export const notImplemented = new func(() => { throw new NotImplementedError(); 
 
 export const __name__ = new str("processing");
 
-export const processingProxy = new Proxy({}, {
+export const processingProxy = new ProxyImpl({}, {
     get(target, name) {
         if (name === __isinitialised__) {
             return processingInstance !== null;
