@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.ProcessingSk = {})));
-}(this, (function (exports) { 'use strict';
+  (global = global || self, factory(global.ProcessingSk = {}));
+}(this, function (exports) { 'use strict';
 
   function _extends() {
     _extends = Object.assign || function (target) {
@@ -803,12 +803,12 @@
       object = _Sk$builtin$5.object;
   var camera = {
     beginCamera: cachedLazy(constructOptionalContectManager, [{
-      __call__: makeFunc(function (self$$1) {
+      __call__: makeFunc(function (self) {
         processingProxy.beginCamera();
-        return self$$1;
+        return self;
       }, "__call__", [self]),
-      __enter__: makeFunc(function (self$$1) {
-        return self$$1;
+      __enter__: makeFunc(function (self) {
+        return self;
       }, "__enter__", [self]),
       __exit__: makeFunc(function () {
         return processingProxy.endCamera();
@@ -1228,7 +1228,7 @@
       WAIT = remappedConstants.WAIT;
 
   function environmentClass($gbl, $loc) {
-    $loc.__getattr__ = new func$1(function (self$$1, key) {
+    $loc.__getattr__ = new func$1(function (self, key) {
       switch (remapToJs$1(key)) {
         case "frameCount":
           return remapToPy$2(processingProxy.frameCount);
@@ -1259,12 +1259,12 @@
   };
 
   function frameRateClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(function (self$$1) {
-      self$$1.v = processingProxy.__frameRate;
+    $loc.__init__ = makeFunc(function (self) {
+      self.v = processingProxy.__frameRate;
     }, "__init__", [self]);
-    $loc.__call__ = makeFunc(function (self$$1, rate) {
+    $loc.__call__ = makeFunc(function (self, rate) {
       processingProxy.frameRate(rate);
-      self$$1.v = rate;
+      self.v = rate;
     }, "__call__", [self, {
       "rate": int_$a
     }]);
@@ -1372,9 +1372,9 @@
   }
 
   function fontClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(function (self$$1, input) {
+    $loc.__init__ = makeFunc(function (self, input) {
       if (input) {
-        self$$1.v = new processingProxy.PFont(input);
+        self.v = new processingProxy.PFont(input);
       }
     }, "__init__", [self, {
       "input ": str$7,
@@ -1444,14 +1444,14 @@
       remapToPy$3 = _Sk$ffi$2.remapToPy,
       remapToJs$2 = _Sk$ffi$2.remapToJs;
 
-  function graphicsInit(self$$1, width, height, renderer) {
-    self$$1.v = processingProxy.createGraphics(width, height, renderer);
+  function graphicsInit(self, width, height, renderer) {
+    self.v = processingProxy.createGraphics(width, height, renderer);
 
     if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
       // monkey patching image to make sure toImageData returns something.
       // 2017 Chrome 64 doesn't always return something the first call.
       // this is a VERY HACKY way to deal with that synchronously.
-      self$$1.v.toImageData = function (x, y, w, h) {
+      self.v.toImageData = function (x, y, w, h) {
         x = x !== undefined ? x : 0;
         y = y !== undefined ? y : 0;
         w = w !== undefined ? w : processingProxy.width;
@@ -1459,7 +1459,7 @@
         var res = undefined;
 
         while (res === undefined) {
-          res = self$$1.v.externals.context.getImageData(x, y, w, h);
+          res = self.v.externals.context.getImageData(x, y, w, h);
         }
 
         return res;
@@ -1477,20 +1477,20 @@
       allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF],
       optional: optional
     }]);
-    $loc.beginDraw = new func$3(function (self$$1) {
-      self$$1.v.beginDraw();
+    $loc.beginDraw = new func$3(function (self) {
+      self.v.beginDraw();
     });
-    $loc.endDraw = new func$3(function (self$$1) {
-      self$$1.v.endDraw();
+    $loc.endDraw = new func$3(function (self) {
+      self.v.endDraw();
     });
-    $loc.__getattr__ = new func$3(function (self$$1, key) {
-      var prop = self$$1.v[remapToJs$2(key)];
+    $loc.__getattr__ = new func$3(function (self, key) {
+      var prop = self.v[remapToJs$2(key)];
 
       if (prop !== undefined) {
         if (typeof prop === "function") {
-          return new func$3(function (self$$1) {
+          return new func$3(function (self) {
             var args = Array.from(arguments).map(remapToJs$2);
-            return remapToPy$3(prop.apply(self$$1.v, args));
+            return remapToPy$3(prop.apply(self.v, args));
           });
         }
 
@@ -1601,89 +1601,89 @@
     return image;
   }
 
-  function imageInit(self$$1, arg1, arg2, arg3) {
-    self$$1.v = new processingProxy.PImage(arg1, arg2, arg3);
+  function imageInit(self, arg1, arg2, arg3) {
+    self.v = new processingProxy.PImage(arg1, arg2, arg3);
   }
 
-  function imageGet(self$$1, x, y, width, height) {
+  function imageGet(self, x, y, width, height) {
     var args = [x, y, width, height].filter(function (a) {
       return a !== undefined;
     });
 
     if (args.length == 2) {
-      return self$$1.v.get.apply(self$$1.v, args);
+      return self.v.get.apply(self.v, args);
     }
 
     var image = callsim$3(exports.PImage);
-    image.v = self$$1.v.get.apply(self$$1.v, args);
+    image.v = self.v.get.apply(self.v, args);
     return image;
   }
 
-  function imageSet(self$$1, x, y, color) {
-    self$$1.v.set(x, y, color);
+  function imageSet(self, x, y, color) {
+    self.v.set(x, y, color);
   }
 
-  function imageCopy(self$$1, srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight) {
-    return self$$1.v.copy(srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight);
+  function imageCopy(self, srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight) {
+    return self.v.copy(srcImg, sx, sy, swidth, sheight, dx, dy, dwidth, dheight);
   }
 
-  function imageMask(self$$1, maskImg) {
-    self$$1.v.mask(maskImg);
+  function imageMask(self, maskImg) {
+    self.v.mask(maskImg);
   }
 
-  function imageBlend(self$$1, srcImg, x, y, width, height, dx, dy, dwidth, dheight) {
-    self$$1.v.blend(srcImg, x, y, width, height, dx, dy, dwidth, dheight);
+  function imageBlend(self, srcImg, x, y, width, height, dx, dy, dwidth, dheight) {
+    self.v.blend(srcImg, x, y, width, height, dx, dy, dwidth, dheight);
   }
 
-  function imageFilter(self$$1, MODE, srcImg) {
-    self$$1.v.filter(MODE, srcImg);
+  function imageFilter(self, MODE, srcImg) {
+    self.v.filter(MODE, srcImg);
   }
 
-  function imageSave(self$$1, filename) {
-    self$$1.v.save(filename);
+  function imageSave(self, filename) {
+    self.v.save(filename);
   }
 
-  function imageResize(self$$1, wide, high) {
-    self$$1.v.save(wide, high);
+  function imageResize(self, wide, high) {
+    self.v.save(wide, high);
   }
 
-  function imageLoadPixels(self$$1) {
-    self$$1.v.loadPixels();
+  function imageLoadPixels(self) {
+    self.v.loadPixels();
   }
 
-  function imageUpdatePixels(self$$1, x, y, w, h) {
-    self$$1.v.updatePixels(x, y, w, h);
+  function imageUpdatePixels(self, x, y, w, h) {
+    self.v.updatePixels(x, y, w, h);
   }
 
   function pixelProxy($glb, $loc) {
-    $loc.__init__ = makeFunc(function (self$$1, image) {
-      self$$1.image = image;
+    $loc.__init__ = makeFunc(function (self, image) {
+      self.image = image;
     }, "__init__", [self, {
       "image": "PImage",
       optional: optional
     }]);
-    $loc.__getitem__ = makeFunc(function (self$$1, index) {
-      return self$$1.image.pixels.getPixel(index);
+    $loc.__getitem__ = makeFunc(function (self, index) {
+      return self.image.pixels.getPixel(index);
     }, "__getitem__", [self, {
       "index": int_$e
     }]);
-    $loc.__setitem__ = makeFunc(function (self$$1, index, color) {
-      return self$$1.image.pixels.setPixel(index, color);
+    $loc.__setitem__ = makeFunc(function (self, index, color) {
+      return self.image.pixels.setPixel(index, color);
     }, "__setitem__", [self, {
       "index": int_$e
     }, {
       "color": [int_$e, lng$3, float_$c, str$8],
       converter: strToColor
     }]);
-    $loc.__iter__ = new Sk.builtin.func(function (self$$1) {
+    $loc.__iter__ = new Sk.builtin.func(function (self) {
       Sk.builtin.pyCheckArgs("__iter__", arguments, 0, 0, true, false);
-      return new list_iter_(new list$2(self$$1.image.pixels.toArray()));
+      return new list_iter_(new list$2(self.image.pixels.toArray()));
     });
-    $loc.__repr__ = makeFunc(function (self$$1) {
-      return "array('i', [".concat(self$$1.image.pixels.toArray().join(", "), "])");
+    $loc.__repr__ = makeFunc(function (self) {
+      return "array('i', [".concat(self.image.pixels.toArray().join(", "), "])");
     }, "__repr__", [self]);
-    $loc.__len__ = makeFunc(function (self$$1) {
-      return self$$1.image.width * self$$1.image.height;
+    $loc.__len__ = makeFunc(function (self) {
+      return self.image.width * self.image.height;
     }, "__len__", [self]);
   }
 
@@ -1699,19 +1699,19 @@
       allowed: [1, 2, 4],
       optional: optional
     }]);
-    $loc.__getattr__ = new func$4(function (self$$1, key) {
+    $loc.__getattr__ = new func$4(function (self, key) {
       key = remapToJs$3(key);
 
       if (key === "width") {
-        return remapToPy$4(self$$1.v.width);
+        return remapToPy$4(self.v.width);
       }
 
       if (key === "height") {
-        return remapToPy$4(self$$1.v.height);
+        return remapToPy$4(self.v.height);
       }
 
       if (key === "pixels") {
-        return callsim$3(PixelProxy, self$$1);
+        return callsim$3(PixelProxy, self);
       }
     });
     $loc.get = makeFunc(imageGet, "get", [self, {
@@ -1934,7 +1934,7 @@
     optional: optional
   }]);
   var loadPixels = makeFunc(processingProxy, "loadPixels");
-  var set$1 = makeFunc(processingProxy, "set", [{
+  var set = makeFunc(processingProxy, "set", [{
     "x": int_$e
   }, {
     "y": int_$e
@@ -1959,7 +1959,7 @@
   var buildClass$5 = Sk.misceval.buildClass;
 
   function keyboardClass($gbl, $loc) {
-    $loc.__getattr__ = new func$5(function (self$$1, attr) {
+    $loc.__getattr__ = new func$5(function (self, attr) {
       var l_attr = remapToJs$4(attr);
 
       if (l_attr === "key") {
@@ -2143,7 +2143,7 @@
   var buildClass$6 = Sk.misceval.buildClass;
 
   function mouseClass($gbl, $loc) {
-    $loc.__getattr__ = new func$6(function (self$$1, key) {
+    $loc.__getattr__ = new func$6(function (self, key) {
       switch (remapToJs$5(key)) {
         case "x":
           return remapToPy$6(processingProxy.mouseX);
@@ -2313,25 +2313,25 @@
       remapToPy$8 = _Sk$ffi$7.remapToPy;
   var buildClass$8 = Sk.misceval.buildClass;
 
-  function shapeIsVisible(self$$1) {
-    return self$$1.v.isVisible();
+  function shapeIsVisible(self) {
+    return self.v.isVisible();
   }
 
-  function shapeSetVisible(self$$1, value) {
-    self$$1.v.setVisible(value);
+  function shapeSetVisible(self, value) {
+    self.v.setVisible(value);
   }
 
-  function shapeDisableStyle(self$$1) {
-    self$$1.v.disableStyle();
+  function shapeDisableStyle(self) {
+    self.v.disableStyle();
   }
 
-  function shapeEnableStyle(self$$1) {
-    self$$1.v.enableStyle();
+  function shapeEnableStyle(self) {
+    self.v.enableStyle();
   }
 
-  function shapeGetChild(self$$1, shape) {
+  function shapeGetChild(self, shape) {
     // getChild() Returns a child element of a shape as a PShapeSVG object
-    var child = self$$1.v.getChild(shape);
+    var child = self.v.getChild(shape);
 
     if (child != null) {
       // special method for Skulpt:
@@ -2344,40 +2344,40 @@
     }
   }
 
-  function shapeTranslate(self$$1, x, y, z) {
-    self$$1.v.translate(x.v, y.v, z.v);
+  function shapeTranslate(self, x, y, z) {
+    self.v.translate(x.v, y.v, z.v);
   }
 
-  function shapeRotate(self$$1, angle) {
-    self$$1.v.rotate(angle);
+  function shapeRotate(self, angle) {
+    self.v.rotate(angle);
   }
 
-  function shapeRotateX(self$$1, angle) {
-    self$$1.v.rotateX(angle);
+  function shapeRotateX(self, angle) {
+    self.v.rotateX(angle);
   }
 
-  function shapeRotateY(self$$1, angle) {
-    self$$1.v.rotateY(angle);
+  function shapeRotateY(self, angle) {
+    self.v.rotateY(angle);
   }
 
-  function shapeRotateZ(self$$1, angle) {
-    self$$1.v.rotateZ(angle);
+  function shapeRotateZ(self, angle) {
+    self.v.rotateZ(angle);
   }
 
-  function shapeScale(self$$1, x, y, z) {
-    self$$1.v.scale(x, y, z);
+  function shapeScale(self, x, y, z) {
+    self.v.scale(x, y, z);
   }
 
   function shapeClass($gbl, $loc) {
-    $loc.__getattr__ = new Sk.builtin.func(function (self$$1, key) {
+    $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
       key = remapToJs$7(key);
 
       switch (key) {
         case "width":
-          return remapToPy$8(self$$1.v.width);
+          return remapToPy$8(self.v.width);
 
         case "height":
-          return remapToPy$8(self$$1.v.height);
+          return remapToPy$8(self.v.height);
       }
     });
     $loc.isVisible = makeFunc(shapeIsVisible, "isVisible", [self]);
@@ -2573,12 +2573,12 @@
     exit: makeFunc(processingProxy, "exit"),
     redraw: makeFunc(processingProxy, "redraw"),
     pushStyle: cachedLazy(constructOptionalContectManager, [{
-      __call__: makeFunc(function (self$$1) {
+      __call__: makeFunc(function (self) {
         processingProxy.pushStyle();
-        return self$$1;
+        return self;
       }, "__call__", [self]),
-      __enter__: makeFunc(function (self$$1) {
-        return self$$1;
+      __enter__: makeFunc(function (self) {
+        return self;
       }, "__enter__", [self]),
       __exit__: makeFunc(function () {
         return processingProxy.popStyle();
@@ -2647,12 +2647,12 @@
     popMatrix: makeFunc(processingProxy, "popMatrix"),
     printMatrix: makeFunc(processingProxy, "printMatrix"),
     pushMatrix: cachedLazy(constructOptionalContectManager, [{
-      __call__: makeFunc(function (self$$1) {
+      __call__: makeFunc(function (self) {
         processingProxy.pushMatrix();
-        return self$$1;
+        return self;
       }, "__call__", [self]),
-      __enter__: makeFunc(function (self$$1) {
-        return self$$1;
+      __enter__: makeFunc(function (self) {
+        return self;
       }, "__enter__", [self]),
       __exit__: makeFunc(function () {
         return processingProxy.popMatrix();
@@ -2742,70 +2742,70 @@
       buildClass$9 = _Sk$misceval$4.buildClass;
   var remapToPy$9 = Sk.ffi.remapToPy;
 
-  function vectorInit(self$$1, x, y, z) {
-    self$$1.v = new processing.PVector(x, y, z);
+  function vectorInit(self, x, y, z) {
+    self.v = new processing.PVector(x, y, z);
   }
 
-  function vectorSet(self$$1, x, y, z) {
-    self$$1.v.set(x, y, z);
+  function vectorSet(self, x, y, z) {
+    self.v.set(x, y, z);
   }
 
-  function vectorGet(self$$1) {
+  function vectorGet(self) {
     var vector = callsim$4(exports.PVector);
-    vector.v = self$$1.v.get();
+    vector.v = self.v.get();
     return vector;
   }
 
-  function vectorAdd(self$$1, vec) {
+  function vectorAdd(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.add(vec);
+    new_vec.v = self.v.add(vec);
     return new_vec;
   }
 
-  function vectorSub(self$$1, vec) {
+  function vectorSub(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.sub(vec);
+    new_vec.v = self.v.sub(vec);
     return new_vec;
   }
 
-  function vectorMult(self$$1, vec) {
+  function vectorMult(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.mult(vec);
+    new_vec.v = self.v.mult(vec);
     return new_vec;
   }
 
-  function vectorDiv(self$$1, vec) {
+  function vectorDiv(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.div(vec);
+    new_vec.v = self.v.div(vec);
     return new_vec;
   }
 
-  function vectorDot(self$$1, vec) {
+  function vectorDot(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.dot(vec);
+    new_vec.v = self.v.dot(vec);
     return new_vec;
   }
 
-  function vectorCross(self$$1, vec) {
+  function vectorCross(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.cross(vec);
+    new_vec.v = self.v.cross(vec);
     return new_vec;
   }
 
-  function vectorDist(self$$1, vec) {
+  function vectorDist(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.dist(vec);
+    new_vec.v = self.v.dist(vec);
     return new_vec;
   }
 
-  function vectorAngleBetween(self$$1, vec) {
+  function vectorAngleBetween(self, vec) {
     var new_vec = callsim$4(exports.PVector);
-    new_vec.v = self$$1.v.angleBetween(vec);
+    new_vec.v = self.v.angleBetween(vec);
     return new_vec;
   }
 
-  function vectorLimit(self$$1, value) {
-    self$$1.v.limit(value);
+  function vectorLimit(self, value) {
+    self.v.limit(value);
   }
 
   function vectorClass($gbl, $loc) {
@@ -2819,15 +2819,15 @@
       "z": int_$n,
       optional: optional
     }]);
-    $loc.__getattr__ = new Sk.builtin.func(function (self$$1, key) {
+    $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
       key = Sk.ffi.remapToJs(key);
 
       if (key === "x") {
-        return remapToPy$9(self$$1.v.x);
+        return remapToPy$9(self.v.x);
       } else if (key === "y") {
-        return remapToPy$9(self$$1.v.y);
+        return remapToPy$9(self.v.y);
       } else if (key === "z") {
-        return Sk.builtin.assk$(self$$1.v.z);
+        return Sk.builtin.assk$(self.v.z);
       }
     });
     $loc.get = makeFunc(vectorGet, "get", [self]), $loc.set = makeFunc(vectorSet, "set", [self, {
@@ -2839,8 +2839,8 @@
       "x": int_$n,
       optional: optional
     }]);
-    $loc.mag = makeFunc(function (self$$1) {
-      return self$$1.v.mag();
+    $loc.mag = makeFunc(function (self) {
+      return self.v.mag();
     }, "mag", [self]);
     $loc.add = makeFunc(vectorAdd, "add", [self, {
       "vector": "PVector"
@@ -2869,8 +2869,8 @@
     $loc.cross = makeFunc(vectorCross, "cross", [self, {
       "vector": "PVector"
     }]);
-    $loc.normalize = makeFunc(function (self$$1) {
-      return self$$1.normalize();
+    $loc.normalize = makeFunc(function (self) {
+      return self.normalize();
     }, "normalize", [self]);
     $loc.limit = makeFunc(vectorLimit, "limit", [self, {
       "value": [int_$n, float_$k]
@@ -2878,11 +2878,11 @@
     $loc.angleBetween = makeFunc(vectorAngleBetween, "angleBetween", [self, {
       "vector": "PVector"
     }]);
-    $loc.array = makeFunc(function (self$$1) {
-      return self$$1.v.array();
+    $loc.array = makeFunc(function (self) {
+      return self.v.array();
     }, "array", [self]);
-    $loc.__repr__ = makeFunc(function (self$$1) {
-      return self$$1.v.toString();
+    $loc.__repr__ = makeFunc(function (self) {
+      return self.v.toString();
     }, "repr", [self]);
   }
 
@@ -2906,16 +2906,16 @@
       CLOSE = remappedConstants.CLOSE;
   var vertex = {
     beginShape: cachedLazy(constructOptionalContectManager, [{
-      __call__: makeFunc(function (self$$1, mode) {
+      __call__: makeFunc(function (self, mode) {
         processingProxy.beginShape(mode);
-        return self$$1;
+        return self;
       }, "__call__", [self, {
         "MODE": int_$o,
         allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP],
         optional: optional
       }]),
-      __enter__: makeFunc(function (self$$1) {
-        return self$$1;
+      __enter__: makeFunc(function (self) {
+        return self;
       }, "__enter__", [self]),
       __exit__: makeFunc(function () {
         return processingProxy.endShape;
@@ -2931,16 +2931,16 @@
       }])
     }, "beginShape"], "beginShape"),
     beginClosedShape: cachedLazy(constructOptionalContectManager, [{
-      __call__: makeFunc(function (self$$1, mode) {
+      __call__: makeFunc(function (self, mode) {
         processingProxy.beginShape(mode);
-        return self$$1;
+        return self;
       }, "__call__", [self, {
         "MODE": int_$o,
         allowed: [POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP],
         optional: optional
       }]),
-      __enter__: makeFunc(function (self$$1) {
-        return self$$1;
+      __enter__: makeFunc(function (self) {
+        return self;
       }, "__enter__"[self]),
       __exit__: makeFunc(function () {
         return processingProxy.endShape(constants.CLOSE);
@@ -3128,7 +3128,7 @@
       filter: filter,
       get: get,
       loadPixels: loadPixels,
-      set: set$1,
+      set: set,
       updatePixels: updatePixels,
       pixels: pixels
     }, {
@@ -3236,7 +3236,7 @@
               proc[callback] = function () {
                 return asyncToPromise(function () {
                   return Sk.misceval.callsimOrSuspend(skulptCallback);
-                }, suspHandler).catch(function (r) {
+                }, suspHandler)["catch"](function (r) {
                   return throwAndExit(r);
                 });
               };
@@ -3302,10 +3302,10 @@
     return mod;
   }
 
-  exports.processing = processing;
   exports.init = init;
   exports.main = main;
+  exports.processing = processing;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
