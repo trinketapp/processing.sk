@@ -9,18 +9,50 @@ import color from "./color.js";
 import { remappedConstants } from "./constants.js";
 import coordinates from "./coordinates.js";
 import curves from "./curves.js";
-import { EnvironmentBuilder, cursor, noCursor, height, width, frameCount, focused, FrameRateBuilder } from "./environment.js";
+import {
+    EnvironmentBuilder,
+    cursor,
+    noCursor,
+    height,
+    width,
+    frameCount,
+    focused,
+    FrameRateBuilder
+} from "./environment.js";
 import files from "./files.js";
 import fontattribues from "./font-attributes.js";
 import fontmetrics from "./font-metrics.js";
 import { PFontBuilder, createFont, loadFont, text, textFont } from "./font.js";
 import { PGraphicsBuilder, createGraphics, hint } from "./graphics.js";
-import PImageBuilder, { image, createImage, imageMode, loadImage, noTint, requestImage,
-    tint, blend, copy, filter, get, loadPixels, set, updatePixels, pixels } from "./image.js";
+import PImageBuilder, {
+    image,
+    createImage,
+    imageMode,
+    loadImage,
+    noTint,
+    requestImage,
+    tint,
+    blend,
+    copy,
+    filter,
+    get,
+    loadPixels,
+    set,
+    updatePixels,
+    pixels
+} from "./image.js";
 import { KeyboardBuilder, keyCode, key, keyPressed } from "./keyboard.js";
 import lights from "./lights.js";
 import materialproperties from "./materialproperties.js";
-import { MouseBuilder, mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton } from "./mouse.js";
+import {
+    MouseBuilder,
+    mouseX,
+    mouseY,
+    pmouseX,
+    pmouseY,
+    mousePressed,
+    mouseButton
+} from "./mouse.js";
 import output from "./output.js";
 import random from "./random.js";
 import { ScreenBuilder } from "./screen.js";
@@ -69,8 +101,8 @@ export function init(path, suspensionHandler, breakHandler, eventPredicate) {
 
     Object.assign(Sk.externalLibraries, {
         "./processing/__init__.js": {
-            path: `${path}/__init__.js`,
-        },
+            path: `${path}/__init__.js`
+        }
     });
 
     if (typeof eventPredicate === "function") {
@@ -114,22 +146,87 @@ export function main() {
 
     initUtils(mod);
 
-    Object.assign(mod, twodprimitives, threedprimitives, attributes, calculation, camera,
-        ccreatingandreading, csetting, { color }, remappedConstants, coordinates, curves,
-        { Environment, environment, cursor, noCursor, height, width, frameCount, frameRate, focused },
-        files, fontattribues, fontmetrics, { PFont, createFont, loadFont, text, textFont },
-        { PGraphics, createGraphics, hint }, { PImage }, { image, createImage, imageMode, loadImage,
-            noTint, requestImage, tint, blend, copy, filter, get, loadPixels, set, updatePixels, pixels },
-        { keyboard, Keyboard, keyCode, key, keyPressed }, lights, materialproperties, { Mouse, mouse,
-            mouseX, mouseY, pmouseX, pmouseY, mousePressed, mouseButton }, output, random, { Screen, screen }, { PShape }, structure,
-        timeanddate, transform, trigonometry, { PVector }, vertex, web, shape, stringFunctions);
+    Object.assign(
+        mod,
+        twodprimitives,
+        threedprimitives,
+        attributes,
+        calculation,
+        camera,
+        ccreatingandreading,
+        csetting,
+        { color },
+        remappedConstants,
+        coordinates,
+        curves,
+        {
+            Environment,
+            environment,
+            cursor,
+            noCursor,
+            height,
+            width,
+            frameCount,
+            frameRate,
+            focused
+        },
+        files,
+        fontattribues,
+        fontmetrics,
+        { PFont, createFont, loadFont, text, textFont },
+        { PGraphics, createGraphics, hint },
+        { PImage },
+        {
+            image,
+            createImage,
+            imageMode,
+            loadImage,
+            noTint,
+            requestImage,
+            tint,
+            blend,
+            copy,
+            filter,
+            get,
+            loadPixels,
+            set,
+            updatePixels,
+            pixels
+        },
+        { keyboard, Keyboard, keyCode, key, keyPressed },
+        lights,
+        materialproperties,
+        {
+            Mouse,
+            mouse,
+            mouseX,
+            mouseY,
+            pmouseX,
+            pmouseY,
+            mousePressed,
+            mouseButton
+        },
+        output,
+        random,
+        { Screen, screen },
+        { PShape },
+        structure,
+        timeanddate,
+        transform,
+        trigonometry,
+        { PVector },
+        vertex,
+        web,
+        shape,
+        stringFunctions
+    );
 
     mod.disableDoubleBuffer = new Sk.builtin.func(function() {
         doubleBuffered = false;
         return Sk.builtin.none.none$;
     });
 
-    mod.run = new Sk.builtin.func(function () {
+    mod.run = new Sk.builtin.func(function() {
         let susp = new Sk.misceval.Suspension();
         let exceptionOccurred = null;
         let finish = null;
@@ -145,13 +242,16 @@ export function main() {
         };
 
         susp.data = {
-            type: "Sk.promise", promise: new Promise(function(resolve, reject) {
+            type: "Sk.promise",
+            promise: new Promise(function(resolve, reject) {
                 exceptionOccurred = reject;
                 finish = resolve;
             })
         };
 
-        let sketchProc = new window.Processing.Sketch(function sketchProcFunc(proc) {
+        let sketchProc = new window.Processing.Sketch(function sketchProcFunc(
+            proc
+        ) {
             function throwAndExit(e) {
                 exceptionOccurred(e);
                 proc.exit();
@@ -160,13 +260,16 @@ export function main() {
             processingInstance = proc;
 
             if (Sk.globals["setup"]) {
-                proc.setup = function () {
-                    return asyncToPromise(() => callsimOrSuspend(Sk.globals["setup"]), suspHandler);
+                proc.setup = function() {
+                    return asyncToPromise(
+                        () => callsimOrSuspend(Sk.globals["setup"]),
+                        suspHandler
+                    );
                 };
             }
 
             if (Sk.globals["draw"]) {
-                proc.draw = function () {
+                proc.draw = function() {
                     // call the break handler every draw so the processing.sk is stoppable.
                     if (bHandler) {
                         try {
@@ -177,14 +280,24 @@ export function main() {
                     }
 
                     return asyncToPromise(
-                        () => callsimOrSuspend(Sk.globals["draw"]), suspHandler
+                        () => callsimOrSuspend(Sk.globals["draw"]),
+                        suspHandler
                     );
                 };
             }
 
             var callBacks = [
-                "mouseMoved", "mouseClicked", "mouseDragged", "mouseMoved", "mouseOut",
-                "mouseOver", "mousePressed", "mouseReleased", "keyPressed", "keyReleased", "keyTyped"
+                "mouseMoved",
+                "mouseClicked",
+                "mouseDragged",
+                "mouseMoved",
+                "mouseOut",
+                "mouseOver",
+                "mousePressed",
+                "mouseReleased",
+                "keyPressed",
+                "keyReleased",
+                "keyTyped"
             ];
 
             for (var cb in callBacks) {
@@ -194,7 +307,7 @@ export function main() {
                         let callback = callBacks[cb];
                         // store the python callback
                         let skulptCallback = Sk.globals[callback];
-                        
+
                         // replace the function with the processing variable if it's keyPressed or mousePressed
                         // because they can both be callbacks and variables.
                         if (callback == "keyPressed") {
@@ -205,9 +318,11 @@ export function main() {
                             Sk.globals[callback] = mousePressed;
                         }
 
-                        proc[callback] = () => asyncToPromise(
-                            () => Sk.misceval.callsimOrSuspend(skulptCallback), suspHandler
-                        ).catch(r => throwAndExit(r));
+                        proc[callback] = () =>
+                            asyncToPromise(
+                                () => Sk.misceval.callsimOrSuspend(skulptCallback),
+                                suspHandler
+                            ).catch(r => throwAndExit(r));
                     })();
                 }
             }

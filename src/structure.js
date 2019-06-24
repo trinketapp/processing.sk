@@ -1,5 +1,14 @@
 import { processing } from "./processing.js";
-import { processingProxy, makeFunc, optional, self, constructOptionalContectManager, cachedLazy, ignored, __isinitialised__ } from "./utils.js";
+import {
+    processingProxy,
+    makeFunc,
+    optional,
+    self,
+    constructOptionalContectManager,
+    cachedLazy,
+    ignored,
+    __isinitialised__
+} from "./utils.js";
 import { remappedConstants } from "./constants.js";
 import Sk from "./skulpt.js";
 
@@ -24,9 +33,9 @@ function noLoop() {
 
 function size(width, height, renderer) {
     if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
-        // monkey patching image to make sure toImageData returns something.
-        // 2017 Chrome 64 doesn't always return something the first call.
-        // this is a VERY HACKY way to deal with that synchronously.
+    // monkey patching image to make sure toImageData returns something.
+    // 2017 Chrome 64 doesn't always return something the first call.
+    // this is a VERY HACKY way to deal with that synchronously.
         processing.toImageData = function(x, y, w, h) {
             x = x !== undefined ? x : 0;
             y = y !== undefined ? y : 0;
@@ -47,28 +56,43 @@ export default {
     noLoop: makeFunc(noLoop, "noLoop"),
 
     size: makeFunc(size, "size", [
-        { "width": int_ },
-        { "height": int_ },
-        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ], optional }
+        { width: int_ },
+        { height: int_ },
+        {
+            renderer: int_,
+            allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF],
+            optional
+        }
     ]),
 
     exit: makeFunc(processingProxy, "exit"),
 
     redraw: makeFunc(processingProxy, "redraw"),
 
-    pushStyle: cachedLazy(constructOptionalContectManager, [{
-        __call__: makeFunc(self => {
-            processingProxy.pushStyle();
-            return self;
-        }, "__call__", [ self ]),
-        __enter__: makeFunc(self => self, "__enter__", [ self ]),
-        __exit__: makeFunc(() => processingProxy.popStyle(), "__exit__", [
-            self,
-            { "exc_type": object, ignored },
-            { "exc_value": object, ignored },
-            { "traceback": object, ignored }
-        ])
-    }, "pushStyle"], "pushStyle"),
+    pushStyle: cachedLazy(
+        constructOptionalContectManager,
+        [
+            {
+                __call__: makeFunc(
+                    self => {
+                        processingProxy.pushStyle();
+                        return self;
+                    },
+                    "__call__",
+                    [self]
+                ),
+                __enter__: makeFunc(self => self, "__enter__", [self]),
+                __exit__: makeFunc(() => processingProxy.popStyle(), "__exit__", [
+                    self,
+                    { exc_type: object, ignored },
+                    { exc_value: object, ignored },
+                    { traceback: object, ignored }
+                ])
+            },
+            "pushStyle"
+        ],
+        "pushStyle"
+    ),
 
     popStyle: makeFunc(processingProxy, "popStyle")
 };

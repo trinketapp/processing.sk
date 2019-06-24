@@ -11,9 +11,9 @@ const { remapToPy, remapToJs } = Sk.ffi;
 function graphicsInit(self, width, height, renderer) {
     self.v = processingProxy.createGraphics(width, height, renderer);
     if (renderer === undefined || renderer === P2D || renderer === JAVA2D) {
-        // monkey patching image to make sure toImageData returns something.
-        // 2017 Chrome 64 doesn't always return something the first call.
-        // this is a VERY HACKY way to deal with that synchronously.
+    // monkey patching image to make sure toImageData returns something.
+    // 2017 Chrome 64 doesn't always return something the first call.
+    // this is a VERY HACKY way to deal with that synchronously.
         self.v.toImageData = function(x, y, w, h) {
             x = x !== undefined ? x : 0;
             y = y !== undefined ? y : 0;
@@ -31,16 +31,20 @@ function graphicsInit(self, width, height, renderer) {
 function graphicsClass($gbl, $loc) {
     $loc.__init__ = makeFunc(graphicsInit, "__init__", [
         self,
-        { "width": int_ },
-        { "height": int_ },
-        { "renderer": int_, allowed: [ P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF ], optional }
+        { width: int_ },
+        { height: int_ },
+        {
+            renderer: int_,
+            allowed: [P2D, JAVA2D, WEBGL, P3D, OPENGL, PDF, DXF],
+            optional
+        }
     ]);
 
-    $loc.beginDraw = new func(function (self) {
+    $loc.beginDraw = new func(function(self) {
         self.v.beginDraw();
     });
 
-    $loc.endDraw = new func(function (self) {
+    $loc.endDraw = new func(function(self) {
         self.v.endDraw();
     });
 
@@ -59,13 +63,14 @@ function graphicsClass($gbl, $loc) {
     });
 }
 
-export const PGraphicsBuilder = mod => buildClass(mod, graphicsClass, "PGraphics", []);
+export const PGraphicsBuilder = mod =>
+    buildClass(mod, graphicsClass, "PGraphics", []);
 
-export const createGraphics = new func(function (width, height, renderer) {
+export const createGraphics = new func(function(width, height, renderer) {
     return callsim(PGraphics, width, height, renderer);
 });
 
-export const hint = new func(function (item) {
+export const hint = new func(function(item) {
     // hint(item)
     processingProxy.hint(item);
 });

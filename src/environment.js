@@ -7,10 +7,9 @@ const { func, int_ } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 const { ARROW, CROSS, HAND, MOVE, TEXT, WAIT } = remappedConstants;
 
-
 function environmentClass($gbl, $loc) {
-    $loc.__getattr__ = new func(function (self, key) {
-        switch(remapToJs(key)) {
+    $loc.__getattr__ = new func(function(self, key) {
+        switch (remapToJs(key)) {
         case "frameCount":
             return remapToPy(processingProxy.frameCount);
         case "frameRate":
@@ -29,25 +28,39 @@ function environmentClass($gbl, $loc) {
     });
 }
 
-export const EnvironmentBuilder = mod => buildClass(mod, environmentClass, "Environment", []);
+export const EnvironmentBuilder = mod =>
+    buildClass(mod, environmentClass, "Environment", []);
 
 function frameRateClass($gbl, $loc) {
-    $loc.__init__ = makeFunc(self => {
-        self.v = processingProxy.__frameRate;
-    }, "__init__", [ self ]);
+    $loc.__init__ = makeFunc(
+        self => {
+            self.v = processingProxy.__frameRate;
+        },
+        "__init__",
+        [self]
+    );
 
-    $loc.__call__ = makeFunc((self, rate) => {
-        processingProxy.frameRate(rate);
-        self.v = rate;
-    }, "__call__", [ self, { "rate": int_ } ]);
+    $loc.__call__ = makeFunc(
+        (self, rate) => {
+            processingProxy.frameRate(rate);
+            self.v = rate;
+        },
+        "__call__",
+        [self, { rate: int_ }]
+    );
 }
 
-export const FrameRateBuilder = mod => buildClass(mod, frameRateClass, "FrameRate", [ int_ ]);
+export const FrameRateBuilder = mod =>
+    buildClass(mod, frameRateClass, "FrameRate", [int_]);
 
 export const cursor = makeFunc(processingProxy, "cursor", [
-    { "image": [ "PImage", int_ ], allowed: [ ARROW, CROSS, HAND, MOVE, TEXT, WAIT ], optional },
-    { "x": int_, optional },
-    { "y": int_, optional }
+    {
+        image: ["PImage", int_],
+        allowed: [ARROW, CROSS, HAND, MOVE, TEXT, WAIT],
+        optional
+    },
+    { x: int_, optional },
+    { y: int_, optional }
 ]);
 
 export const noCursor = makeFunc(processingProxy, "noCursor");

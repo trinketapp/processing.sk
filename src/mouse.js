@@ -6,7 +6,7 @@ const { func } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
 function mouseClass($gbl, $loc) {
-    $loc.__getattr__ = new func(function (self, key) {
+    $loc.__getattr__ = new func(function(self, key) {
         switch (remapToJs(key)) {
         case "x":
             return remapToPy(processingProxy.mouseX);
