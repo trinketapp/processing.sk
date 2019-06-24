@@ -189,7 +189,7 @@ export function initUtils(mod) {
         );
 }
 
-export function constructOptionalContectManager(loc, name) {
+export function constructOptionalContextManager(loc, name) {
     let funcs = keys(loc);
 
     if (

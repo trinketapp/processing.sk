@@ -4,7 +4,7 @@ import {
     makeFunc,
     optional,
     self,
-    constructOptionalContectManager,
+    constructOptionalContextManager,
     cachedLazy,
     ignored,
     __isinitialised__
@@ -70,7 +70,7 @@ export default {
     redraw: makeFunc(processingProxy, "redraw"),
 
     pushStyle: cachedLazy(
-        constructOptionalContectManager,
+        constructOptionalContextManager,
         [
             {
                 __call__: makeFunc(

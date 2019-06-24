@@ -4,7 +4,7 @@ import {
     processingProxy,
     makeFunc,
     optional,
-    constructOptionalContectManager,
+    constructOptionalContextManager,
     self,
     cachedLazy,
     ignored
@@ -26,7 +26,7 @@ const {
 
 export default {
     beginShape: cachedLazy(
-        constructOptionalContectManager,
+        constructOptionalContextManager,
         [
             {
                 __call__: makeFunc(
@@ -66,7 +66,7 @@ export default {
     ),
 
     beginClosedShape: cachedLazy(
-        constructOptionalContectManager,
+        constructOptionalContextManager,
         [
             {
                 __call__: makeFunc(

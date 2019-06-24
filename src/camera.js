@@ -4,7 +4,7 @@ import {
     makeFunc,
     optional,
     self,
-    constructOptionalContectManager,
+    constructOptionalContextManager,
     cachedLazy,
     ignored
 } from "./utils.js";
@@ -13,7 +13,7 @@ const { float_, int_, object } = Sk.builtin;
 
 export default {
     beginCamera: cachedLazy(
-        constructOptionalContectManager,
+        constructOptionalContextManager,
         [
             {
                 __call__: makeFunc(

@@ -3,7 +3,7 @@ import {
     processingProxy,
     makeFunc,
     optional,
-    constructOptionalContectManager,
+    constructOptionalContextManager,
     cachedLazy,
     self,
     ignored
@@ -35,7 +35,7 @@ export default {
     printMatrix: makeFunc(processingProxy, "printMatrix"),
 
     pushMatrix: cachedLazy(
-        constructOptionalContectManager,
+        constructOptionalContextManager,
         [
             {
                 __call__: makeFunc(
