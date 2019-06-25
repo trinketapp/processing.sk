@@ -1,6 +1,6 @@
 {
   "name": "processing.sk",
-  "version": "0.0.6",
+  "version": "0.0.12",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
   "browserslist": "> 0.2%, ie=10",

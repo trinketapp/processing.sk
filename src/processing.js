@@ -90,12 +90,7 @@ let doubleBuffered = true;
 let eventPred = () => true;
 
 export function init(path, suspensionHandler, breakHandler, eventPredicate) {
-    suspHandler = suspensionHandler;
-    if (breakHandler !== undefined && typeof breakHandler !== "function") {
-        throw new Error("breakHandler must be a function if anything");
-    } else {
-        bHandler = breakHandler;
-    }
+    initProcessing(suspensionHandler, breakHandler, eventPredicate);
 
     Sk.externalLibraries = Sk.externalLibraries || {};
 
@@ -104,6 +99,19 @@ export function init(path, suspensionHandler, breakHandler, eventPredicate) {
             path: `${path}/__init__.js`
         }
     });
+}
+
+export function initProcessing(
+    suspensionHandler,
+    breakHandler,
+    eventPredicate
+) {
+    suspHandler = suspensionHandler;
+    if (breakHandler !== undefined && typeof breakHandler !== "function") {
+        throw new Error("breakHandler must be a function if anything");
+    } else {
+        bHandler = breakHandler;
+    }
 
     if (typeof eventPredicate === "function") {
         eventPred = eventPredicate;
