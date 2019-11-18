@@ -1,4 +1,3 @@
-
 import { processingProxy, makeFunc } from "./utils.js";
 
 export default {

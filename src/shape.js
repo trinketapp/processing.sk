@@ -28,7 +28,7 @@ function shapeGetChild(self, shape) {
     // getChild() Returns a child element of a shape as a PShapeSVG object
     var child = self.v.getChild(shape);
     if (child != null) {
-        // special method for Skulpt:
+    // special method for Skulpt:
         var new_shape = Sk.misceval.callsim(PShape);
         // Now fill in value:
         new_shape.v = child;
@@ -63,7 +63,7 @@ function shapeScale(self, x, y, z) {
 }
 
 function shapeClass($gbl, $loc) {
-    $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
+    $loc.__getattr__ = new Sk.builtin.func(function(self, key) {
         key = remapToJs(key);
         switch (key) {
         case "width":
@@ -73,73 +73,74 @@ function shapeClass($gbl, $loc) {
         }
     });
 
-    $loc.isVisible = makeFunc(shapeIsVisible, "isVisible", [ self ]);
+    $loc.isVisible = makeFunc(shapeIsVisible, "isVisible", [self]);
 
-    $loc.setVisible = makeFunc(shapeSetVisible, "setVisible" [
-        self,
-        { "value": bool }
-    ]);
+    $loc.setVisible = makeFunc(
+        shapeSetVisible,
+        "setVisible"[(self, { value: bool })]
+    );
 
-    $loc.disableStyle = makeFunc(shapeDisableStyle, "disableStyle", [ self ]);
+    $loc.disableStyle = makeFunc(shapeDisableStyle, "disableStyle", [self]);
 
-    $loc.enableStyle = makeFunc(shapeEnableStyle, "enableStyle", [ self ]);
+    $loc.enableStyle = makeFunc(shapeEnableStyle, "enableStyle", [self]);
 
     $loc.getChild = makeFunc(shapeGetChild, "getChild", [
         self,
-        { "shape": PShape }
+        { shape: PShape }
     ]);
 
     $loc.translate = makeFunc(shapeTranslate, "translate", [
         self,
-        { "x": [ int_, float_ ] },
-        { "y": [ int_, float_ ] },
-        { "z": [ int_, float_ ], optional }
+        { x: [int_, float_] },
+        { y: [int_, float_] },
+        { z: [int_, float_], optional }
     ]);
 
     $loc.rotate = makeFunc(shapeRotate, "rotate", [
         self,
-        { "angle": [ int_, float_ ] }
+        { angle: [int_, float_] }
     ]);
 
     $loc.rotateX = makeFunc(shapeRotateX, "rotateX", [
         self,
-        { "angle": [ int_, float_ ] }
+        { angle: [int_, float_] }
     ]);
 
     $loc.rotateY = makeFunc(shapeRotateY, "rotateY", [
         self,
-        { "angle": [ int_, float_ ] }
+        { angle: [int_, float_] }
     ]);
 
     $loc.rotateZ = makeFunc(shapeRotateZ, "rotateZ", [
         self,
-        { "angle": [ int_, float_ ] }
+        { angle: [int_, float_] }
     ]);
 
-    $loc.scale = makeFunc(shapeScale, "scale" [
-        self,
-        { "x": [ int_, float_ ] },
-        { "y": [ int_, float_ ], optional },
-        { "z": [ int_, float_ ], optional }
-    ]);
+    $loc.scale = makeFunc(
+        shapeScale,
+        "scale"[
+            (self,
+            { x: [int_, float_] },
+            { y: [int_, float_], optional },
+            { z: [int_, float_], optional })
+        ]
+    );
 }
 
 export const PShapeBuilder = mod => buildClass(mod, shapeClass, "PShape", []);
 
 export default {
-    loadShape: makeFunc(processingProxy, "loadShape", [
-        { "filename": str }
-    ]),
+    loadShape: makeFunc(processingProxy, "loadShape", [{ filename: str }]),
 
     shape: makeFunc(processingProxy, "shape", [
-        { "sh": "PShape" },
-        { "x": [ int_, float_ ] },
-        { "y": [ int_, float_ ] },
-        { "width": [ int_, float_ ], optional },
-        { "height": [ int_, float_ ], optional }
+        { sh: "PShape" },
+        { x: [int_, float_] },
+        { y: [int_, float_] },
+        { width: [int_, float_], optional },
+        { height: [int_, float_], optional }
     ]),
 
     shapeMode: makeFunc(processingProxy, "shapeMode", [
-        { "img": int_, allowed: [ CORNER, CORNERS, CENTER ] }
+        { img: int_, allowed: [CORNER, CORNERS, CENTER] }
     ])
 };

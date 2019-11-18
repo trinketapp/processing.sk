@@ -5,17 +5,15 @@ const { float_, int_ } = Sk.builtin;
 
 export default {
     box: makeFunc(processingProxy, "box", [
-        { "width": [ int_, float_ ] },
-        { "height": [ int_, float_ ], optional },
-        { "depth": [ int_, float_ ], optional }
+        { width: [int_, float_] },
+        { height: [int_, float_], optional },
+        { depth: [int_, float_], optional }
     ]),
 
-    sphere: makeFunc(processingProxy, "sphere", [
-        { "radius": [ int_, float_ ] }
-    ]),
+    sphere: makeFunc(processingProxy, "sphere", [{ radius: [int_, float_] }]),
 
     sphereDetail: makeFunc(processingProxy, "sphereDetail", [
-        { "ures": int_ },
-        { "vres": int_, optional }
+        { ures: int_ },
+        { vres: int_, optional }
     ])
 };

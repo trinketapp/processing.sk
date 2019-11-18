@@ -7,22 +7,21 @@ const { remapToPy, remapToJs } = Sk.ffi;
 const { func } = Sk.builtin;
 const { buildClass } = Sk.misceval;
 
-function keyboardClass ($gbl, $loc) {
-    $loc.__getattr__ = new func(function (self, attr) {
+function keyboardClass($gbl, $loc) {
+    $loc.__getattr__ = new func(function(self, attr) {
         let l_attr = remapToJs(attr);
         if (l_attr === "key") {
             return key();
-        }
-        else if (l_attr === "keyCode") {
+        } else if (l_attr === "keyCode") {
             return keyCode();
-        }
-        else if (l_attr === "keyPressed") {
+        } else if (l_attr === "keyPressed") {
             return keyPressed();
         }
     });
 }
 
-export const KeyboardBuilder = mod => buildClass(mod, keyboardClass, "Keyboard", []);
+export const KeyboardBuilder = mod =>
+    buildClass(mod, keyboardClass, "Keyboard", []);
 
 export const key = () => {
     if (processingProxy.key.code === CODED) {

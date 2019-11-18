@@ -6,11 +6,11 @@ const { buildClass } = Sk.misceval;
 const { list, func } = Sk.builtin;
 
 function screenClass($gbl, $loc) {
-    $loc.__init__ = new func(function (self) {
+    $loc.__init__ = new func(function(self) {
         self.pixels = null;
     });
 
-    $loc.__getattr__ = new func(function (self, key) {
+    $loc.__getattr__ = new func(function(self, key) {
         key = remapToJs(key);
         switch (key) {
         case "height":

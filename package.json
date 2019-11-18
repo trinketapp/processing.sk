@@ -1,6 +1,6 @@
 {
   "name": "processing.sk",
-  "version": "0.0.6",
+  "version": "0.0.12",
   "description": "A python interface for processing.js for skulpt",
   "main": "main.js",
   "browserslist": "> 0.2%, ie=10",
@@ -17,12 +17,30 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-transform-object-assign": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-object-assign": "^7.2.0",
+    "@babel/preset-env": "^7.4.5",
     "eslint": "^5.5.0",
-    "rollup": "^0.65.2",
-    "rollup-plugin-babel": "^4.0.3",
-    "uglify-js": "^3.1.9"
+    "husky": "^2.5.0",
+    "lint-staged": "^8.2.1",
+    "prettier": "1.18.2",
+    "rollup": "^1.16.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "uglify-js": "^3.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
