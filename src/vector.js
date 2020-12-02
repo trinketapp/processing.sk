@@ -76,9 +76,9 @@ function vectorLimit(self, value) {
 function vectorClass($gbl, $loc) {
     $loc.__init__ = makeFunc(vectorInit, "__init__", [
         self,
-        { "x": int_, optional },
-        { "y": int_, optional },
-        { "z": int_, optional }
+        { "x": [ int_, float_ ], optional },
+        { "y": [ int_, float_ ], optional },
+        { "z": [ int_, float_ ], optional }
     ]);
 
     $loc.__getattr__ = new Sk.builtin.func(function (self, key) {
@@ -96,9 +96,9 @@ function vectorClass($gbl, $loc) {
 
     $loc.set = makeFunc(vectorSet, "set", [
         self,
-        { "x": int_ },
-        { "x": int_, optional },
-        { "x": int_, optional }
+        { "x": [ int_, float_ ] },
+        { "y": [ int_, float_ ], optional },
+        { "z": [ int_, float_ ], optional }
     ]);
 
     $loc.mag = makeFunc(self => self.v.mag(), "mag", [ self ]);
